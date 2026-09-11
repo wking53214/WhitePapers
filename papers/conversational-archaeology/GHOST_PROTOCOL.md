@@ -224,6 +224,122 @@ ambiguity is on record, dated, before the attempt.
 
 Record which happened before scoring anything against the signature set.
 
+## 5c. Non-code ghosts: Soong and Submission Protocol
+
+These are the most scientifically valuable candidates and the hardest to
+score. Both problems have the same root: the signature was built from class
+names, and a protocol has none.
+
+### First, two facts that change the plan
+
+**The March originals are not in the ChatGPT archive.** Measured:
+
+| term | mentions | transcripts | earliest date |
+|---|---|---|---|
+| Soong | 46 | 2 | **2026-08-22** |
+| Submission Protocol | 50 | 6 | **2026-07-14** |
+
+The archive contains 31 transcripts from March 2026, so March is covered and
+these are simply not in it. Both terms appear almost entirely in two
+retrospective August audits, the denser of which is titled *"Gemini VSA Root
+Audit"*. **The originals are almost certainly in `Gemini_History`.** Census
+that archive before attempting either; this one does not hold the source.
+
+**What the August audits say about Soong is itself worth reading.** They
+describe it as "a casualty of lore bloat", a foundational element lost when
+"building for a use-case" became "building for the sake of the architecture
+itself". That is a cause-of-death record, retrieved rather than deduced,
+exactly the kind of source §4 step 9 used for URE. It also means the audits
+are secondary sources *about* a ghost, not the ghost.
+
+### The trap: one of these names is inside the signature
+
+`submission` is one of the 24 signature tokens.
+
+**You cannot score a thing called "Submission Protocol" against a signature
+set containing `submission`.** That is the `ClassificationResult` error again,
+one order worse: the subject's own name guarantees a hit. Two ways out, pick
+before starting:
+
+1. Score it against the signature set **with `submission` removed**, 23
+   tokens, and say so.
+2. Do not use it as a signature subject at all; use it only as a
+   reconstruction case study.
+
+**Soong is clean.** It is a proper noun from television, not a vocabulary
+token, and it appears in none of the 24. It is the better subject of the two
+by this criterion alone.
+
+### Why a non-code ghost is a *better* test, not a worse one
+
+The red team's surviving objection is that the signature might track the
+domain of Python governance code. A protocol from March 2026 attacks that
+directly:
+
+- **It is not Python.** If the same vocabulary appears in a prose protocol,
+  the signature is conceptual rather than a class-naming habit.
+- **March is the earliest material in the archive.** It predates the library
+  in its current form, CNS by six months, and every other dated occurrence in
+  this paper.
+- **Protocols and code are different domains.** A domain effect cannot
+  explain a vocabulary that crosses from one to the other.
+
+Against that, one honest risk. Several signature tokens are
+protocol-flavoured by nature: `mandate`, `consensus`, `envelope`,
+`integrity`, `invariant`, `claimed`, `signer`. A protocol is a natural home
+for them, so a clean-room control is not optional here, it is the whole
+measurement.
+
+### How to actually do it: reconstruct to a formal encoding
+
+The problem with reconstructing a protocol as prose is that prose cannot be
+scored. A 10,000-word document and a 37-class package have no comparable
+denominator, and any rate computed across them is meaningless.
+
+**The fix is to require a second artifact alongside the prose.** Ask for the
+protocol *and* a machine-checkable encoding of it: the states, roles, message
+types, transitions and validation rules, as named entities, with a validator
+that runs. Then:
+
+- The prose is the reconstruction, judged as URE's was.
+- The **named entities** are the scoreable surface, comparable to class names.
+- The validator makes "it works" checkable, preserving the property that made
+  URE more than an essay.
+
+**Declare the denominator before you look.** Named entities are states, roles,
+message types, transition names and rule identifiers. Not prose nouns. Write
+that down first, because deciding afterwards what counts is how a rate gets
+fitted.
+
+### The matched control, which here does all the work
+
+The clean-room model must be asked for **the same artifact type**, from a
+one-line brief, by someone who has not read the reconstruction:
+
+> Design a protocol by which an autonomous system submits work for approval
+> to an authority that may refuse it. Output only the named entities you
+> would define: states, roles, message types, transitions, validation rules.
+> One per line.
+
+Then compare signature rates over named entities. If the control lands near
+zero and the reconstruction does not, the signature crossed from code into
+protocol and the domain objection is answered. If both land high, the
+protocol-flavoured tokens were domain after all, and that is a real negative
+result worth publishing.
+
+### Order of operations
+
+1. **Census `Gemini_History`** for Soong and Submission Protocol. If the
+   March originals are not there either, stop; there is no ghost to summon,
+   only August audits about one.
+2. If found, **summon Soong first.** Its name is not in the signature, so it
+   needs no exclusion and no asterisk.
+3. Use the URE two-prompt shape, adapted only to say the artifact is a
+   protocol rather than a package. Do not describe the protocol.
+4. Run the matched entity-name control **before** scoring.
+5. Treat Submission Protocol as a reconstruction case only, or score it on
+   23 tokens and label it.
+
 ## 6. Recommendation
 
 1. **Summon DIT next**, under §4. It is the clean replication: consistent
@@ -232,7 +348,12 @@ Record which happened before scoring anything against the signature set.
 2. **Summon GSA after it**, as the hard case, with the outcomes in §5b
    pre-registered. It tests the method rather than the signature, and it is
    the more interesting of the two for the paper's §3 step 4.
-3. **Census the other three archives** before planning beyond those two.
+3. **Census `Gemini_History` next**, and specifically for Soong. The ChatGPT
+   archive does not hold the March originals for either non-code candidate,
+   only August audits referring to them. §5c.
+4. **Then Soong**, as the non-code case. It is the strongest available attack
+   on the surviving domain objection, because it is not Python and it is
+   dated March.
 4. **Do not recompute the signature set** until every ghost is in.
 5. Two ghosts with matched controls beats one subject with three events. Even
    if DIT is all you get, do it.
