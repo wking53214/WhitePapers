@@ -6,6 +6,29 @@ Draft 1 is written at full fidelity because it is private and because a
 redacted draft is harder to check. That makes this file load-bearing: the
 paper cannot be published as written.
 
+## The crown jewels, added after the blue team
+
+`BLUE_TEAM.md` §B4b derives a **24-token survivor set**: the vocabulary that
+appears across the author's repositories and nowhere in 5,188 third-party
+class names or 145 clean-room names. That list is the most concentrated
+description of the author's conceptual schema that exists. It is shorter than
+any class shape, easier to copy, and it is the actual recipe.
+
+**It never leaves this repository.** Not in an appendix, not in a figure, not
+in a reviewer packet. The paper reports:
+
+- the count, 24 of 56
+- the three-filter construction, which anyone can apply to their own codebase
+- the scores of every corpus against it
+- `regime` alone, as the worked example, because §B2's cross-domain argument
+  cannot be made without naming one token
+
+One token illustrates the method. Twenty-four hands it over.
+
+`data/cleanroom_trial*_names.txt` are safe to publish: they are model output
+containing none of the author's vocabulary by construction, and they let a
+reader reproduce the controls without the library.
+
 ## The binding constraint
 
 `wking53214/CNS` carries a trade-secret notice dated 2026-09-11 forbidding

@@ -37,24 +37,31 @@ packages, with **zero** structural copies of any library class and member
 overlap of 0.00 wherever a class name recurred.
 
 **That result does not survive a control the original schema study did not
-have.** Two fresh model sessions, given only a prose description of the
-system's function with no access to the archive, the library, or any of the
-author's material, score 14.8% on the same vocabulary. Most of the
-separation the schema study reports is therefore attributable to **domain**
-rather than to authorship: governance and resilience code contains
-governance and resilience words, and the study's twelve controls were all
-off-domain.
+have.** Three fresh model sessions, with no access to the archive, the
+library, or any of the author's material, score 14.8%, and the one given the
+vaguest brief scores **31.6%**, above the subject and above the library's own
+held-out repositories. Seven human-written domain-matched packages score
+10.7%. The separation the schema study reports is therefore a **domain**
+effect and not an authorship effect, and not a language-model effect either:
+human and model code in this domain score alike. The study's twelve controls
+were all off-domain, so it could not see this.
 
 We report this as the paper's principal finding, because it is the more
 useful one. What survives is a well-evidenced reconstruction, a
 demonstration that it copied no code, and a negative methodological result:
 **a study claiming an organisation has a distinctive conceptual vocabulary
 requires a domain-matched control, and without one it will measure its
-subject matter instead.** We also report a sharper hypothesis the control
-exposed: the concepts a system needs appear to be determined by its domain
-and reachable by anyone, while the particular words are the author's. The
-clean-room sessions reached every one of the subject's concepts and none of
-its names.
+subject matter instead.**
+
+The measure can then be rebuilt, and we rebuild it. Filtering the vocabulary
+by cross-repository use, then by absence from 5,188 third-party class names,
+then by absence from clean-room output, leaves **24 tokens that no control
+reaches**: zero occurrences across nineteen third-party packages and three
+clean-room trials. The subject scores 8.1% on that set against 0.0% for every
+control, on three classes, which is suggestive and under-powered and reported
+as both. The clean-room sessions reached every one of the subject's concepts
+and almost none of its words, which is the distinction the rebuilt measure
+isolates.
 
 ## 1. Problem
 
@@ -390,7 +397,59 @@ narrower: the recurrence is datable to mid-2026 and is not an artefact of the
 reconstruction. Whether it is an artefact of the tools used to produce the
 archive is exactly what §6.4 leaves unresolved.
 
-### 6.8 Status of the central claim
+### 6.8 Rebuilding the measure, and a signature that survives
+
+§6.4 shows the published vocabulary does not discriminate. A third
+clean-room trial, given a one-line brief and left to derive the architecture
+itself, scored **31.6%** on it, above the subject's 21.6% and above the
+library's own held-out repositories at 25.4%. A model handed one sentence
+outscores the codebase the vocabulary was derived from. The measure is
+refuted, not merely unsupported.
+
+The measure can be rebuilt. Three filters, each using a corpus the next does
+not see:
+
+1. Keep tokens used in **two or more** of the author's repositories.
+2. Drop any token appearing anywhere in **5,188 third-party class names**
+   across 19 packages, 7 of them domain-matched resilience and policy
+   libraries. This removes domain and generic vocabulary. 33 survive.
+3. Drop any token a **clean-room model** reaches. Two trials removed 5.
+
+Then a held-out test: the third trial, never used in the construction,
+removed 4 more. **24 tokens survive all of it.**
+
+| corpus | published 56 | 24-token signature |
+|---|---|---|
+| URE, the subject | 21.6% | **8.1%** |
+| Clean-room trials 1 and 2 | 14.8% | **0.0%** |
+| Clean-room trial 3, held out | **31.6%** | **0.0%** |
+| Third-party, 19 packages incl. 7 domain-matched | 3.5% | **0.0%** |
+
+The signature discriminates completely against every control: zero
+occurrences in 5,188 third-party class names and zero in 145 clean-room
+names across three trials with three different briefs. The subject scores
+8.1%, on three classes, all carrying one token.
+
+**The worked example, and why a single token carries more weight than an
+aggregate here.** That token appears across the author's work in clinical
+risk assessment, market forecasting, drone resilience, vehicle safety and
+governance code. Five unrelated domains. It appears **nowhere** in seven
+domain-matched third-party packages, nowhere in twelve off-domain ones, and
+nowhere in 145 clean-room names produced from resilience briefs. A domain
+effect predicts a word clusters inside its domain; this one is absent from
+the domain and present across the author's unrelated projects. That is the
+pattern the schema hypothesis predicts and the domain hypothesis forbids.
+
+**Under-powered, and we say so.** Three classes cannot carry an interval
+worth quoting. The controls are not small numbers: zero of 145 and zero of
+5,188. The signature set is solidly established; the reconstruction's score
+on it is suggestive. Both statements belong in any citation of this result.
+
+**Falsifiable by construction.** Each additional clean-room trial can only
+shrink the survivor set. It never grows to accommodate evidence, which is
+the property the original 56-token measure lacked.
+
+### 6.9 Status of the central claim
 
 Ordered by how hard each is to attack:
 
@@ -401,17 +460,21 @@ Ordered by how hard each is to attack:
 3. Where names recur, shapes do not: member overlap 0.00 on the surviving
    cases. **Established**, and the cleanest evidence that whatever is shared
    is conceptual rather than textual.
-4. The recurrence is not general Python naming convention. **Established**
-   against off-domain packages.
-5. The recurrence predates any instrument that could detect it.
-   **Established** for two names, datable to June and July 2026.
-6. The library therefore shares a conceptual schema attributable to its
-   author. **Not established, and positively doubted** by §6.4.
+4. The published whole-vocabulary measure conflates domain with authorship
+   and is refuted as a fingerprint. **Established**, by a control the
+   original study did not run.
+5. The effect is not a language-model artefact: domain-matched human code
+   scores the same as a clean-room model. **Established.**
+6. A 24-token author signature exists that no control reaches.
+   **Established** for the set; **under-powered** for the subject's score on
+   it.
+7. The library shares a broad conceptual schema attributable to its author.
+   **Not established.** Twenty-four tokens surviving a filter is not the
+   56-token claim, and the subject's three events do not settle it.
 
-Claim 6 is the one that would have made this paper exciting. Testing it is
-what took it away, which is the correct outcome: it would have been falsified
-by the first reviewer to run a domain-matched control, and it is better that
-it was falsified here.
+Claim 7 is what would have made this paper exciting in the form we first
+wrote it. Testing it took it away and handed back claims 4 through 6, which
+are smaller, true, and useful to anyone attempting the same measurement.
 
 ## 7. Results
 

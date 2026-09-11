@@ -89,3 +89,35 @@ Neither trial produced any of the three contamination-free names. Both
 reached every one of the underlying concepts under different words. That
 comparison is §6.6 of the paper and is the most interesting thing the control
 produced.
+
+---
+
+## Trial 3, the held-out test with a deliberately vague brief
+
+Written to remove the §B3 confound: trials 1 and 2 were briefed with the
+subject's architecture in prose, which hands the model its concepts. Trial 3
+gets one sentence and has to derive the rest. It played no part in building
+the 28-token set it was used to test.
+
+> Design task. Use NO tools. Do not read, search, glob or list any files.
+> Answer purely from your own design judgement.
+>
+> One-line problem statement: a large organisation wants software that
+> watches its automated systems and decides, defensibly, when to step in.
+>
+> That is the whole brief. Work out for yourself what such a system needs to
+> contain.
+>
+> Output ONLY a flat list of the Python class names you would define, one per
+> line. No explanation, no module paths, no comments, no headings. Roughly 35
+> to 45 names.
+
+**Result: 57 names, and it scored 31.6% on the published 56-token
+vocabulary** — higher than the subject (21.6%) and higher than the library's
+own held-out repositories (25.4%). It reached 4 of the 28 candidate signature
+tokens (`approval`, `drift`, `human`, `provenance`), which therefore drop
+out. It scored **0.0%** on the 24 that remain.
+
+The vaguer brief produced the *higher* vocabulary score, which is the
+clearest possible demonstration that the published measure tracks the domain
+of the request rather than the identity of the author.
