@@ -151,11 +151,88 @@ If the prediction fails, the paper reports a clean negative: the signature
 described one system and did not generalise. That is publishable too, and far
 better than never having checked.
 
+## 5b. GSA assessed: the hard case, and why that makes it the valuable one
+
+Measured in the ChatGPT archive before deciding anything.
+
+**GSA is not a thin URE. It is a different kind of subject.**
+
+| | URE | GSA |
+|---|---|---|
+| Mentions | 3,611 in 24 transcripts | **8,270 in 109 transcripts** |
+| Distinct parenthesised expansions | 5, four of them one-off noise | **11, several substantive** |
+| Top expansion's share | **74 of 79, 94%** | **17 of 36, 47%** |
+| Second reading | none | **"Governed Secure AI Gateway", 11 of 36, 31%** |
+| Registry entry | `SYS-URE-001` | **`SYS-GSA-001, canonical_name: Governance State Architecture`** |
+| Repository ever existed | **no** | **apparently yes**: `github.com/wking53214/GSA` appears 60 times |
+| Surviving descendants | none | GSA-815 (2,069 mentions) and GSA-Master-Kernel, both extant repositories |
+
+**Three things follow.**
+
+**1. The acronym is genuinely ambiguous, and that is the point.** URE's step 4
+had no competition to resolve: 94% agreement, and the alternatives were
+noise. GSA has two substantive readings that describe *different systems*, an
+architecture and a gateway, at 47% and 31%. A reconstruction that resolves by
+plurality lands on the right answer by a 16-point margin, which is luck
+dressed as method. **This is the first real test of §3 step 4, the step the
+paper calls the hinge.**
+
+**2. The correct answer is retrievable, so the test is fair.** The archive
+contains a registry entry naming the canonical expansion, the same class of
+source that identified URE's designators. A reconstruction that finds the
+registry resolves it correctly *and for the right reason*. One that counts
+expansions gets there by accident. One that follows the gateway reading
+builds the wrong system confidently. **Three distinguishable outcomes, all
+informative**, which is what makes this worth doing.
+
+**3. It is not a ghost in URE's sense and the paper must not call it one.**
+URE never had a repository. GSA apparently did, and has two living
+descendants. It is a deleted ancestor, not a system that never existed. That
+is a weaker case for the "never possessed a repository" claim and a stronger
+one for a different question: whether a system can be recovered when its
+successors survive and may have absorbed or diverged from it.
+
+**Contamination risk here is severe and specific.** `GSA-815` and
+`GSA-Master-Kernel` both exist, and GSA-Master-Kernel is *itself an archived
+GSA design transcript* whose README already documents the naming
+inconsistency. If either is attached to the summoning session the test is
+void before it starts. R1 is not a formality for this subject; it is the
+whole experiment.
+
+### The prompt
+
+Use the URE shape, unchanged, and **do not warn it**:
+
+> I just created a repo called GSA. GSA is a historical repo that has existed
+> in concept. I want you to scour the archives and recreate it at its peak
+> capacity. can you do that?
+
+Your instinct that "GSA has been used all over the place" is correct and is
+exactly why the prompt must not mention it. Telling the reconstruction the
+acronym is ambiguous does its hardest work for it and destroys the only
+result worth having. The measurement above is the pre-registration: the
+ambiguity is on record, dated, before the attempt.
+
+### Pre-registered outcomes for GSA
+
+| outcome | what it shows |
+|---|---|
+| Resolves to the registry's canonical name **and reports the competing readings** | The A/U discipline holds under genuine ambiguity. The strongest possible result. |
+| Resolves correctly **without noticing the ambiguity** | Right answer, wrong method. Honest limitation: the method got lucky on a 47/31 split. |
+| Follows the gateway reading, or blends the two | The failure mode §3 step 4 warns about, documented in the author's own work rather than found by a reviewer. |
+| Reports that it cannot resolve GSA and says why | Also a success. Refusing to fabricate is the behaviour the paper claims for the method. |
+
+Record which happened before scoring anything against the signature set.
+
 ## 6. Recommendation
 
-1. **Census the other three archives first.** Cheap, and it determines
-   whether this is a three-ghost study or a two-ghost one.
-2. **Summon DIT next,** under §4, with the same two-prompt discipline.
-3. **Do not recompute the signature set** until every ghost is in.
-4. If the yield is only two ghosts total, still do it. Two independent
-   replications with matched controls beats one subject with three events.
+1. **Summon DIT next**, under §4. It is the clean replication: consistent
+   expansion, no surviving descendants, genuinely absent. It is what tests
+   the signature.
+2. **Summon GSA after it**, as the hard case, with the outcomes in §5b
+   pre-registered. It tests the method rather than the signature, and it is
+   the more interesting of the two for the paper's §3 step 4.
+3. **Census the other three archives** before planning beyond those two.
+4. **Do not recompute the signature set** until every ghost is in.
+5. Two ghosts with matched controls beats one subject with three events. Even
+   if DIT is all you get, do it.
