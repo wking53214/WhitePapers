@@ -116,8 +116,11 @@ than plausibility is the step at which a fabrication would have begun, and
 would then have been carried consistently through fifteen modules and 278
 tests, producing a wholly wrong system that passed every internal check.
 
-The resolution came from 78 independent parenthesized expansions across the
-corpus. Not one inference.
+The resolution came from 78 independent parenthesised expansions across the
+corpus. **Re-measured for this paper against a fresh clone of the archive:
+exactly 78, and zero occurrences of any competing three-word expansion.** The
+acronym was not resolved against a plurality of candidates; there was no
+competition to resolve.
 
 **Cause of death.** URE was a dependency that never became a project. It was
 specified as the replacement for a missing health-monitoring component inside
@@ -389,6 +392,17 @@ Those transcripts predate the reconstruction, the schema measurement, and
 any instrument capable of detecting a schema. So the archive evidence
 escapes two objections: it cannot have been echoed from an attached
 repository, and the vocabulary cannot have been fitted to it.
+
+**This was verified at the source rather than taken on trust.** The
+reconstruction session had two library repositories attached, one of which
+contains a `Regime`-named class, giving the token a contamination path. The
+archive closes it: the subject's regime vocabulary appears verbatim in a
+transcript dated **2026-06-19**, four occurrences of the exact enumeration
+name with all six of its members, and the predecessor's vocabulary appears
+155 times in a transcript titled for an entirely different application
+domain. Twenty-one transcripts in that archive use the token, spanning June
+to August 2026 across unrelated subjects. The cross-domain pattern therefore
+holds from the archive alone, with no reference to the library at all.
 
 It does **not** escape the model-prior objection, and an earlier draft of
 this paper wrongly claimed that it did. The archive is a collection of AI

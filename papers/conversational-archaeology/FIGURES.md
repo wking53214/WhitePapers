@@ -103,22 +103,74 @@ reconstruction's `docs/PROVENANCE.md` §8, which records the predecessor's
 vocabulary rather than shipping it, since the reconstruction deliberately
 adopted the v2 names instead.
 
-## Figures that are author-reported and should be re-verified (A)
+## Author-reported figures, now independently verified (A -> V)
 
-These come from `RECONSTRUCTION.md` §2 and were not re-measured. Each is
-checkable against the archives, and should be before publication.
+The archive was cloned and these were re-measured rather than trusted.
 
-- 2 prompts; corpus of 242 MB, 1,768 files, 863 transcripts
+```
+git clone --depth 1 https://github.com/wking53214/chatgpt_history
+cd chatgpt_history/transcripts
+grep -roh "URE ([A-Z][a-z]* [A-Z][a-z]* [A-Z][a-z]*)" --include=*.md . | sort | uniq -c
+```
+
+| figure | claimed | measured | status |
+|---|---|---|---|
+| Acronym expansions | 78 | **78** | **exact** |
+| Competing expansions of URE | none stated | **none exist** | stronger than claimed |
+| Archive file count | 1,768 | **1,768** | exact |
+| S1 transcript at the cited path | yes | **present** | confirmed |
+| S4 transcript at the cited path | yes | **present** | confirmed |
+| S1 date | 2026-06-19 | **2026-06-19** | exact |
+| S4 date | 2026-07-29 | created 2026-07-27, **updated 2026-07-29** | the cited date is `update_time` |
+| S4 title | "Sentinel OS for Drones" | **exact match** | confirmed |
+
+**The 78 figure is the one §6 leans on and it is now the strongest number in
+the paper.** The regex returns 78 occurrences of `URE (Universal Resilience
+Engine)` and **zero** occurrences of any other three-word expansion. The
+acronym was not resolved against a plurality; there was no competition.
+
+### The contamination question on `regime`, closed
+
+`BLUE_TEAM.md` §B2 flagged that `RegimeEngine` exists in `sentinel_os`, which
+was attached to the reconstruction session, giving the `regime` token a
+contamination path. That path is now ruled out at the source:
+
+| check | result |
+|---|---|
+| `SystemRegime` in S1 (2026-06-19) | **4 occurrences** |
+| Its members in S1 | NOMINAL 3, STRESSED 3, ATTACKED 2, CASCADING 3, RECOVERING 4, ADAPTING 2 |
+| `OperationalRegime` in S4 | **155 occurrences**, with all six v1 members |
+
+URE's regime vocabulary is verbatim from a transcript dated **2026-06-19**,
+three months before CNS existed and independent of `sentinel_os`. The
+reconstruction did not need the attached repository and demonstrably did not
+use it for this.
+
+### Cross-domain spread of `regime` in the archive alone
+
+Twenty-one transcripts contain it, spanning 2026-06-19 to 2026-08-25, under
+titles including a drone operating system, an executive technical assessment,
+code-fingerprint extraction, a root audit, a fortress code comparison and an
+unrelated project. The cross-domain claim in §B2 therefore holds from the
+archive on its own, without reference to the library.
+
+### Still author-reported (A)
+
+- 2 prompts; corpus of 242 MB, 863 transcripts
 - 24 transcripts containing the subject, 2,644 raw occurrences
-- 78 acronym expansions
 - 297 lines of historical code recovered verbatim
-- 4 primary sources identified
 - 3 defects carried forward from the archive, 4 introduced and caught
 
-The 78-expansion figure is the one that most deserves independent
-confirmation, because §6 leans on it: it is the evidence that the acronym was
-resolved rather than guessed, and it is the single point where a wrong answer
-would have produced a confident and entirely incorrect system.
+### Still open, and it cannot be closed from here
+
+`RECONSTRUCTION.md` §2 says four repositories were attached to the
+reconstruction session and §3 names only two, `sentinel_os` and
+`innovation_os`. **The other two are unidentified.** The contamination
+analysis in §6.5 is therefore complete with respect to the two named
+repositories and incomplete with respect to the session as a whole. If either
+unnamed repository was a library repository, more of the shared names may
+need discarding. Recover that list from the session record before
+publication.
 
 ---
 
