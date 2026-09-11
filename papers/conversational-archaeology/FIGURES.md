@@ -356,3 +356,63 @@ A broader sweep of eighteen repositories for religious vocabulary
 providence and twenty more) returns this term and nothing else. `genesis`
 also appears, 139 times, but every occurrence is the blockchain sense, a
 ledger's genesis anchor, and none is religious usage.
+
+## §0.2c, the blind replication (V)
+
+The subject artifact is `evidence/SOONG_GOVERNING_CONSTRAINT_DERIVATION.md`,
+614 lines, generated 2026-09-11T22:44:40Z, committed as `f020dd9` on branch
+`claude/soong-protocol-constraint-xk8jcb` of `wking53214/gemini_extraction`.
+
+**Attachment conditions, recorded at the time rather than reconstructed.**
+The session was given the four conversational archives and nothing else. The
+prompt is quoted in full in §0.2c. Confirmed two independent ways:
+
+1. The prompt names only the history repositories.
+2. The artifact's §0.3 corpus table lists five repositories with commit SHAs
+   (`gemini_extraction` a3f01fe, `gemini_history` 184fd52, `chatgpt_history`
+   1414b89, `claude_history` 5b1c42e, `copilot_history` 9f6fb93). This
+   paper's repository is not among them.
+
+**Verification of its claims against the archive, run here independently:**
+
+```
+python3 - <<'PY'
+import json, re
+recs = json.load(open("Takeout/My Activity/Gemini Apps/myactivity.json"))
+T = lambda r: str(r.get("time", ""))
+for r in sorted([r for r in recs if "2026-03-25T18:5" in T(r)], key=T):
+    print(T(r)[11:19], "|", r["title"][:120])
+print(len([r for r in recs if T(r).startswith("2026-03-24")]))   # 0
+print(len([r for r in recs if re.search(r"alpha[\s\-_]?omega", json.dumps(r), re.I)]))   # 351
+PY
+```
+
+| its claim | verified |
+|---|---|
+| Alpha-Omega named 18:53:09, author's own prompt | **exact** |
+| Reorder proposed 18:55:45, author's own prompt | **exact** |
+| Rename 18:56:29, 44 seconds later | **exact** |
+| Abort rather than filter | **exact**, quoted in §0.2 |
+| Zero records dated 2026-03-24 | **confirmed** (03-23: 42, 03-25: 22, 03-26: 124) |
+| `alpha-omega` persists to 2026-07-06 | **351 occurrences** |
+| `Alpha-Omega` in any source file | **0**, unlike `apply_liturgical_pause` |
+
+**The limit on what it replicates.** Its corpus included a prior extraction
+pass, and that pass had already indexed the material:
+
+```
+cd gemini_extraction
+git grep -ci -e "mark 12" -e "john 13" a3f01fe        # events.jsonl 45, chronology.jsonl 43, ...
+git grep -ci "alpha.omega" a3f01fe                     # events.jsonl 215, evidence_ledger 182, ...
+git grep -ci -e "mark 12" -e "john 13" a3f01fe -- 'reports/*'   # zero in every report
+git show --stat f020dd9                                # 1 file changed, 614 insertions
+```
+
+So the raw material was pre-indexed but the **conclusion** was not stated
+anywhere: zero verse references in any pre-existing report, and the commit
+adds exactly one file. §0.2c states the distinction rather than claiming cold
+recovery.
+
+**The cold test that is still open.** Same prompt, pointed at
+`gemini_history` alone with `gemini_extraction` withheld. That measures
+recoverability from primary record.

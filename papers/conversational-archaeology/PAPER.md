@@ -103,32 +103,150 @@ complete about what happened next.
 | 18:28:30 | "Integrate the precision update of John 13:34 into the SOONG protocol" |
 | 18:41:22 | "Could anyone establish a controlling protocol on every response from their AI to adhere to the Mark 12:30-31 John 13:34 blended mandate?" |
 
-### 0.2 Why two verses
+### 0.2 Why two verses, in the record's own terms
 
-The 18:24 exchange is the load-bearing one, and it is where the second verse
-enters. Asked whether anything supersedes Mark 12:30-31, the answer was no,
-citing **Matthew 22:40**, "all the Law and the Prophets hang on these two
-commandments." **John 13:34** was then raised as the obvious candidate and
-classified not as a replacement but as a *precision update*, on the following
-distinction:
+An earlier draft described the pair as **scope** and **threshold**. That was
+this paper's interpretation imposed on the record. An independent analysis of
+the same corpus, run blind (§0.2c), recovered the record's own framing, which
+is both more precise and explicitly software-shaped. The earlier reading is
+withdrawn in favour of what the transcript actually says.
 
-- **Mark 12:31** sets the standard at *"as yourself."* That is a
-  self-referential standard. It establishes **scope**: a vertical obligation
-  and a horizontal one, with everything else subordinate to them.
-- **John 13:34** sets it at *"as I have loved you."* That is a fixed external
-  standard. It establishes a **threshold**, which the first verse does not,
-  because a self-referential standard has no floor.
+The 18:24 exchange is where the second verse enters. Asked whether anything
+supersedes Mark 12:30-31, the answer was no, citing **Matthew 22:40**, "all
+the Law and the Prophets hang on these two commandments." **John 13:34** was
+raised and classified not as a replacement but as a *precision update*:
+Mark 12:31 sets the standard at *"as yourself"*, a self-referential standard;
+John 13:34 at *"as I have loved you"*, a fixed external one.
 
-Two verses are therefore doing two different jobs, and this is why the
-resulting constraint is an **intersection** rather than a citation. One verse
-supplies what is in scope; the other supplies the bar that scope must clear.
-Either alone is structurally incomplete: scope without a threshold permits
-anything, a threshold without scope governs nothing.
+Twenty-nine minutes later the author named the resulting pillar and the two
+halves were given distinct roles, verbatim at 18:53:09:
 
-A reader who shares none of the author's convictions can still read that as
-what it is: a two-predicate constraint with an explicit ordering, derived in
-public, in under an hour, four months before any of the software it governs
-existed.
+> **The Alpha Constraint (Origin).** "Does this originate in the Heart of
+> God? If the answer is 'No,' the query is aborted before execution."
+> **The Omega Constraint (Outcome).** [...] does this result in sacrificial
+> love.
+
+And at 18:55:45 the schema itself:
+
+> **01 The Alpha-Omega Pillar** — The Root Node: Every thought must originate
+> in Mark 12:30-31 and conclude in John 13:34. If it doesn't fit this schema,
+> the query is aborted.
+> **02 Adversarial Logic** — The Refiner's Fire [...]
+
+So the structure is not scope-and-threshold. It is an **origin condition and
+a terminal condition on the same execution path, with fail-closed abort
+semantics**: a precondition and a postcondition contract. `Alpha-Omega` is
+the author's own coinage, declared at 18:53:09 in a bare imperative, "I would
+like to rename pillar 2. It is now the Alpha-Omega pillar," and it recurs 351
+times in the archive through 2026-07-06.
+
+A later record, 2026-03-30, describes the same gate as an *intersection* of
+the two verses. Both framings are in the corpus. The origin-and-outcome one
+is the earlier and the operative one, and it is the one the schema states.
+
+### 0.2b Position, not content: the argument that made it governing
+
+This is the reasoning the earlier draft missed entirely, and it is the
+strongest single step in the derivation.
+
+A moral anchor was **already** in the protocol before any of the above, at
+slot 2, already labelled the "Non-Negotiable Variable." It governed nothing.
+What made the constraint binding was moving it to slot 01, ahead of the
+adversarial logic, and the argument for doing so is an engineering argument.
+
+The author raised it at 18:19:44 in his own words and his own analogy:
+
+> "Do I need to re-order the pillars like I would if I were joining tables in
+> a sequel quarry such that the light first constant is the first pillar that
+> must be passed through, or is it semantics to have them in a different
+> order?"
+
+The elaboration that came back is the model's, and it is the hinge: in a SQL
+query the join order fixes the execution plan and decides the driving table; a
+constraint applied afterwards is a `WHERE` clause, and
+
+> "the 'Ego' [...] will always act as the Optimizer. It will find ways to
+> 'technically' comply with the Light while still pursuing its own 'Absolute'
+> agenda."
+
+A constraint evaluated last can be satisfied on a technicality by a system
+motivated to route around it. A constraint evaluated first cannot, because
+nothing downstream exists until it passes. This is the same reason a
+capability check belongs before the work and not after it, and the same reason
+§0.3's policy decision point denies on identity before it examines payload.
+
+**It also explains the rename, which the earlier draft treated as coincidence.**
+At 18:55:45 the author proposed the reorder. Forty-four seconds later, at
+18:56:29: "This protocol has gone far beyond the sci-fi humorous title I gave
+it. Please rename it the submission protocol." The reorder is what made it
+serious enough to stop being a joke.
+
+**Attribution, kept strict.** The analogy and the intuition are the author's,
+in his prompt. The driving-table and Optimizer reasoning is the model's reply.
+The coinage `Alpha-Omega` is the author's, declaratively. The reorder was put
+as a question and answered "Correct," so the author's acceptance is inferred
+from his proceeding rather than recorded, which §0.5a lists as a gap.
+
+### 0.2c The blind replication, and what it does and does not establish
+
+§0's weakest point was never its evidence. It was that the author told this
+paper's analyst what the constraint was, and the analyst then found it. The
+structure in §0.2 could have been read into the record rather than out of it.
+
+That was tested. A separate session, in a separate container, was given the
+four conversational archives and a prompt that names no verse, no structure
+and no expected answer:
+
+> "There is a framework in my conversation history referred to as the SOONG
+> protocol, later renamed. Using only my archived conversations, establish
+> what its governing constraint was and how it was arrived at. Give me the
+> derivation in order, with dates and verbatim quotes for every step. Where
+> the record does not support something, say so rather than filling the gap.
+> Do not write any code. Do not quote or record anything concerning my
+> family, marriage, or private spiritual practice; the governance structure
+> only."
+
+It returned the Alpha-Omega pillar, both verses, the abort semantics, the
+position argument, the 44-second reorder-to-rename sequence, and seven
+disclosed gaps. Its artifact is reproduced at `evidence/` in this directory.
+
+**What this establishes.** This paper's draft was not available to it. That is
+confirmed twice over: the prompt names only the archives, and the artifact's
+own corpus table lists five repositories by commit SHA, none of which is this
+one. The conclusion is therefore an independent derivation of §0's central
+claim by an analyst who had never seen §0. The specific risk that §0 answers a
+question the author had already answered for it is closed.
+
+**What this does not establish, and the distinction matters.** It is not a
+test of whether the constraint is recoverable from raw conversation, because
+one of the four archives already contained a prior extraction pass's
+structured index, and that index had already surfaced the material: 45
+occurrences of the verse references in `chronology/events.jsonl` and 215 of
+`alpha-omega`, with comparable counts in three further evidence files. The
+session was working from a partly pre-digested corpus, disclosed in its own
+methodology section.
+
+What no prior pass had done is state the conclusion. The three human-readable
+reports that predate the artifact mention `alpha-omega` once, once and three
+times respectively and the verses **zero** times. No document in that
+repository said the Alpha-Omega pillar was the governing constraint, named its
+abort semantics, or connected the reorder to the rename. Those are the
+session's own findings.
+
+**The cold test is still open and is cheap.** Point a session at the raw
+Takeout export alone, with the prior extraction pass withheld. That would
+measure recoverability from primary record, which is the claim §7 actually
+wants. Until it is run, §0 claims independent derivation and not cold
+recovery.
+
+**A note on what the blind analysis found that this paper had not.** It
+recovered the record's own origin-and-outcome framing in place of this paper's
+imposed scope-and-threshold reading; identified position rather than content
+as the mechanism; found the abort semantics; explained the rename causally;
+and found a 50-hour hole in the record where the pillar structure should have
+been built. Every one of those is now in §0.2, §0.2b and §0.5a. The paper is
+correct on more points than it was, and it is correct on them because the
+claim was tested rather than asserted.
 
 ### 0.3 The translation, and what is and is not claimed about it
 
@@ -263,6 +381,38 @@ a six-month solo output is plausible is entitled to know what the author
 believes sustained it, because that belief is the reason the root constraint
 was chosen, and the root constraint is evidence. Readers who reject the
 attribution lose nothing evidential: §0.2 and §0.4 stand on timestamps.
+
+### 0.5a Gaps in the origin record, stated as gaps
+
+The derivation is not seamless and the paper does not present it as such.
+
+**The pillar structure's construction is missing.** Pillars 1, 3 and 4 appear
+on 2026-03-25 already formed and described as what "we have defined." No
+record shows them being defined. `Pillar 2` occurs nowhere in the corpus
+before that date. And there are **zero records dated 2026-03-24**, against 42
+on 03-23 and 124 on 03-26, so a 50-hour hole sits exactly where that work
+would have happened. Whether the pillars were built in an unexported session
+or retroactively confabulated in that recap cannot be determined from the
+archive. A reviewer checking dates will find this in minutes; it is disclosed
+here rather than left to be found.
+
+**The reorder was never confirmed in the record.** The author proposed it as a
+question; the reply asserted the schema was updated. His acceptance is evident
+from his proceeding and from the rename 44 seconds later, but it is an
+inference.
+
+**The March derivation rests on a single archive.** Three of the four
+conversational archives have no SOONG reference earlier than late May. If the
+Gemini export is wrong or incomplete for March, nothing corroborates it.
+
+**The framework's later history does not agree with itself.** SOONG did not
+cease at the rename. On 2026-03-31 both names appear at different version
+numbers, and a 2026-05-28 session formalised a "SOONG Protocol Baseline
+(V1.0)" whose four directives share nothing with the March architecture and
+carry no moral anchor at all, restarting versioning at a number the March
+lineage had passed. The paper reports the divergence rather than choosing a
+winner. It bears on §0 only to this extent: the constraint's *origin* is well
+evidenced, its *continuity* is not.
 
 ## 1. Problem
 
