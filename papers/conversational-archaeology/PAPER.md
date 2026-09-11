@@ -3,9 +3,12 @@
 # Conversational Archaeology
 
 **Reconstructing a lost software system from archived design discourse, and
-verifying the reconstruction against an independently measured schema**
+why verifying such a reconstruction is harder than it looks**
 
-*Draft 1, 2026-09-11*
+*Draft 2, 2026-09-11. Draft 1 claimed the reconstruction was verified against
+the author's conceptual schema. A clean-room control run during adversarial
+review showed that measure reports domain rather than authorship. See
+`RED_TEAM.md`.*
 
 ---
 
@@ -19,32 +22,39 @@ three-letter name. The rebuild produced fifteen modules, 278 passing tests
 and zero runtime dependencies, together with a dated account of the system's
 lifecycle and cause of death.
 
-The reconstruction itself is not the contribution. Any sufficiently capable
-generative process can produce plausible software from a prompt, and a
-plausible reconstruction is indistinguishable from a fabrication by
-inspection alone. The contribution is the verification: the rebuilt system
-was scored against a conceptual schema measured independently from eighteen
-unrelated repositories before the reconstruction began. It scored 21.6%
-(95% CI 11.4 to 37.2), against 25.4% for repositories that actually existed
-and 2.8% for third-party control packages, while containing **zero**
-structural copies of any class in the source library.
+The reconstruction is not the contribution, because a plausible
+reconstruction and a confident fabrication are indistinguishable by
+inspection: both compile, both have tests, both read as coherent. The
+question this paper is organised around is the second one: **given a
+reconstruction, how would you know it is one?**
 
-That combination is the finding. The rebuilt system independently reached
-five of the library's recurring class names with near-zero member overlap,
-which is convergence on concepts rather than recovery of code. Two of the
-three names the archive preserved as the original system's namespace also
-recur in the library, which places the recurrence in mid-2026, months before
-any instrument existed that could have detected it. A
-reconstruction can be checked, not merely admired, when the organization
-that lost the system has separately measured what its own thinking looks
-like.
+We attempted to answer it with an instrument the subject's organisation
+already had, a conceptual schema measured independently from eighteen
+unrelated repositories before the reconstruction began. The rebuilt system
+scored 21.6% on that schema's published vocabulary, against 25.4% for
+repositories that actually existed and 2.8% for third-party control
+packages, with **zero** structural copies of any library class and member
+overlap of 0.00 wherever a class name recurred.
 
-We argue the general case: **software does not die when its code is deleted,
-it dies when the reasoning that produced it stops being retrievable**, and an
-organization that archives design discourse as seriously as source can
-recover systems whose source it never had.
+**That result does not survive a control the original schema study did not
+have.** Two fresh model sessions, given only a prose description of the
+system's function with no access to the archive, the library, or any of the
+author's material, score 14.8% on the same vocabulary. Most of the
+separation the schema study reports is therefore attributable to **domain**
+rather than to authorship: governance and resilience code contains
+governance and resilience words, and the study's twelve controls were all
+off-domain.
 
----
+We report this as the paper's principal finding, because it is the more
+useful one. What survives is a well-evidenced reconstruction, a
+demonstration that it copied no code, and a negative methodological result:
+**a study claiming an organisation has a distinctive conceptual vocabulary
+requires a domain-matched control, and without one it will measure its
+subject matter instead.** We also report a sharper hypothesis the control
+exposed: the concepts a system needs appear to be determined by its domain
+and reachable by anyone, while the particular words are the author's. The
+clean-room sessions reached every one of the subject's concepts and none of
+its names.
 
 ## 1. Problem
 
@@ -245,7 +255,7 @@ Published result: held-out repositories 25.4%, third-party controls 2.8%, a
 structural copies of any training class, so the recurrence is convergence
 rather than shared code.
 
-### 6.3 Why URE is a better test than anything in the original study
+### 6.3 Why URE is a better subject than anything in the original study
 
 The original study's weakness is the standard one: its held-out repositories
 already existed when the vocabulary was derived. A sceptic can argue the
@@ -263,107 +273,145 @@ be:
   reconstruction session never loaded it, cites none of it, and its
   provenance document does not mention it.
 
-This is a prospective out-of-sample test on a case that materialized after
-the instrument was calibrated.
+This is a prospective out-of-sample subject that materialised after the
+instrument was calibrated. It removes the fitted-vocabulary objection
+entirely. It does not, as §6.4 shows, remove the objection that the
+instrument measures domain rather than authorship, and no choice of subject
+could have: that required a control, not a better case.
 
-### 6.4 Result
+### 6.4 Result, and the control that undoes its interpretation
 
 Scored with the published 56-token vocabulary, by the published method, over
-the reconstruction's own source (tests excluded, as for the held-out
-repositories):
+the reconstruction's own source with tests excluded as for the held-out
+repositories:
 
-| | classes | carrying a vocabulary token | 95% CI |
+| | classes | carrying a token | 95% CI |
 |---|---|---|---|
-| **URE (reconstructed)** | 37 | **21.6%** | 11.4 to 37.2 |
+| URE (reconstructed) | 37 | 21.6% | 11.4 to 37.2 |
 | Held-out repositories, pooled | 579 | 25.4% | 22.0 to 29.1 |
 | Third-party controls, pooled | 4,379 | 2.8% | 2.4 to 3.3 |
+| **Clean-room model, same domain, no access** | **88** | **14.8%** | **9.0 to 23.3** |
 
-URE lands within four points of repositories that actually exist, and
-7.7x above the control. Taking the least favourable reading available, URE's
-lower bound against the control's upper bound, the separation is still 3.4x.
+The last row is ours and it is the one that matters. Two fresh model
+sessions were given a prose description of the system's function, with every
+name removed, no archive, no library, and no tools, and asked only which
+class names they would define. With access to none of the author's material
+they reach 14.8%, against the reconstruction's 21.6% and the library's
+25.4%.
 
-**Structural copies of any library class: zero.** The reconstruction did not
-reproduce code. It reproduced concepts.
+**Interpretation.** The gap between the library and third-party packages is
+real but is largely a gap between *domains*, not between authors. A
+resilience engine contains the words "regime", "decision", "health" and
+"outcome" because that is what resilience engines are about. An HTTP client
+and a numerical library do not. The schema study's twelve controls were an
+HTTP client, a database driver, a numerical library, a web framework, a type
+checker, a build tool, a crypto library and an API SDK. None was a
+governance system, so the study could not distinguish its hypothesis from
+its subject matter.
 
-The tokens URE carries are `regime` (3 classes), `decision` (2), `health`
-(2), `outcome` (1).
+We also decompose the score, which points the same way: three of URE's eight
+vocabulary hits come from `health` and `outcome`, both of which the study's
+own control-token list reports the third-party packages carrying.
 
-### 6.5 The sharper result: five names, no shared shape
+### 6.5 What the name-level evidence shows, after contamination control
 
-URE independently defines five classes whose names recur across the library.
-In every case the members differ almost completely:
+Exact class-name recurrence is a stronger instrument than the vocabulary,
+because it involves no token list, no reduction rules and no judgement. It
+asks only whether the same name appears.
 
-| URE class | library definitions | max member overlap |
-|---|---|---|
-| `GovernanceDecision` | 7 | **0.00** |
-| `Observation` | 4 | 0.20 |
-| `RecoveryAction` | 3 | **0.00** |
-| `AdaptiveThresholdController` | 3 | 0.11 |
-| `ClassificationResult` | 1 | **0.00** |
+It requires one control the draft of this paper initially missed. The
+reconstruction session had two library repositories attached and searched
+them. Any name present in those two could have been echoed rather than
+reached:
 
-URE's `GovernanceDecision` is an enumeration of verdicts: ALLOW, DENY,
-QUARANTINE, THROTTLE, ISOLATE, DEGRADE, REVIEW. Across all seven library
-definitions the members are records instead: `accepted, processor, reason,
-status` in three of them, an eleven-field governance record in two others,
-`allowed, reason, regime` in another. Not one member name is shared with
-URE's. Same name, same role in the architecture, no shared content anywhere.
+| URE class | in an attached repo | library definitions | member overlap |
+|---|---|---|---|
+| `GovernanceDecision` | no | 7 | **0.00** |
+| `RecoveryAction` | no | 3 | **0.00** |
+| `AdaptiveThresholdController` | no | 3 | 0.11 |
+| `Observation` | **yes** | 4 | discarded |
+| `ClassificationResult` | **yes, and nowhere else** | 1 | discarded |
 
-`RecoveryAction` is the same story in miniature. URE: an enumeration of
-DEGRADE, ISOLATE, NONE, QUARANTINE, RESTORE, THROTTLE. The library: a record
-of `action, execution_id, recovered, timestamp`. Both are unmistakably "the
-recovery action" concept. Neither could have been derived from the other.
+Three of thirty-seven scored classes, 8.1%, carry names that recur in the
+library with no contamination path. Against third-party packages, whose
+pooled rate is 0.5% and whose worst single outlier is 2.4%, that is a large
+multiple. Against the clean-room model's 3.4% it is a factor of 2.4 on three
+events against three, **which is not separable at this sample size and
+cannot carry a claim.**
 
-This is the distinction the schema study exists to draw, arriving on a case
-that cannot have been contaminated. Had the reconstruction copied, the
-overlaps would be high and the structural copy count non-zero. Had it
-invented freely, the vocabulary score would sit near the 2.8% control. It
-does neither.
+None of the five names, nor any of the three names the archive preserved as
+the system's original namespace, appears anywhere in a 4,985-name corpus
+spanning twelve third-party packages. They are not common Python names. That
+closes one objection and leaves the one above open.
 
-### 6.6 One name, four domains
+### 6.6 The finding the control actually produced
 
-The clearest single instance. A regime enumeration recurs under one name
-across four unrelated application domains:
+The clean-room sessions reached **none** of the three contamination-free
+names. What they produced instead:
 
-| domain | members |
+| the author's material | clean-room model |
 |---|---|
-| Vehicle driving safety | STABLE, CAUTION, WARNING, CRITICAL |
-| Clinical governance | STABLE, CAUTION, WARNING, CRITICAL |
-| Actuator containment | STABLE, UNSTABLE, CRITICAL |
-| Drone resilience (URE's recovered predecessor) | STABLE, SURGE, RESOURCE_OVERLOAD, ANOMALOUS_CRITICAL, SATURATED, CONTESTED |
+| `OperationalRegime`, `SystemRegime` | `OperatingMode`, `OperatingState` |
+| `RecoveryAction` | `RemediationAction`, `RemediationStep` |
+| `AdaptiveThresholdController` | `ThresholdAdapter`, `ThresholdTuner` |
+| `GovernanceDecision` | `DecisionRecord`, `JudgementRecord` |
 
-A car, a hospital, an actuator and a drone. One class name. Every one begins
-at `STABLE`. Beyond that first member the vocabularies share nothing.
+Every concept, none of the words. That is a more precise hypothesis than the
+one we set out to test:
 
-The reconstruction then *renamed* it, deliberately, to follow the recovered
-v2 specification, and documented the reconciliation. The schema match
-survives the rename, because `regime` is a vocabulary token independent of
-which particular word carries it.
+> The concepts a system requires are determined by its domain and are
+> reachable by anyone competent in that domain. The particular words are the
+> author's.
 
-### 6.7 The archive's own namespace, checked against the library
+The vocabulary measure operates on the first layer, which is why a
+clean-room model matches it. Exact-name collision probes the second, which
+is why it trends in the right direction but lacks the events to prove
+anything. **Constructing a measure that isolates the lexical layer is the
+open problem this paper leaves behind,** and it is a better problem than the
+one it started with.
 
-The strongest version of the argument does not rely on the reconstruction at
-all, and was found by looking at what the archive recorded rather than at
-what was built from it.
+### 6.7 What the archive escapes, and what it does not
 
-The corpus preserved URE's namespace family as three names:
-`URE.OperationalRegime`, `URE.SystemResilienceConfig` and
-`URE.ClassificationResult`.
+The corpus preserved the system's namespace as three names:
+`OperationalRegime`, `SystemResilienceConfig` and `ClassificationResult`.
+Two of the three independently recur in the library, and
+`AdaptiveThresholdController` appears in a transcript dated 2026-06-19 as
+well as in two unattached library repositories.
 
-**Two of those three independently recur in the library.**
-`OperationalRegime` in three repositories, as §6.6 shows.
-`ClassificationResult` in one, with zero member overlap.
+Those transcripts predate the reconstruction, the schema measurement, and
+any instrument capable of detecting a schema. So the archive evidence
+escapes two objections: it cannot have been echoed from an attached
+repository, and the vocabulary cannot have been fitted to it.
 
-This matters because it moves the finding back in time. Those names were
-written in mid-2026, in conversations about a drone resilience engine, by
-someone not thinking about a shared schema and with no instrument to measure
-one. The schema was measured in September from thirty unrelated
-repositories. The recurrence was already in the archive, waiting, before
-anything existed that could detect it.
+It does **not** escape the model-prior objection, and an earlier draft of
+this paper wrongly claimed that it did. The archive is a collection of AI
+conversation transcripts. A model wrote those names too. The correct claim is
+narrower: the recurrence is datable to mid-2026 and is not an artefact of the
+reconstruction. Whether it is an artefact of the tools used to produce the
+archive is exactly what §6.4 leaves unresolved.
 
-A reconstruction can be accused of pattern-matching its author. A transcript
-written three months earlier cannot.
+### 6.8 Status of the central claim
 
----
+Ordered by how hard each is to attack:
+
+1. A system with no repository was reconstructed from archived design
+   discourse. **Established.**
+2. The reconstruction contains no copied code: zero structural matches
+   across the available library. **Established.**
+3. Where names recur, shapes do not: member overlap 0.00 on the surviving
+   cases. **Established**, and the cleanest evidence that whatever is shared
+   is conceptual rather than textual.
+4. The recurrence is not general Python naming convention. **Established**
+   against off-domain packages.
+5. The recurrence predates any instrument that could detect it.
+   **Established** for two names, datable to June and July 2026.
+6. The library therefore shares a conceptual schema attributable to its
+   author. **Not established, and positively doubted** by §6.4.
+
+Claim 6 is the one that would have made this paper exciting. Testing it is
+what took it away, which is the correct outcome: it would have been falsified
+by the first reviewer to run a domain-matched control, and it is better that
+it was falsified here.
 
 ## 7. Results
 
@@ -435,11 +483,17 @@ rather than a weakness.
    reconstruction's own suite and demonstration. It has never served traffic.
 7. **Not unsupervised.** Four defects were introduced and caught by ordinary
    engineering discipline applied to the agent's work.
-8. **The instrument shares an author with the subject.** The schema was
-   measured from the same person's repositories that URE was reconstructed
-   for. This is what makes the test possible and also bounds it: it shows the
-   reconstruction is consistent with that author's schema, not with software
-   in general. *Author input needed on how far to push this.*
+8. **The instrument shares an author with the subject,** which bounds what a
+   positive result could ever have meant.
+9. **The clean-room control is two sessions of one model family.** A
+   different model, or a human engineer given the same brief, might score
+   differently. Two trials with 88 names is enough to overturn the
+   vocabulary claim, and not enough to quantify the effect precisely.
+10. **No domain-matched human baseline exists yet.** An open-source policy
+    engine, SRE toolkit or incident-management library by another author,
+    scored the same way, would separate domain from era from model. Until it
+    exists, those three explanations remain entangled. This is the single
+    most useful experiment still outstanding.
 
 ---
 
@@ -457,16 +511,17 @@ consumer that outlives its host will not survive the host's cancellation. If
 something is worth keeping, give it the three things that let it persist
 independently.
 
-**For verification of generated software.** An organization that has measured
-its own conceptual schema gains an external check on generated work that no
-internal test suite provides. This generalizes past reconstruction:
-the same instrument scores any newly generated repository against the
-organization's established vocabulary, and a score near the third-party
-control is a signal that what was produced does not belong to the codebase it
-claims to join.
+**For verification of generated software.** The idea that an organisation
+could score generated work against its own measured vocabulary is attractive
+and, on this evidence, does not work. §6.4 shows such a score mostly reports
+the domain of the work rather than its provenance, so a fabrication written
+in the right domain passes. Anyone building such a check needs the lexical
+layer isolated first, per §6.6, and that measure does not yet exist.
 
-That last implication is, on reflection, the most transferable result here,
-and it is worth its own paper.
+**For anyone measuring an organisation's conceptual fingerprint.** Use a
+domain-matched control. Off-domain controls make any subject look
+distinctive, because they are measuring subject matter. This is the paper's
+most transferable result and it is a negative one.
 
 ---
 

@@ -119,3 +119,47 @@ The 78-expansion figure is the one that most deserves independent
 confirmation, because §6 leans on it: it is the evidence that the acronym was
 resolved rather than guessed, and it is the single point where a wrong answer
 would have produced a confident and entirely incorrect system.
+
+---
+
+## The clean-room control (draft 2, the finding that changed the paper)
+
+Two fresh model sessions, no tools, no filesystem, no archive, no library.
+Prompts verbatim and outputs in `data/`. To re-score:
+
+```
+python scripts/score_names.py data/cleanroom_trial1_names.txt /path/to/library /path/to/CNS
+python scripts/score_names.py data/cleanroom_trial2_names.txt /path/to/library /path/to/CNS
+```
+
+| | names | collisions | vocabulary |
+|---|---|---|---|
+| Trial 1 | 45 | 2 = 4.4% | 20.0% |
+| Trial 2 | 43 | 1 = 2.3% | 9.3% |
+| Pooled | 88 | 3 = 3.4% | 14.8% |
+
+**Replication of the schema study's control, incidentally.** Re-deriving the
+third-party control on a twelve-package set gave 2.9% on the vocabulary
+against the published 2.8%. Different package set, same answer. The study's
+control figure replicates; it is the *interpretation* of the gap that the
+clean-room control overturns.
+
+**The null corpus.** 4,985 distinct class names across pydantic, redis,
+fastapi, starlette, httpx, numpy, setuptools, anthropic, uvicorn, psycopg2,
+cryptography and mypy. Pooled collision rate with the library 0.5%, worst
+single package 2.4% (redis). None of the paper's five shared names, and none
+of the archive's three namespace names, appears anywhere in it.
+
+**Contamination control.** `RECONSTRUCTION.md` §3 step 2 names `sentinel_os`
+and `innovation_os` as attached to the reconstruction session. Presence of
+each shared name in those two was checked directly; `Observation` and
+`ClassificationResult` are present and are therefore discarded from the
+paper's evidence. This check should be repeated if the full list of four
+attached repositories is recovered, since two are unidentified in that
+document and could widen the discard set.
+
+**Outstanding, and the paper says so:** a domain-matched human baseline. No
+figure in this paper separates "the author's schema" from "governance
+software in 2026" from "this model family's naming habits". The clean-room
+control rules the first explanation out as *sufficient*; it does not rank the
+other two.
