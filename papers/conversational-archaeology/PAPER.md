@@ -173,9 +173,10 @@ clears the same bar more decisively and by a shorter route.
 | Dated before any governed artifact existed | 2026-03-25, verbatim in the archive |
 | Derived rather than asserted | the full 45-minute derivation is on the record |
 | Persists across vendors | recurs 2026-07-12 through 2026-08-11 in a second vendor's archive, in sessions titled "Fail-closed logic fix", "AI Governance Integration", "Governance Pipeline Comparison", "Cognitive Continuity System" |
-| Explicable by domain effect | **no.** No governance framework in the surveyed literature or in nineteen third-party packages derives its root constraint from Mark 12:30-31 |
+| Explicable by domain effect | **partly.** Scripture-rooted AI governance frameworks do exist, and §0.4a states what survives the correction |
 | Explicable by model prior | **no.** Three clean-room trials given the same governance brief produced no theological constraint of any kind |
-| Recoverable from the code | **no.** Zero occurrences in the source of any repository |
+| The verses recoverable from the code | **no.** Zero occurrences of either verse, or of the governing constant's name, in the source of any repository |
+| Any religious vocabulary in the code | **one term, disclosed in §0.4b** |
 
 The last two rows are what make it load-bearing. The `regime` finding in
 `BLUE_TEAM.md` §B2 rests on a token being absent from 5,276 control names.
@@ -184,6 +185,70 @@ present, dated and reasoned in the author's own record. And because it never
 entered the artifacts, no one who read the repositories could have
 reconstructed it, which forecloses the contamination path that §6.5 has to
 work to close for everything else.
+
+### 0.4a What the literature correction leaves standing
+
+An earlier draft of this section claimed no governance framework in the
+surveyed literature roots itself in Mark 12:30-31. **A literature survey was
+then run and the claim is false in that form.** Faith-based AI governance is a
+real if small literature. It includes a four-tiered model placing biblical
+moral principles at the base and anchoring all higher governance layers on
+them, comparative studies of faith-based approaches to AI governance, and
+decalogue-as-principle-list framings. Separately, layered ethical
+architectures that encode rigid constraints at the lowest layer, and
+governance-by-architecture designs treating constraints as first-class and
+enforced at declared runtime points, are established engineering patterns.
+
+So neither "scripture as a governance root" nor "constraints as architecture"
+is novel, and the paper should not have implied either.
+
+What those searches did not surface is the specific construction: **two verses
+paired so that one supplies scope and the other supplies an external
+threshold, motivated by the observation that the first verse's standard is
+self-referential.** The surveyed frameworks treat scripture as a source of
+principles to be enumerated. This treats two verses as a two-predicate gate
+with an ordering and a stated failure mode, which is a different move.
+
+That is the narrowed claim, and it is the one §0 makes. The narrowing costs
+the section its broadest assertion and leaves its actual contribution intact,
+which is the better trade. The domain row in the table above is marked
+"partly" for this reason: there is a domain in which scripture-rooted
+governance is ordinary, the author's repositories are not in it, and the
+clean-room result still holds regardless.
+
+### 0.4b `apply_liturgical_pause`, and the correction it forces
+
+The claim that no religious vocabulary appears in any source file was checked
+and is **wrong**. One term survives into shipped code:
+
+```
+async def apply_liturgical_pause(self, delay_duration: float) -> None
+```
+
+It appears in `gsa-master-kernel` (two files), in the recovered legacy engine
+carried by the DIT reconstruction, in a third repository's archived kernel,
+and in a loose module inside the conversational archive itself. It is a
+method on a pacing governor: a rate limiter whose delay is named after
+liturgy, meaning deliberate ceremonial pacing rather than mere throttling.
+
+**This cuts two ways and both belong in the paper.**
+
+Against §0.4: the contamination path is not quite closed. A reader of those
+repositories would see one religious term and could infer that some
+theological frame exists upstream. They could not recover the verses, the
+pairing, or the scope/threshold argument from it, so the anchor survives, but
+"nothing at all reached the code" was an overstatement and is withdrawn.
+
+For the authorship argument: **this is a better worked example than `regime`.**
+It is a theological term transferred into infrastructure code, in a method
+name, where the domain offers no reason for it whatsoever. `regime` at least
+has a home in econometrics, which is why §B2 has to argue about transfer.
+Nobody's rate limiter has a liturgical pause. It appears **zero** times in the
+installed third-party corpus and in every control set measured.
+
+The honest summary is that the origin constraint left exactly one fingerprint
+in the artifacts, it is an unmistakable one, and the paper is stronger for
+reporting it than it was for claiming there were none.
 
 ### 0.5 The author's attribution, stated as his
 

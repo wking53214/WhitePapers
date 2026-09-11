@@ -278,3 +278,81 @@ repositories carrying approval-escalation vocabulary found three matching
 decision functions, all descended from the same source file. This is one
 instance, not independent recurrence, which is why §0.3 labels it
 interpretation.
+
+## The four additional reconstructions (V), and why three of them cannot testify
+
+Four further reconstructions were produced on 2026-09-11 and scored with the
+same script, unchanged:
+
+```
+python scripts/score_reconstruction.py /path/to/<subject> /path/to/library /path/to/CNS
+```
+
+| subject | classes | 56-token vocabulary | **structural copies of a library class** |
+|---|---|---|---|
+| URE, the original subject | 37 | 21.6% | **0** |
+| ICEBURG | 15 | 20.0% | **0** |
+| SAGE-K | 42 | 38.1% | **128** |
+| DIT | 31 | 48.4% | **3** |
+| GSA | 48 | 29.2% | **0** |
+
+**The copy counts are the finding, not the scores.** URE's zero copies is what
+established it had not been assembled from the library. SAGE-K's **128** says
+the opposite: many classes have member overlap 1.00 against `gsa-815` and
+`sentinel_os`, which is identical field and method name sets. It shares code
+with the library rather than independently reproducing its shapes. DIT's 3 sit
+in `legacy/gsa_v13_citadel_processor.py`, the recovered legacy engine, and its
+own `src/dit/` rewrite of the same components scores 0.17 and 0.25 overlap
+instead, which is the pattern a genuine rewrite produces.
+
+**Independence, assessed per subject before any score is quoted:**
+
+| subject | independent of the instrument? | why |
+|---|---|---|
+| ICEBURG | **no, circular on vocabulary** | its own renamed descendant *is* `sentinel_os`, one of the 18 training repositories the vocabulary was derived from |
+| SAGE-K | **no** | 128 structural copies; provenance ties it to the GSA wrapper and the Sentinel resolver seam |
+| DIT | **partly** | a layer of the same Sentinel kernel; cites `sentinel_os` paths in docstrings, imports nothing from it |
+| GSA | **no, fully circular** | carries `archive/GSA_Governance_Operating_Core_Enterprise.py`, the exact file `cns.governance` was extracted from, now importing `from cns.governance` |
+
+GSA's zero copies is an artifact of that extraction rather than evidence: the
+class definitions were removed from its copy and replaced by imports, so there
+is nothing left to match.
+
+**None of these four is a clean replication of the URE result, and their
+scores must not be pooled with it.** What they support is a leave-one-out
+design: rebuild the survivor set from the library with the subject's own
+ancestors and descendants excluded from the training set, then score. That is
+standard cross-validation, it is what a reviewer will ask for, and it is the
+only way these four become evidence rather than circularity.
+
+### The origin constraint in all four (V)
+
+```
+grep -rioE "mark 12|john 13|greatest commandment|light.first" <each subject>
+# ICEBURG 0, SAGE-K 0, DIT 0, GSA 0
+```
+
+**Zero in all four.** Four independent reconstruction sessions mined the same
+archives in which the constraint appears 82 and 43 times respectively, and
+none of them surfaced it into code. That is an independent replication of §0's
+zero-in-source finding on four fresh subjects, and it is the strongest
+available evidence that the constraint genuinely does not travel into
+artifacts.
+
+### `apply_liturgical_pause` (V)
+
+```
+grep -rn "liturg" --include=*.py .
+# gsa-master-kernel/artifact_12.py:313, artifact_11.py:296
+# gsa/archive/gsa_kernel_v3_initial.py:258
+# dit/legacy/gsa_v13_citadel_processor.py:102
+# plus a loose module inside the Gemini archive
+grep -rl "liturg" <installed third-party site-packages> --include=*.py
+# zero
+```
+
+A broader sweep of eighteen repositories for religious vocabulary
+(liturgical, covenant, sanctification, scripture, gospel, commandment,
+providence and twenty more) returns this term and nothing else. `genesis`
+also appears, 139 times, but every occurrence is the blockchain sense, a
+ledger's genesis anchor, and none is religious usage.
