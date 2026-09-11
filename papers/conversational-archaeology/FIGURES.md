@@ -215,3 +215,66 @@ figure in this paper separates "the author's schema" from "governance
 software in 2026" from "this model family's naming habits". The clean-room
 control rules the first explanation out as *sufficient*; it does not rank the
 other two.
+
+---
+
+## §0, the origin constraint (V)
+
+Every figure in §0 comes from the two conversational archives and was
+measured, not recalled. The Gemini archive is Google Takeout format; the
+activity file is `Takeout/My Activity/Gemini Apps/myactivity.json`, 4,911
+records spanning 2025-11-02 to 2026-07-09.
+
+```
+# the derivation session, and the timestamps in the 0.1 table
+python3 - <<'PY'
+import json, re
+recs = json.load(open("Takeout/My Activity/Gemini Apps/myactivity.json"))
+h = [r for r in recs if re.search(r"mark\s*12|john\s*13|greatest\s+commandment",
+                                  json.dumps(r), re.I)]
+h.sort(key=lambda r: r["time"])
+for r in h[:8]:
+    print(r["time"], "|", r["title"][:160])
+PY
+
+# first and last occurrence of each term
+#   mark 12              82 records  2026-03-25 -> 2026-07-06
+#   john 13              43 records  2026-03-25 -> 2026-07-06
+#   greatest commandment 22 records  2026-03-25 -> 2026-06-04
+#   new commandment       5 records  2026-03-25 -> 2026-06-04
+
+# cross-vendor persistence, second archive
+cd ../chatgpt_history/transcripts
+grep -rlio "greatest commandment\|mark 12:30\|john 13:34\|light.first" . 
+# 5 transcripts, create_time 2026-07-12 .. 2026-08-11
+
+# absence from the artifacts: run across every repository
+grep -rin "light.first\|greatest commandment\|mark 12\|john 13\|covenant" \
+     <all repos> --include=*.py --include=*.md
+# only hits are boilerplate Contributor Covenant CODE_OF_CONDUCT.md in one
+# repository and its vendored copy. Zero in any source file.
+```
+
+**Key figures:**
+
+| figure | value |
+|---|---|
+| Derivation session date | 2026-03-25, 17:56:49 to 18:41:22 UTC |
+| Records mentioning Mark 12 | 82, first 2026-03-25 |
+| Records mentioning John 13 | 43, first 2026-03-25 |
+| Earliest occurrence anywhere in a 4,911-record archive beginning 2025-11-02 | **2026-03-25**, none earlier |
+| Cross-vendor recurrence | 5 transcripts, 2026-07-12 to 2026-08-11 |
+| Occurrences in source code, all repositories | **0** |
+| Clean-room trials producing any theological constraint | **0 of 3** |
+
+**Caveat on "from the first day."** The constraint is the first day of the
+*governance stack*, not of the archive. The archive begins 2025-11-02 and the
+question does not appear until 2026-03-25. §0 states it the narrower way for
+this reason.
+
+**Caveat on the §0.3 code mapping.** The ordered two-predicate structure was
+found in one implementation and its two vendored copies. A scan of the five
+repositories carrying approval-escalation vocabulary found three matching
+decision functions, all descended from the same source file. This is one
+instance, not independent recurrence, which is why §0.3 labels it
+interpretation.

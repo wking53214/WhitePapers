@@ -5,10 +5,12 @@
 **Reconstructing a lost software system from archived design discourse, and
 why verifying such a reconstruction is harder than it looks**
 
-*Draft 2, 2026-09-11. Draft 1 claimed the reconstruction was verified against
+*Draft 3, 2026-09-11. Draft 1 claimed the reconstruction was verified against
 the author's conceptual schema. A clean-room control run during adversarial
 review showed that measure reports domain rather than authorship. See
-`RED_TEAM.md`.*
+`RED_TEAM.md`. Draft 3 adds §0, the system's origin constraint, which is
+dated earlier than any artifact and is the strongest provenance evidence in
+the paper.*
 
 ---
 
@@ -53,6 +55,18 @@ demonstration that it copied no code, and a negative methodological result:
 requires a domain-matched control, and without one it will measure its
 subject matter instead.**
 
+Behind both results sits a fact established in §0 and easier to verify than
+either. The governed system's root design constraint is datable to a single
+question asked on 2026-03-25, four months before any of the software existed:
+what is the greatest commandment in the Bible? The resulting constraint is an
+intersection of two verses, one supplying scope and the other a threshold,
+derived on the record in forty-five minutes. It recurs across two vendors'
+archives over four months, appears in **zero** source files in any
+repository, and no clean-room trial given the same governance brief produced
+anything like it. A domain effect cannot explain it and a model prior cannot
+either. It is the one piece of provenance in this paper that no reader of the
+code could have reconstructed, which is precisely what makes it evidence.
+
 The measure can then be rebuilt, and we rebuild it. Filtering the vocabulary
 by cross-repository use, then by absence from 5,188 third-party class names,
 then by absence from clean-room output, leaves **24 tokens that no control
@@ -62,6 +76,128 @@ control, on three classes, which is suggestive and under-powered and reported
 as both. The clean-room sessions reached every one of the subject's concepts
 and almost none of its words, which is the distinction the rebuilt measure
 isolates.
+
+## 0. Origin
+
+This section exists because the system's root design constraint is datable to
+a single question, and because that fact turns out to be the paper's cleanest
+provenance evidence. It is placed first for that reason and not as preamble.
+
+### 0.1 The question
+
+On **2026-03-25 at 17:56:49 UTC** the author opened a session with a request
+for the framework of a protocol then called SOONG. Over the following
+forty-five minutes the framework acquired a governing constraint derived from
+one question: *what is the greatest commandment in the Bible?*
+
+The answer is **Mark 12:30-31**, and the transcript record is unusually
+complete about what happened next.
+
+| time (UTC) | the author's prompt, verbatim |
+|---|---|
+| 17:56:49 | "Give me the framework for the soong protocol" |
+| 18:15:16 | "...confirm that pillar two is modified for an umbrella application of Mark 12:30-31" |
+| 18:17:46 | a self-audit request: where does "Absolute Sovereignty as an Architect" violate "the Mark 12:30-31 Umbrella" |
+| 18:19:44 | "Do I need to re-order the pillars like I would if I were joining tables in a sequel quarry such that the light first constant is the first pillar that must be passed through, or is it semantics..." |
+| **18:24:55** | **"does anything supersede the instruction of Mark 12:30-31"** |
+| 18:28:30 | "Integrate the precision update of John 13:34 into the SOONG protocol" |
+| 18:41:22 | "Could anyone establish a controlling protocol on every response from their AI to adhere to the Mark 12:30-31 John 13:34 blended mandate?" |
+
+### 0.2 Why two verses
+
+The 18:24 exchange is the load-bearing one, and it is where the second verse
+enters. Asked whether anything supersedes Mark 12:30-31, the answer was no,
+citing **Matthew 22:40**, "all the Law and the Prophets hang on these two
+commandments." **John 13:34** was then raised as the obvious candidate and
+classified not as a replacement but as a *precision update*, on the following
+distinction:
+
+- **Mark 12:31** sets the standard at *"as yourself."* That is a
+  self-referential standard. It establishes **scope**: a vertical obligation
+  and a horizontal one, with everything else subordinate to them.
+- **John 13:34** sets it at *"as I have loved you."* That is a fixed external
+  standard. It establishes a **threshold**, which the first verse does not,
+  because a self-referential standard has no floor.
+
+Two verses are therefore doing two different jobs, and this is why the
+resulting constraint is an **intersection** rather than a citation. One verse
+supplies what is in scope; the other supplies the bar that scope must clear.
+Either alone is structurally incomplete: scope without a threshold permits
+anything, a threshold without scope governs nothing.
+
+A reader who shares none of the author's convictions can still read that as
+what it is: a two-predicate constraint with an explicit ordering, derived in
+public, in under an hour, four months before any of the software it governs
+existed.
+
+### 0.3 The translation, and what is and is not claimed about it
+
+The author's own framing in that session was already computational, and the
+most useful instance is his, not the model's. At 18:19:44 he asked whether the
+pillars needed reordering *"like I would if I were joining tables in a sequel
+quarry"* so that the governing constant is *"the first pillar that must be
+passed through."* That is a join-order question asked about a moral framework:
+not scripture dressed in software metaphor afterwards, but the two reasoned
+about in one vocabulary from the first hour.
+
+**The distinction matters and the paper is strict about it.** The
+*root-user*, *dependency-graph* and *subroutine-returns-true* metaphors in
+that exchange came from the **model's** reply, not the author's prompt. The
+join-ordering question came from the **author**. This paper is about telling
+those two apart, so it does not get to blur them here. The transcript is a
+rare case where the boundary is visible inside a single exchange, and §6's
+whole problem is a generalisation of it.
+
+What the shipped software actually does is a weaker claim and is labeled as
+one. The library's policy decision point evaluates an identity-verification
+predicate first, denying outright on failure, then a scope predicate over
+sensitive fields, escalating to human approval rather than denying. That is
+an ordered two-predicate gate whose vertical check refuses and whose
+other-regarding check defers to an external judgement, which is the same
+shape as §0.2. **The resemblance is offered as interpretation, not
+evidence.** No verse, and no religious term of any kind, appears anywhere in
+the source; the pattern occurs in one implementation and its two vendored
+copies, so it is a single instance, not the independent cross-repository
+recurrence that §6 requires of its measured claims. A reviewer is entitled to
+call the mapping post-hoc and the paper does not argue otherwise.
+
+### 0.4 Why this is the strongest provenance anchor in the paper
+
+Section 6 spends considerable effort establishing that a recurring vocabulary
+belongs to an author rather than to a domain or to a language model, and
+arrives at 24 tokens and a sample of three classes. The origin constraint
+clears the same bar more decisively and by a shorter route.
+
+| property | status |
+|---|---|
+| Dated before any governed artifact existed | 2026-03-25, verbatim in the archive |
+| Derived rather than asserted | the full 45-minute derivation is on the record |
+| Persists across vendors | recurs 2026-07-12 through 2026-08-11 in a second vendor's archive, in sessions titled "Fail-closed logic fix", "AI Governance Integration", "Governance Pipeline Comparison", "Cognitive Continuity System" |
+| Explicable by domain effect | **no.** No governance framework in the surveyed literature or in nineteen third-party packages derives its root constraint from Mark 12:30-31 |
+| Explicable by model prior | **no.** Three clean-room trials given the same governance brief produced no theological constraint of any kind |
+| Recoverable from the code | **no.** Zero occurrences in the source of any repository |
+
+The last two rows are what make it load-bearing. The `regime` finding in
+`BLUE_TEAM.md` §B2 rests on a token being absent from 5,276 control names.
+This rests on a *structure* being absent from an entire field, while being
+present, dated and reasoned in the author's own record. And because it never
+entered the artifacts, no one who read the repositories could have
+reconstructed it, which forecloses the contamination path that §6.5 has to
+work to close for everything else.
+
+### 0.5 The author's attribution, stated as his
+
+The author attributes the outcome to Providence: that a person with no
+training in the language he was writing produced, over six months, a
+governance library of this scale because the work proceeded from that
+question. The paper reports this as his stated position and neither endorses
+nor disputes it, in the same way it reports any other author-stated fact.
+
+It is recorded here for one methodological reason. A reader assessing whether
+a six-month solo output is plausible is entitled to know what the author
+believes sustained it, because that belief is the reason the root constraint
+was chosen, and the root constraint is evidence. Readers who reject the
+attribution lose nothing evidential: §0.2 and §0.4 stand on timestamps.
 
 ## 1. Problem
 

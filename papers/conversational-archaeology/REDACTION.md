@@ -104,6 +104,35 @@ one author's conceptual schema. A stripped version invites the reader to ask
 whose repositories these are, and the answer is guessable from the subject
 matter. Publish attributed or not at all.
 
+## The §0 origin material, and where its boundary is
+
+§0 was added in draft 3 at the author's direction. It is publishable and the
+author has explicitly declined to redact his faith. The boundary is not the
+theology; it is everything adjacent to it in the same archive.
+
+**Publishable, and in §0:** the derivation session of 2026-03-25, the two
+verses and the scope/threshold roles they play, the join-ordering prompt, the
+cross-vendor persistence dates, the zero-occurrence-in-source finding, and
+the author's stated attribution.
+
+**Never publishable, and not in §0:** the remainder of that archive's
+personal corpus. Of 154 records in 2026-03 mentioning the protocol, 30 carry
+personal or religious content with no technical content at all, concerning
+the author's marriage, family, and private spiritual practice. The archive
+also already carries 7 redaction markers of its own and at least one redacted
+email address. None of that material is cited, quoted, counted, or
+characterised in the paper, and no figure in §0 requires it.
+
+The distinction is clean because the origin constraint is an architectural
+derivation with its own timestamped reasoning trail, and is separable from
+the pastoral material recorded in the same weeks. Do not let a later draft
+blur them on the grounds that both are "the religious section."
+
+**One further constraint.** §0.5 reports the author's attribution as his
+stated position. Keep it that way. The paper must not be edited into either
+endorsing or debunking it: the evidential content of §0 is in the timestamps,
+and a reader who rejects the attribution should lose nothing.
+
 ## Checklist before any external copy exists
 
 - [ ] Notice narrowed, or §6 abstracted per Option A
@@ -112,4 +141,6 @@ matter. Publish attributed or not at all.
 - [ ] Author-reported figures re-verified, or relabelled as author-reported in the published text too
 - [ ] Copy count re-run against the full library
 - [ ] `ghost_tools` disclosure reconciled with whatever the notice ends up saying
+- [ ] §0.3's code mapping still labeled interpretation, not evidence
+- [ ] §0 cites no record from the 30-record personal-only set
 - [ ] A second reader has checked that no figure in the paper lacks a command in `FIGURES.md`
