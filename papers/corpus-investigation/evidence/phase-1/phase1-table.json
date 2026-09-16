@@ -1,0 +1,2924 @@
+{
+ "_provenance": {
+  "date": "2026-09-16",
+  "note": "Merged Phase 1 table: 71 inspections (Fable 5.1) + verdicts (Fable 5.1 for 27 repos incl. cost-of-exclusion lens; Opus 5 REFUTE lens for 29 repos). Built by plain code from the evidence files in this directory."
+ },
+ "table": [
+  {
+   "repo": "AC-HCCSE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "1 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "GSA",
+    "Gemini_Extraction",
+    "Gemini_History"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 22 tests actually pass and whether the demo runs end to end (not executed; read-only inspection only).",
+    "Contents and actual run status of .github/workflows/ci.yml (file presence confirmed; contents and CI run results not opened or queried).",
+    "Whether the provenance claims are accurate: that a prior wking53214/AC-HCCSE repository existed and was lost, that the Gemini activity record cited exists at the stated paths in Gemini_History / Gemini_Extraction, and that the code faithfully reproduces that record. These are author claims in PROVENANCE.md / RECONSTRUCTION.md and the commit message, not independently verified here.",
+    "Contents of ac_hccse/__init__.py, allocation.py, orchestration.py, records.py, review.py, sampling.py and examples/run_pipeline_demo.py were not opened; only scoring.py was inspected as a representative module.",
+    "Whether the 'GSA' string in PROVENANCE.md refers to the GSA corpus repository or merely to a template name."
+   ],
+   "description_vs_observed": "Enumeration metadata gives description=null, so there is no author description to test. Other metadata is consistent with observation: language=Python matches the 9 .py files observed; default_branch=main matches the sole branch; size_kb=18 is consistent with the small file sizes seen (~31 KB of text across all listed files, before git compression); pushed_at=2026-09-12 matches the single commit d"
+  },
+  {
+   "repo": "ANVIL",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "9 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "GSA",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether anvil_validation_harness.py actually passes (read-only; not executed). The '14 passed' (README) and '27 passed' (commit 8a95a5a, d648eaa) figures are author claims.",
+    "Whether the 'GSA' token in ANVIL.py's header and class names refers to any of the corpus repositories named GSA / GSA-* or is merely a shared product name; no file in this repo names another repository explicitly.",
+    "Full behaviour and correctness of ANVIL.py beyond its header, import block and class list (69KB file inspected partially by pattern extraction, not line by line).",
+    "Exact line count of ANVIL.py (commit d648eaa claims 2921 -> 2794 lines; not verified).",
+    "Whether the repository is archived on GitHub (enumeration metadata did not include an archived flag and I did not query repository metadata).",
+    "Whether the ghost_buster baseline described in HEAD commit as 'verified: a re-run now reports 0 new findings' is true (not executed)."
+   ],
+   "description_vs_observed": "The enumeration description ('Single-file deterministic, hash-chained governance kernel: tamper-evident execution lineage, immutable state, DAG checkpoints, and opt-in fail-closed execution recording') substantially matches observed content: ANVIL.py is a single Python file; it defines IntegrityEngine/ChainVerifier/IntegrityManager (hash chaining), deep_freeze and frozen envelopes (immutable state"
+  },
+  {
+   "repo": "Anvil.clean",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no README, no description in metadata)",
+    "Whether it was meant as a cleaned copy of the ANVIL repository (the name suggests it, but repo names are not evidence and no content confirms it)",
+    "Whether any content was ever pushed and later removed (no commit history is reachable via the API)",
+    "first_commit_date, last_commit_date, head_sha (no commits exist)"
+   ],
+   "description_vs_observed": "The enumeration metadata gives no description (null), size_kb 0, language null, and created_at == pushed_at == 2026-09-11. Observation is fully consistent with this: the repository is empty on all refs with zero branches, tags, and commits. There is no discrepancy. The only implicit claim, default_branch \"main\", is not verifiable because no branch of that name (or any name) exists yet."
+  },
+  {
+   "repo": "ARCHIVE",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "6 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "CODE",
+    "DIT",
+    "EDDP",
+    "FORTRESS (NOT an exact corpus name; corpus lists FORTRESS1 and fortress-kernel)",
+    "GSA",
+    "GSA-815",
+    "GSA-GATEWAY (NOT an exact corpus name; corpus lists GSA-GATEWAY1)",
+    "OBSERVE",
+    "STRIDE",
+    "URE",
+    "ghost_tools",
+    "sentinel_os",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     false
+    ]
+   ],
+   "contested": true,
+   "material_correction": [
+    {
+     "lens": "COST_OF_EXCLUSION",
+     "model": "claude-fable-5-1",
+     "eligibility": "ELIGIBLE",
+     "purpose": "SPECIMEN_OR_DATA_CORPUS",
+     "confidence": "MEDIUM"
+    }
+   ],
+   "contested_reason": "classification.primary_purpose: MIXED_AMBIGUOUS is defined in the rules as 'stores transcripts AND ALSO contains substantive tooling'. I independently confirmed there is NO tooling anywhere in the repo: root has 14 entries (no scripts/, no *.py at root; classification.eligibility: AMBIGUOUS_INVESTIGATE sidelines the repo, and under the cost-of-exclusion lens that is the expensive error here. The sole exclusion criterion ('primary purpose is storing conversation history') is not met on independent ",
+   "could_not_determine": [
+    "Content of TRANSCRIPT.md itself (the Gemini URL first line, the 'User prompt:'/'Response:' structure, 517 lines, 9 turns) - fetch succeeded but exceeded tool output limits and was not sliced; all such statements rest on PROVENANCE.md/README.md.",
+    "Whether the seven 'invalid' payloads actually fail json.loads - no code was executed; only artifact_1.json was visually confirmed to contain unescaped inner quotes, and artifact_5.json to look well-formed. artifact_2/3/6/7/8/9.json were not opened.",
+    "Whether artifact_N.json files are byte-for-byte identical to the payloads inside TRANSCRIPT.md, and whether turn 4 truly duplicates turn 1 (SHA-256 claim in PROVENANCE.md not verified).",
+    "Reconciliation of file counts: PROVENANCE.md and commit bf55631 cite '43 files under extracted/' alongside statements that 19 duplicate files were removed and 2 moved to FORTRESS; the currently observed count is exactly 43 (42 .py + 1 .json), so it is unclear whether 43 is pre- or post-pruning.",
+    "Any of the cross-repo claims in README.md (identity with GSA-GATEWAY governance-stack file, OBSERVE observe_consolidated.py, drift from GSA-815/sentinel_os, absence of filter classes in CODE/GSA-GATEWAY/EDDP/OBSERVE/CITADEL/STRIDE) - not checked against those repos.",
+    "Whether 'FORTRESS' and 'GSA-GATEWAY' as linked in README correspond to corpus repos FORTRESS1/fortress-kernel and GSA-GATEWAY1 respectively (names do not match exactly).",
+    "Origin date and Gemini model version of the archived conversation (PROVENANCE.md itself states these are unknown).",
+    "Whether the repository is flagged 'archived' at the GitHub level (not exposed by the calls used); only the in-repo .ghost_archive convention marker was observed.",
+    "Whether the extracted fragments are 'real' production code from external codebases as README asserts (the 'Source:' headers name claude_governance_api.py, production_harness.py, test_governor_failclosed.py, but those files were not located)."
+   ],
+   "description_vs_observed": "Largely matches, with one numeric discrepancy and two unverified elements. (1) Description says 'nine ... JSON payloads'; observed are EIGHT artifact_N.json files (1,2,3,5,6,7,8,9) - README.md itself says 'Eight' and PROVENANCE.md explains turn 4 was dropped as a byte-identical duplicate of turn 1, so 'nine' counts transcript turns, not files. (2) 'One archived Gemini transcript': TRANSCRIPT.md (3"
+  },
+  {
+   "repo": "ARLF",
+   "access": "OK",
+   "purpose": "DOCS_OR_PAPERS",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "6 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "GSA",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "VSA"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     false
+    ]
+   ],
+   "contested": true,
+   "material_correction": [],
+   "contested_reason": "observed.source_file_count_estimate (0) / observed.primary_languages (omits Python): The non-default branch claude/arlf-repo-recreation-68ldf3 carries proposals/reference/arlf/ with 8 Python modules (__init__.py 1235 B, certificate.py 3625 B, gates.py 3717 B, governor.py 2196 B, pipeline.py 7524 B, resol; observed.has_tests_dir (false) / observed.test_file_count_estimate (0): proposals/reference/tests/ exists on the non-default branch with __init__.py plus 5 test modules (test_certificate.py 4174 B, test_integration.py 5410 B, test_loop_of_the_absurd.py 3686 B, test_resolution.py 6001 B, test; classification.preliminary_state_signals ['DOCUMENTED ONLY']: The repo is documented-only on main, but not on all branches: the branch one commit ahead of main adds a runnable, dependency-free Python reference implementation with tests, and a Python .gitignore (__pycache__/, *.py[c; observed.last_commit_date (2026-09-12T01:06:59Z) / observed.commit_count (6, EXACT): These are correct for main only. list_commits on the non-default branch returns 7 commits: the 6 on main plus 0949d88 'Specify RLCF and resolve the Authority Gap' authored 2026-09-12T02:09:08Z, so the branch is exactly 1",
+   "could_not_determine": [
+    "Whether claude/arlf-repo-recreation-68ldf3 is ahead of main and by how many commits (commits on that branch were not listed; its tree differs from main: adds .gitignore and proposals/, and four root docs have different sizes).",
+    "Contents of proposals/reference/ on the non-default branch (not listed).",
+    "Whether the 7 JSONL ledgers actually validate against the 5 schemas in schemas/ (not executed; only claimed in commit cf6a8a5's message).",
+    "Whether the 16 source/excerpts/RAW-*.txt files are faithful verbatim copies of records in Gemini_Extraction/Gemini_History (not cross-checked).",
+    "Contents of the JSONL ledgers, schema files, spec/, adversarial/, reports/ documents and excerpt files (only listed, not opened, apart from the root docs and source/PROVENANCE.md).",
+    "Whether the GSA, VSA and Citadel tokens in README.md, source/PROVENANCE.md and NOMENCLATURE.md refer to the corpus repositories of the same names or only to concepts/ledgers (context suggests concepts; not confirmed)."
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author description to test. language=null is consistent with observation: the repo has no programming-language source files (Markdown, JSONL, JSON Schema and .txt only). default_branch=main, created_at 2026-09-11 and pushed_at 2026-09-12 are consistent with the observed 6 commits spanning 2026-09-11T23:40:52Z to 2026-09-12T01:06:59Z. size_kb=194 is p"
+  },
+  {
+   "repo": "ATS",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "24 (EXACT)",
+   "tests_dir": false,
+   "ci": true,
+   "mentions": [
+    "Claude_History"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the Python modules actually import or run, or whether the CI workflow passes (nothing was executed; README claims are untested here).",
+    "Authorship and origin of the two PDFs (PROVENANCE.md itself records them as having no recorded origin).",
+    "Why the enumeration created_at (2026-07-04) precedes the earliest observed commit on main (2026-08-14): history rewrite, force-push, or an empty six-week period; non-default branch commit histories were not listed.",
+    "Whether the description's 'domain-independent governance architecture' claim holds; observed filenames are hiring-specific except gov4_kernel.py, and I did not read the code.",
+    "Whether ats_seam_inventory.md or the other seven Markdown documents mention additional corpus repos; per procedure only README, PROVENANCE, LICENSE and manifests were scanned for corpus names.",
+    "Whether .ghost_baseline.json's finding IDs are now actually path-relative as the head commit claims (only the preview was inspected).",
+    "The full contents and correctness of the two test files and whether they cover what PROVENANCE.md and commit messages claim (14 tests for gov4_kernel, counter-system suite)."
+   ],
+   "description_vs_observed": "Largely matches. The description's claims of auditing ATS hiring decisions for geographic, demographic-proxy (name-based) and volatility bias plus audit fraud, packaging EEOC-style evidence, and logging to a hash-chained governance kernel all correspond to items the README enumerates (ats_counter_system.py, ats_governor_fixed.py, ats_governance_kernel_bridge.py + gov4_kernel.py, ats_gsa_core.py) a"
+  },
+  {
+   "repo": "AUGUR",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "11 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "ARCHIVE",
+    "CNS",
+    "Claude_History",
+    "Conservation_Kernel",
+    "GSA",
+    "HERALD",
+    "PERCEIVE",
+    "SAGE-K",
+    "fortress-kernel",
+    "ghost_tools",
+    "observe-perceive",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes (34 tests is a README/commit claim; tests not executed, tests/test_augur.py not opened)",
+    "Whether the source code implements the veto-only 'may refuse, never approve' semantics or any integration with observe-perceive's gate (augur/*.py not opened; observe-perceive not inspected)",
+    "Whether claude/parses is fully merged into main: its tip 9b69b33 is absent from main's history and main's fc0e521 '(#4)' has a near-identical message, consistent with a squash merge, but content equivalence was not verified",
+    "Contents of .ghost_baseline.json (20.9 KB JSON, not opened) beyond commit messages describing it as a ghost_buster findings baseline",
+    "Relationship, if any, between this repo (formerly named FORTRESS) and the corpus repo FORTRESS1; no file or commit message mentions FORTRESS1",
+    "Exact repository size (enumeration says 79 KB; observed blob sizes sum to roughly 95 KB uncompressed, which is consistent but not verified)",
+    "Whether the enumeration's private=true flag is accurate (not queried)"
+   ],
+   "description_vs_observed": "The enumeration description matches the observed contents closely. README.md and pyproject.toml both describe a closed-loop simulation in which controllers plus a learning policy steer a noisy value toward a moving target under guardrails; the README's banner and rename block state the veto-only governance-screen rule ('may refuse and may never approve') and the rename from FORTRESS on 2026-09-07,"
+  },
+  {
+   "repo": "CCC",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "22 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "CNS",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Ecology",
+    "Gemini_History",
+    "HERALD",
+    "Resume_OS",
+    "VSA",
+    "ghost_tools",
+    "observe-perceive"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or how many test functions exist (read-only; not executed; 27/135/143 figures are author claims from README, IMPLEMENTATION.md and commit messages).",
+    "Contents of .ghost_baseline.json (117,621 B; not opened).",
+    "Whether branch mission/close-the-system head 6b194db4 is tree-identical to main's squash commit d8020cf8 (same commit message observed; no diff performed).",
+    "Whether the repository is actually public or private: enumeration metadata says private=true, while ccc/system.py comments and commit a6227d3f say 'CCC is public' / 'public repo's audit trail'.",
+    "Whether the referenced observe-perceive document docs/audit/COMMERCIAL_RED_TEAM_2026-09-08.md exists (not checked; outside this repo).",
+    "The verbatim literal of the PRIVATE_SOURCE_MARKERS tuple (grep output line was suppressed as too long; marker names were confirmed individually).",
+    "Whether any content in .ghost_baseline.json or test fixtures embeds excerpts from conversation archives (not inspected)."
+   ],
+   "description_vs_observed": "Largely matches. The description's core claims are observed: pyproject.toml declares dependencies = [] (dependency-free), the language is Python, and the package has modules and README sections for provenance (ccc/provenance.py), epistemic state (ccc/epistemic_state.py), evidence (ccc/evidence.py), human authority (ccc/human_resolution.py, human-gated rules) and historical lineage (ccc/lineage.py)"
+  },
+  {
+   "repo": "ChatGPT_History",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 5,
+   "commits": "12 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "AC-HCCSE (as 'ac-hccse')",
+    "ANVIL",
+    "ARCHIVE",
+    "ARLF",
+    "ATS",
+    "AUGUR",
+    "Anvil.clean (as 'anvil.clean')",
+    "CCC",
+    "CITADEL",
+    "CNS",
+    "CODE",
+    "ChatGPT_History (self)",
+    "Claude_History",
+    "Claude_History / CoPilot_History / Gemini_History",
+    "CoPilot_History",
+    "Conservation_Kernel",
+    "DGK (as 'dgk' / 'DGK')",
+    "DIT",
+    "Data_files",
+    "EDDP",
+    "Ecology",
+    "FORTRESS1 / fortress-kernel (partial: literal 'FORTRESS')",
+    "GEMS",
+    "GLCM1 (partial: 'GLCM')",
+    "GOVERNANCE-CONTROL-PLANE (as 'governance-control-plane')",
+    "GRAPH",
+    "GSA",
+    "GSA-2 (as 'gsa-2')",
+    "GSA-815",
+    "GSA-GATEWAY1 (partial: 'GSA-GATEWAY' / 'gsa-gateway')",
+    "GSA-GOVERNANCE-CORE (as 'gsa-governance-core')",
+    "GSA-Master-Kernel",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "Governance_Gateway",
+    "HERALD",
+    "HTTP (as 'Hyper Test Truth Protocol (HTTP)')",
+    "ICEBERG (as 'iceberg' / 'ICEBERG')",
+    "ICEBERG-SIM (as 'iceberg-sim')",
+    "KAGGLE",
+    "OBSERVE",
+    "PERCEIVE",
+    "RADAR",
+    "Resume_OS",
+    "SAGE-K (as 'sage-k' / 'SAGE-K')",
+    "SOONG_protocol (near: 'SOONG Protocol')",
+    "STRIDE",
+    "TAKEOUT1 (partial: 'takeout')",
+    "TBCA",
+    "TIE",
+    "TOUCHSTONE",
+    "TRIAD-PLUS-42 (as 'triad-plus-42')",
+    "Triad-42",
+    "URE",
+    "UTEP (as 'UTEP Kernel')",
+    "VANGUARD",
+    "VSA",
+    "WhitePapers",
+    "ZTGKT",
+    "ZTS",
+    "composition-engine (near: 'Composition Engine')",
+    "content-polish-pipeline",
+    "fortress-kernel",
+    "ghost_tools",
+    "innovation_os",
+    "observe-perceive",
+    "sentinel_os",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Exact number of files in transcripts/ and summaries/ (full listings returned but not individually counted; README/PROVENANCE claim 863 each).",
+    "Whether index/manifest.json's conversation_count / message_count match the README claims (555 KB file not opened).",
+    "Current public/private visibility of the repository (metadata says private; commit 293b4ff1 and PROVENANCE.md say it was made public; README says private).",
+    "Contents of individual transcripts/summaries, the raw conversations-*.json files, data/raw.jsonl, data/raw.csv (not opened per size rule).",
+    "Contents of tools/third_party_names.txt (not opened; expected to hold personal names).",
+    "Contents of derived/round2_governance_gateway/00_\u201305_ and 99_MANIFEST.md, harness/repro.py, harness/repro2.py, colab_extracts/*.py (listed only).",
+    "Whether scripts/process.py, tools/redact_pii.py or the harness scripts actually run or reproduce the stated results (read-only; nothing executed).",
+    "Whether tag Full-zip is annotated or lightweight (list_tags sha equals the commit sha on its lineage, suggesting lightweight, but not verified).",
+    "Whether additional unreachable/pre-rewrite objects exist beyond the 4 commits reachable from Full-zip, and whether the 'earlier private-repo commits' holding un-redacted strings (9758661 / ee52190 / 9215f7d per commit 375c0714) are the same as the ones now on main.",
+    "Whether PR #1 (referenced by merge commit 1414b896) had review activity (PR tools not in the allowed set).",
+    "Why the repo's reported size_kb (92,209) is smaller than the sum of blob sizes (~200 MB raw + derived) \u2014 presumably pack compression, but not verified."
+   ],
+   "description_vs_observed": "The enumeration description ('Structured archive of my ChatGPT conversation history \u2014 863 conversations (2023\u20132026) from the account data export, plus derived analysis. See PROVENANCE.md.') matches the observed content in substance: a single raw ChatGPT export directory, per-message derivatives, a manifest, full directories of per-conversation transcripts and summaries, PROVENANCE.md, and a derive"
+  },
+  {
+   "repo": "CITADEL",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "8 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "STRIDE",
+    "VSA",
+    "ZTS",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether any of the four .py files actually execute (README/PROVENANCE/commit messages claim copy1 and v1.2 run, copy2's __main__ raises TypeError, and the old flattened artifact_1.py raised SyntaxError); nothing was executed in this read-only pass, and the current multi-line artifact_1.py's run status is not documented anywhere in the repo",
+    "Whether the repository is flagged 'archived' in GitHub metadata; the enumeration metadata carried no archived field and the description's word 'Archived' is an author claim",
+    "Why the enumeration created_at (2026-07-04) precedes both the first commit (2026-08-13) and PROVENANCE.md's stated repo creation date (2026-08-13)",
+    "Commit histories of branches claude/parses and claude/recovered-originals (only their root trees were listed); whether claude/parses is fully identical to main beyond the root-level blob SHAs",
+    "Whether 'ZTS' and 'vsa' tokens in TRANSCRIPT.md refer to the corpus repos ZTS and VSA or are unrelated acronyms/labels in the AI's response",
+    "Contents of the referenced but absent RECOVERY.md manifest and the 'Gemini export' from which artifact_1.py was recovered (commit 3f1d1d56); neither is in this repo",
+    "Existence/contents of the excluded second source file CITADEL-01.txt mentioned in PROVENANCE.md"
+   ],
+   "description_vs_observed": "Largely matches. Observed: a single-turn Gemini transcript (TRANSCRIPT.md) containing a pasted 'CITADEL v1.1' regex-based enforcement engine and a prose audit; readable per-draft splits (citadel_v1.1_copy1.py, citadel_v1.1_copy2.py); a citadel_v1.2.py adding exactly one extra check (prohibited_verbs); and a PROVENANCE.md. Language Python matches (4 .py files). Discrepancies: (1) the description sa"
+  },
+  {
+   "repo": "Claude_History",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "5 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CCC",
+    "ChatGPT_History",
+    "CoPilot_History",
+    "Ecology",
+    "Gemini_History",
+    "ghost_tools",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Exact file counts in transcripts/, summaries/, data/raw/ and Data_sets/claude_export/conversations/ were not tallied; listings are visually consistent with 265 conversations but the number is the README/commit claim, not an independent count.",
+    "The '10,721 messages' figure could not be verified without opening the data files (not done per the >5000 KB rule).",
+    "Whether scripts/process.py actually regenerates the committed outputs byte-for-byte (not executed; read-only).",
+    "Whether tools/redact_pii.py has been run against this repo's data after 2026-09-11 (the commit that added it says it had not been run at that time; no later commit on main touches data).",
+    "Contents of index/manifest.json and Data_sets/claude_export/memories.json (not opened).",
+    "Whether a GitHub release with the asset Claud_History.zip referenced by README exists (release listing is outside the allowed tool set); the tag full-zip points at the first commit but its relationship to a release asset was not confirmed.",
+    "The purpose of branch claude/gsa-repo-recreation-rrzvir beyond adding LICENSE (its name suggests a relation to a GSA repo but no file content evidences this).",
+    "Which conversations the transcripts cover or their subject matter (no transcript was opened).",
+    "What ghost_tools version 1.2.3 does with the .ghost_archive marker beyond what the commit message states."
+   ],
+   "description_vs_observed": "Largely matches. Observed: a Claude.ai export split per conversation, per-conversation transcripts, paired naive-keyword and export-supplied AI summaries, index/manifest.json, and scripts/process.py that generates all of them; listing sizes are consistent with ~265 conversations. Unverified: the exact 265/10,721 counts (README/commit claims only). Omissions and discrepancies: (1) the description d"
+  },
+  {
+   "repo": "CNS",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "20 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "Conservation_Kernel",
+    "Ecology",
+    "GRAPH",
+    "GSA-815",
+    "GSA-815, OBSERVE, Ecology, GSA-Master-Kernel, GRAPH, sentinel_os, ghost_tools",
+    "GSA-Master-Kernel",
+    "HERALD",
+    "OBSERVE",
+    "ghost_tools",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or the CI workflow actually runs green (commit messages claim so; not executed or verified here)",
+    "Content of .github/workflows/ci.yml (listed, not read)",
+    "Content of docs/PRODUCTION_READINESS.md, docs/ROADMAP.md, docs/evidence/*.md and docs/migrations/README.md (listed by size only, not read)",
+    "Content and purpose of the unmerged claude/cns-variable-alignment-av0hwf branch files (COMPOSITION_IMPLEMENTATION_STATUS.md, LIBRARY_COMPOSITION_GUIDE.md, conftest.py, Tests/test_herald_composition.py, Tests/test_library_composition.py) \u2014 only names and sizes observed",
+    "Whether ghost/operate-20260911-094424 is an ancestor of main or diverges (its smaller README/pyproject sizes suggest an earlier snapshot but this is not verified)",
+    "Commit counts on the two non-default branches (list_commits was run only on main)",
+    "Why enumeration pushed_at is 2026-09-12 when the newest main commit is 2026-09-11T19:07:22Z; possibly a push to a non-default branch, not verified",
+    "Whether the module-level extraction claims in README ('extracted by syntax tree ... verified structurally identical') are true; no cross-repo verification performed"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author description to test at the repo-metadata level. The pyproject.toml description ('Central nervous system: the contracts every repo in the library joins on.') matches observed content: a small contracts-only Python package with tests, CI and analysis docs. Language=Python matches (14 .py files observed across cns/, docs/, tests/ on main). size_k"
+  },
+  {
+   "repo": "CODE",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "10 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "AC-HCCSE",
+    "ATS, CCC, Conservation_Kernel, EDDP",
+    "EDDP",
+    "GRAPH",
+    "GSA-815",
+    "GSA-GATEWAY (written without the '1' suffix; corpus list has GSA-GATEWAY1)",
+    "content-polish-pipeline",
+    "ghost_tools",
+    "sentinel_os, SAGE-K"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the reconstructed content-pipeline-user-source.py actually parses or executes: nothing was executed (read-only mandate); the commit message claims it parses, and the visible head shows no import statements before first use of Callable/hmac/hashlib, so execution behaviour is unverified.",
+    "The middle ~114 KB of TRANSCRIPT.md and the middle ~60 KB of content-pipeline-user-source.py were not read; whether they mention other corpus repos or contain additional artifacts is unknown.",
+    "content-pipeline-user-source.py.flattened (66,419 B) was not opened; its content is known only from PROVENANCE/commit descriptions.",
+    "The original date of the Gemini conversation (PROVENANCE.md states it is unknown).",
+    "Whether claude/parses and claude/reconstruct differ from main in file content beyond their heads (no diff was taken; relationship inferred from commit messages).",
+    "Whether the referenced external artifacts exist (ghost_tools RECOVERY.md manifest, apply_code_*_move_v1.sh / apply_code_phase1_trim_v2.sh scripts, the landed files in EDDP, GSA-GATEWAY, GSA-815, GRAPH): not checked, out of scope for this repo.",
+    "Whether the repository is flagged archived on GitHub (the archived flag was not in the supplied metadata and no repo-metadata call was made).",
+    "Whether the file the README/PROVENANCE call 'GSA-GATEWAY' is the corpus repo GSA-GATEWAY1 or a differently named repo."
+   ],
+   "description_vs_observed": "The enumeration description ('Archived AI chat transcript: a content-polish/IVR code paste split into modules by Gemini. Non-executing raw material \u2014 see PROVENANCE.md.') matches the observed contents in substance: TRANSCRIPT.md opens with a gemini.google.com URL and a modularization prompt whose pasted code begins with ContentPolishPipeline; PROVENANCE.md exists and documents the extraction; READ"
+  },
+  {
+   "repo": "composition-engine",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "6 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "CNS",
+    "SWIZZLE",
+    "ghost_tools",
+    "innovation_os",
+    "wizzle"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 21 tests claimed in README actually exist in tests/test_library_composition.py or pass (tests not opened, not executed).",
+    "Whether the `from cns.gate import ...` bridge can ever resolve given the local package is also named `cns` (src/cns/); namespace collision not verified.",
+    "Whether src/cns/compose_library.py and src/cns/adapters.py are dead/superseded code after the refactor in commit f9eedef, or still used (contents not read).",
+    "Whether the four adapters (swizzle, ghost_tools, wizzle, innovation_os) actually call the corresponding corpus repos or are stubs returning fixed outcomes (adapters_cns.py / adapters.py not read).",
+    "Python version, dependencies, or install method (no manifest of any kind present).",
+    "License terms (no LICENSE or NOTICE file present).",
+    "Reason the enumeration reports size_kb=39 while summed blob sizes of listed files are roughly 106 KB (likely pack compression, but not verified)."
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. The remaining metadata matches observation: language 'Python' agrees with 9 .py files observed (plus 5 .md files); default_branch 'main' is the only branch; created_at and pushed_at 2026-09-12 agree with the commit dates (all 6 commits fall between 2026-09-12T20:55:46Z and 2026-09-12T21:11:53Z). One numeric note: size_kb=39 vers"
+  },
+  {
+   "repo": "Conservation_Kernel",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "17 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CCC",
+    "Ecology",
+    "GEMS",
+    "GSA-815",
+    "Resume_OS",
+    "TOUCHSTONE",
+    "Triad-42",
+    "innovation_os",
+    "observe-perceive",
+    "sentinel_os",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 18 test files actually pass at HEAD (tests were not executed; CHANGELOG claims 52 at 0.1.0 and commit messages claim 61/67 at 0.2.0 plus 8 more at 0.3.0, all author claims).",
+    "Whether the code does what README/description claim (module bodies in src/conservation_kernel were not read; only listings, README, PROVENANCE, CHANGELOG, pyproject and the CI workflow were inspected).",
+    "Contents of the nine docs/*.md files (listed only), including the sibling-repo head table PROVENANCE.md says is in docs/ARCHITECTURE_ASSESSMENT.md, which may name further corpus repos.",
+    "Contents of .ghost_baseline.json (179 KB, not opened) beyond what commit messages say about it.",
+    "Contents of .gitignore and experiments/metrics/initial_run.json (not opened).",
+    "Full commit history of the non-default branches beyond the first 5 commits each (audit/governance-stack-2026-09 commits not listed separately; its head SHA matches a main commit).",
+    "Whether CI runs have actually succeeded (workflow file present; run results not queried).",
+    "Exact repository size breakdown; size_kb=130 from enumeration metadata not independently verified."
+   ],
+   "description_vs_observed": "The enumeration description ('Independently testable hostile baseline that checks whether machine-mediated transformations preserve protected epistemic and provenance distinctions') is the verbatim pyproject.toml description string and matches the README's self-description. Observed structure is consistent with it: a Python package with verifier/ledger/registry/kernel modules, numbered hostile-att"
+  },
+  {
+   "repo": "content-polish-pipeline",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "9 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "CODE",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the repository is actually flagged archived/read-only on GitHub: PROVENANCE.md claims it is 'kept, archived and read-only' (briefly unarchived on 2026-09-09), but the enumeration metadata carries no archived flag and none of the permitted API calls exposes one.",
+    "Whether the test suite actually passes (23 tests claimed in PROVENANCE.md and commit 33626b0); tests were not executed under the read-only rule.",
+    "Full contents of filters.py, pipeline.py and tests/test_pipeline.py were not read (only listed); the shallow IMPLEMENTED/TESTED signals rest on file presence, sizes, README, pyproject and __init__.py.",
+    "Whether the 'GSA_CORE' logger name quoted in PROVENANCE.md relates to the corpus repositories GSA / GSA-* or is an unrelated identifier from the Gemini-era original.",
+    "Commit histories and diffs of the three non-default branches (only their root and, for the oscillation branch, package/tests listings were retrieved); how claude/integrate-polish-pipeline-kd0xec and claude/oscillation-provenance relate to PRs #1 and #2 is inferred only from PROVENANCE.md sizes and commit messages, not verified.",
+    "Whether the vendored copies in wking53214/ghost_tools actually exist as PROVENANCE.md describes (cross-repo claim, not checked here)."
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed in substance: README.md, pyproject.toml (dependencies = []) and __init__.py confirm an LLM output quality gate with pronoun/speculation/empirical filters, retry with recalibration feedback, stdlib-only, async, HMAC-signed output, and PROVENANCE.md confirms the claimed descent from filter classes in the CODE repo. language=Python, size ~45 KB, c"
+  },
+  {
+   "repo": "CoPilot_History",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 5,
+   "commits": "8 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CCC",
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "DIT",
+    "Ecology",
+    "FORTRESS1",
+    "GSA",
+    "ghost_tools",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Exact counts of transcripts/ and summaries/ files (listing was not programmatically counted; ~369 is an estimate consistent with README and file names ending at untitled_08)",
+    "Whether the README's 4,242 messages / 369 conversations / date span claims are true (large data files and index/manifest.json were not opened per the >5000 KB rule)",
+    "Why the older branch README (local-work-preserved-2026-09-07) reports 'rows: 95370' while current README reports 4,242 messages (possibly multi-line CSV physical rows vs logical records; not verified)",
+    "Whether scripts/process.py or tools/redact_pii.py have ever been executed in this repo (commit message for the redactor says it has not been run here; process.py output is committed but not independently verified)",
+    "Contents of the transcript files that carry corpus-related titles (Citadel_*, GSA_and_DIT_*, Review_of_FORTRESS_v2_*); only filenames were observed",
+    "Reason for pushed_at 2026-09-12 in enumeration metadata when the newest commit on main is 2026-09-11 (possibly a push to a non-default branch; not checked)",
+    "Any content differences between claude/archive-marker and main beyond the identical root listing (subdirectories on that branch were not listed)"
+   ],
+   "description_vs_observed": "The enumeration description largely matches what was observed: README, scripts/process.py, transcripts/, summaries/ and index/manifest.json all exist and the README repeats the same figures (4,242 messages, 369 conversations, Feb 2025-May 2026) and the same regeneration claim. The figures themselves were not verified against the data. Items the description omits: a tools/ directory with a PII reda"
+  },
+  {
+   "repo": "Data_files",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "11 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "EDDP",
+    "GEMS",
+    "GRAPH",
+    "GSA",
+    "GSA-GATEWAY1",
+    "OBSERVE",
+    "PERCEIVE",
+    "RADAR",
+    "ghost_tools",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether Data_files actually shares git history with the EDDP repo through 6dd34d3 (EDDP not accessed; only Data_files' own history observed - 6dd34d3 does exist here)",
+    "Contents/structure of data/conversations.db, data/raw.jsonl, data/raw.csv, index/manifest.json, TRANSCRIPT.md, and generated/transcripts/copilot-activity-history_transcript.md (not opened per size rule); the sources of the aggregated conversations beyond what commit messages and sampled summaries state ('home exports', Copilot activity history, UUID-named exports)",
+    "Whether the PROVENANCE.md execution results (10 adapters run OK, 9 sources SyntaxError, etc.) are accurate - not re-executed",
+    "Why enumeration metadata says created_at 2026-07-04 while the oldest commit and PROVENANCE.md both say 2026-08-13 (possibly repo created empty earlier, or history rewritten; cannot tell from API)",
+    "Whether 'GSA-GATEWAY' in README.md refers to corpus repo GSA-GATEWAY1 or some other repo",
+    "Whether the generated/data/ directory is a duplicate copy of data/ or the same objects (listings identical, blobs not compared)",
+    "Whether files listed in PROVENANCE.md but absent from main (clinical_governance_ledger_*, observe_clinical_risk_*, clinical_capacity_orchestration_*) exist in the OBSERVE repo as commit ff34a5b claims"
+   ],
+   "description_vs_observed": "Largely matches. Observed: README.md, .ghost_archive marker and commit history all state the repo is an archived, superseded predecessor of EDDP; commit 6dd34d3 exists in main history; head commits (2026-09-03 README, 2026-09-11 archive marker) are archival housekeeping; language is Python-dominant among code files. Discrepancies/under-description: (1) the description omits that the bulk of the re"
+  },
+  {
+   "repo": "DGK",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "1 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "DGK",
+    "DIT",
+    "GSA-Master-Kernel",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "SAGE-K",
+    "VANGUARD"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 38 (or 33) tests actually pass -- tests were not executed and CI run results were not queried (read-only tool constraint; actions tools not in allowed set)",
+    "Contents and correctness of the nine dgk/*.py source files, test_dgk.py, and run_kernel_demo.py -- only listed by name and size, not read",
+    "Whether the claimed source record (Gemini_History record index 886) actually contains the 765-line module described -- not verified against the other repositories",
+    "Whether the previously existing wking53214/DGK repository history was force-overwritten (single commit dated 2026-09-12 vs enumeration created_at 2026-09-11; the one-day gap and PROVENANCE.md's statement that 'the GitHub repo of that name is empty' before reconstruction are consistent with a re-push, but the API does not expose prior history)",
+    "Licensing terms -- no LICENSE or NOTICE file present"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author-claim text to test. Metadata language=Python matches observed (all code files are .py). size_kb=30 is consistent with the observed file sizes (~65 KB of text across all files, plausibly ~30 KB packed). default_branch=main matches. created_at 2026-09-11 vs sole commit 2026-09-12T01:33:49Z: the repo was created a day before its only commit, whic"
+  },
+  {
+   "repo": "DIT",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "4 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "GSA",
+    "GSA-2",
+    "ICEBERG",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or the claimed 115/128 test count is accurate (no execution performed; CI run results not queried)",
+    "Contents of docs/ARCHITECTURE.md and docs/AUDIT_REMEDIATION.md (not opened)",
+    "Contents of any src/dit/*.py, legacy/*.py, or tests/*.py file (only listings inspected)",
+    "Whether the referenced sentinel_os#51 PR or GSA-2 repository state is as described",
+    "Whether the feat/sync-evaluate branch differs from main in any file content beyond the merge (root listing identical; README size differs 6962 vs 7255 bytes, consistent with main having one later commit)",
+    "Repo private flag and size_kb (73) from enumeration metadata were not independently verifiable via the loaded tools"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. Other metadata is consistent with observation: language Python (all source files are .py), default branch main (exists and has content), created_at 2026-09-11 and pushed_at 2026-09-12 match the first (2026-09-11T20:51:54Z) and last (2026-09-12T01:56:09Z) commit dates exactly. size_kb=73 is plausible given the ~130 KB of listed f"
+  },
+  {
+   "repo": "Ecology",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "35 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ATS",
+    "CCC",
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "DGK",
+    "DIT",
+    "GEMS",
+    "GSA",
+    "Gemini_History",
+    "ICEBERG",
+    "OBSERVE",
+    "URE",
+    "ghost_tools",
+    "innovation_os",
+    "observe-perceive",
+    "sentinel_os",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite currently passes (CI results not queried; no execution).",
+    "Contents of corpus/synapsis-master.zip (18.2MB), corpus/Extractor_corpus.md, raw_sources/Extractor_py_google_gemini_source.pdf, and .ghost_baseline.json: not opened per size rule.",
+    "Exact current corpus/ file count (PROVENANCE.md says 360 as of 2026-09-07; the later commit 060334fa renamed at least one .py to .txt and the listing was not tallied file-by-file).",
+    "Contents of ruff.toml, .pre-commit-config.yaml, .gitignore, and the remaining root .py modules (not opened).",
+    "Whether the audit/governance-stack-2026-09 and claude/corpus-parses branches differ from main beyond the .ghost_baseline.json size difference observed on audit/ (111,157 vs 150,955 bytes).",
+    "How many of the corpus/ .md files are chat-transcript material versus exported code/docs; PROVENANCE.md says 'harvested from other systems and conversations' without a per-file breakdown of that distinction."
+   ],
+   "description_vs_observed": "The enumeration description ('Local RAG-based technical memory: ingests chat exports, PDFs, and Python source into a chunked, gitignore-aware corpus, queried via Ollama + ChromaDB. Working prototype: no persisted identity, provenance, or temporal model yet') matches what was observed in README.md, requirements.txt (ollama, chromadb, pypdf), code_scanner.py/history_loader.py/preprocess.py presence,"
+  },
+  {
+   "repo": "EDDP",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "19 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ATS",
+    "CODE",
+    "GRAPH",
+    "OBSERVE",
+    "PERCEIVE",
+    "RADAR",
+    "ghost_tools",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the repository is flagged archived on GitHub (the enumeration metadata carries no archived flag; only the description says 'ARCHIVED').",
+    "Whether the six root .py modules other than eddp_pipeline.py actually execute; only eddp_pipeline.py was opened, and PROVENANCE.md's execution results predate the later wiring/refactoring commits.",
+    "Actual contents of TRANSCRIPT.md (not opened; 464 KB) beyond what README/PROVENANCE say about it.",
+    "Whether the ~10 MB reported size is fully explained by the deleted conversation-database prototype in history (no size breakdown available via the API used).",
+    "Whether the two claude/* branches were ever merged into main; main's HEAD commit message mirrors claude/parses' commit and is tagged '(#1)', suggesting a PR merge, but PR data was not queried (out of scope).",
+    "The origin date of the underlying Gemini transcript (PROVENANCE.md itself says unknown)."
+   ],
+   "description_vs_observed": "Largely matches. The description's 'preserved artifacts from an AI-assisted refactoring session' corresponds to PROVENANCE.md, TRANSCRIPT.md and _archive/; 'small wired-together fail-closed data pipeline (telemetry guardrail, HMAC ingestion auth, 8-module assessment/dispatch)' corresponds exactly to the four files inventoried in README and to eddp_pipeline.py's docstring and imports; 'a collection"
+  },
+  {
+   "repo": "fortress-kernel",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "17 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ghost_tools",
+    "observe-perceive"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or how many tests it contains (README says 48, commit e3c18511 says 31; test file not opened, nothing executed)",
+    "Contents and quality of fortress_unified.py (not opened; only its exported names via __init__.py are known)",
+    "Contents of .ghost_baseline.json and .gitignore (not opened)",
+    "What the main branch (sha 6732b3bb, not in master's history) and the claude/ and audit/ branches differ in beyond file sizes; commits on those branches were not listed",
+    "Why enumeration pushed_at is 2026-09-11 when the newest master commit is 2026-09-08 (likely a push on another branch, but not verified)",
+    "Whether observe-perceive actually consumes this module as the README claims"
+   ],
+   "description_vs_observed": "The enumeration description ('Experimental unified governance kernel integrating adaptive, stability & energy-based control strategies with shared integrity guardrails') matches what was observed: __init__.py exports SAGEController (adaptive), LyapunovController (stability), EnergyController (energy), plus IntegrityLayer/InvariantMonitor/DriftMonitor/MandateLayer guardrails and an audit ledger, an"
+  },
+  {
+   "repo": "FORTRESS1",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository: nothing observable (no description, no files, no commits) indicates why it was created",
+    "Whether the name FORTRESS1 relates to the corpus repo fortress-kernel: repo names are not evidence and no file content exists to check",
+    "first_commit_date / last_commit_date / head_sha: not applicable, there are no commits"
+   ],
+   "description_vs_observed": "Enumeration metadata (size_kb=0, language=null, description=null, created_at=pushed_at=2026-09-11) is fully consistent with what was observed: the repository is empty with no branches, commits, tags, or files. No discrepancy. The metadata's default_branch=main names a branch that does not actually exist as a git ref (list_branches returned []), which is normal for a repository created but never pu"
+  },
+  {
+   "repo": "Gemini_Extraction",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 5,
+   "commits": "10 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "DGK",
+    "DIT",
+    "EDDP",
+    "FORTRESS1",
+    "GSA",
+    "GSA-815",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "ICEBERG",
+    "OBSERVE",
+    "PERCEIVE",
+    "SOONG_protocol",
+    "URE",
+    "VSA",
+    "ghost_tools",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the derived jsonl datasets (evidence_ledger, provenance, chronology, events, artifacts, terminology) are well-formed or conform to the schemas \u2014 large files were not opened.",
+    "Whether the LFS-tracked source/extracted/code_blocks.jsonl object is actually present in LFS storage (only the 133-byte pointer was listed).",
+    "Contents of branches claude/ghost-tools-clone-j3frq0 and claude/gsa-repo-recreation-rrzvir beyond the fact that they point at the same SHA as main (root listing not separately fetched since SHA is identical).",
+    "Full diff between claude/soong-protocol-constraint-xk8jcb (b6fdd99) and main; only the reports/ listing difference was observed.",
+    "Whether the raw export contains PII or was redacted (the SOONG report mentions a 'PII-redacted' second copy in Gemini_History, but this repo's copy was not inspected).",
+    "Whether any processing code for the pipeline exists elsewhere (e.g. in Gemini_History or another repo)."
+   ],
+   "description_vs_observed": "The enumeration description largely matches observed contents: an immutable raw source with recorded SHA-256, normalized dataset (messages.jsonl), an evidence ledger, entity and lineage files, and per-system investigation directories for VSA, CITADEL, FORTRESS, GSA and GOVERNANCE_KERNEL (plus DIT, GALLM, UNKNOWN_ROOT not named in the description). The record count (4,911) and date range (Nov 2025 "
+  },
+  {
+   "repo": "Gemini_History",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 5,
+   "commits": "11 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CCC",
+    "ChatGPT_History",
+    "Ecology",
+    "GSA",
+    "Gemini_Extraction",
+    "ghost_tools",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ],
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether data/raw.jsonl and data/raw.csv actually contain empty message fields (README claim; file not opened)",
+    "Whether myactivity.json really has 4,911 records spanning 2025-11-02 to 2026-07-09 (README claim; 30.6MB file not opened)",
+    "Exact count of .txt files in Takeout/My Activity/Gemini Apps (README says 96; not individually counted)",
+    "Contents and functionality of tools/redact_pii.py (not opened; only its size and the accompanying REDACTION.md were inspected)",
+    "Whether the transcripts/*.md files contain empty-message artifacts as the README claims (not opened)",
+    "Whether Gemini_Extraction actually contains the analysis the README attributes to it (external repo, not accessed)",
+    "Whether the repository is flagged archived at the GitHub-settings level (only the README/.ghost_archive marker were observed; repo metadata not queried)",
+    "Why pushed_at (2026-09-12 per enumeration) postdates the newest main commit (2026-09-11); non-main branch pushes were not dated",
+    "Whether the branches claude/ghost-tools-clone-j3frq0 and claude/gsa-repo-recreation-rrzvir have any commits beyond main (they share main's sha, so their trees are identical, but their names suggest work that may live elsewhere)"
+   ],
+   "description_vs_observed": "The enumeration description largely matches observation. Confirmed: README explicitly marks the repo archived and incomplete; Takeout/My Activity/Gemini Apps/ holds roughly 190 files with the stated extension mix (17 .pdf, 10 .zip, 54 .py, 5 .csv, 3 .html, 2 .xlsx counted exactly from the listing; .txt count not individually verified); scripts/process.py is a 2-line stub; README points to Gemini_E"
+  },
+  {
+   "repo": "GEMS",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "9 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "CCC",
+    "Conservation_Kernel",
+    "TIE",
+    "TRIAD-PLUS-42",
+    "Triad-42",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 7 tests (per commit messages) or the 5 test files actually pass; tests were not executed",
+    "Actual number of attack types in transport/experiments (description and transport/README claim 20; code not opened or counted)",
+    "Content of .ghost_baseline.json and whether its 19 findings (per commit 44470ff) are accurate",
+    "Exact text of LICENSE (not opened)",
+    "Content of schemas/provenance.schema.json",
+    "Whether 'Triad+42' references in docs correspond to the Triad-42 or TRIAD-PLUS-42 corpus repositories",
+    "Whether transport/ code runs against the current conservation_kernel as PROVENANCE.md claims",
+    "Contents of the GEMS-FER-1.0 forensic package referenced throughout (not present in the repo)"
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed closely. Observed: src/gems provides typed contracts (contracts/models.py), router (core/router.py), workflow coordinator (core/workflow.py), human-authority governance (governance/constitution.py, validator.py), TIE adapter (integrations/tie.py), Triad+42 review (cognition/triad42.py); docs/RECONSTRUCTION_STATUS.md exists; transport/ is docume"
+  },
+  {
+   "repo": "ghost_tools",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "72 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ANVIL",
+    "AUGUR",
+    "CCC",
+    "CITADEL",
+    "CNS",
+    "CODE",
+    "Conservation_Kernel",
+    "Ecology",
+    "GEMS",
+    "GSA",
+    "GSA-815",
+    "Governance_Gateway",
+    "HERALD",
+    "SWIZZLE",
+    "TOUCHSTONE",
+    "content-polish-pipeline",
+    "observe-perceive",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes (nothing executed; CI results not queried)",
+    "Contents of publish.yml, .gitignore, .gitleaksignore, ghost_buster/calibration.json, and any individual source module (not opened)",
+    "Total commit count across non-default branches (only main was paged)",
+    "Whether claude/refactor-long-functions-all-21, fix/swizzle-findings and probe-tag-permission differ from main below the top level (only root listings compared)",
+    "Full README and CHANGELOG prose beyond first lines, headings and name scans",
+    "Whether the repo has open PRs/issues (not queried, out of scope tools)"
+   ],
+   "description_vs_observed": "The enumeration description ('Codebase integrity toolkit that detects structural ghosts, documentation drift, duplication, dead code & parallel implementations for human review') matches what was observed: a Python package with a ghost_buster scanner (structure, copies/duplication, deadend, naming, secrets, mutation, etc.), a triage step and ghost_writer for docs. Observed scope is broader than th"
+  },
+  {
+   "repo": "GLCM1",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no contents, no description, no README)",
+    "Whether the repo name GLCM1 relates to any other corpus repository (names are not evidence)",
+    "Whether any content exists locally on the author's machine that was never pushed"
+   ],
+   "description_vs_observed": "Enumeration metadata reported description=null, size_kb=0, language=null, default_branch=main, created_at and pushed_at both 2026-09-11. Observation is fully consistent: the repository is empty (no branches, commits, tags, or files). The only nuance is that default_branch=main is a repository setting with no actual ref behind it, since the branch does not exist in git. No discrepancy."
+  },
+  {
+   "repo": "GOVERNANCE-CONTROL-PLANE",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no README, files, or description exist)",
+    "Whether the repository was ever populated then force-emptied (no reflog or history accessible via API)",
+    "Relationship to other corpus repos such as Governance_Gateway or GSA-GOVERNANCE-CORE (the name suggests a theme but names are not evidence)"
+   ],
+   "description_vs_observed": "Enumeration metadata gives description=null, size_kb=0, language=null, created_at=pushed_at=2026-09-11. Observations are consistent: the repository is entirely empty (no branches, commits, tags, or files). No discrepancy. The identical created_at and pushed_at dates with zero commits are consistent with a repository created on GitHub and never pushed to."
+  },
+  {
+   "repo": "Governance_Gateway",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "16 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "Governance_Gateway",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or whether the CI workflow has ever run green (no test execution; actions/run status not queried).",
+    "Whether the README's claimed '105 adversarial attacks, 100 defended / 5 exposed' corresponds to the tests in the repo: only 3 test files (~11 KB) were observed, and test_adversarial.py / test_gateway.py contents were not read, so the 105-case count cannot be confirmed from observed content.",
+    "Content of models.py, __init__.py, test_adversarial.py, test_gateway.py, and .gitignore (not opened; only sizes observed).",
+    "Identity of the 'associated white paper' referenced in README (no file or link in this repo names it; the corpus repo 'WhitePapers' is not mentioned verbatim anywhere observed).",
+    "Meaning of 'ArnoldAI repositories' in ARCHITECTURE.md (not a corpus repo name in the provided list).",
+    "Why branch claude/prompt-red-blue-team-sj9a31 exists at the same SHA as main (no unique commits observed; branch purpose not determinable from content).",
+    "Whether the 10 identically-messaged 'Add Governance Gateway v0.1 red-team baseline' commits within ~10 seconds are distinct content changes or an import artifact (per-commit diffs not inspected)."
+   ],
+   "description_vs_observed": "The enumeration description ('Minimal governance gateway enforcing validated artifacts, provenance continuity, authority constraints, and fail-closed submission boundaries') substantially matches the observed content: a minimal Python validation gateway exists with explicit provenance, authority, scope, epistemic-status and integrity checks, and INVARIANTS.md states a fail-closed rule that gateway"
+  },
+  {
+   "repo": "GRAPH",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 5,
+   "commits": "9 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CNS",
+    "CODE",
+    "EDDP"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether any of the six .py files actually parse or run (no execution performed; claims of runnability come from README and commit messages only)",
+    "Contents of the non-default branches beyond their root listings (subdirectories on those branches were not enumerated)",
+    "Whether gaps_multilayer_governance_source.py on main (rebuilt per PR #3) is byte-identical to any original elsewhere",
+    "Whether the cns dependency at the pinned commit is reachable (private repo; not fetched)",
+    "Repository private/archived status beyond the enumeration metadata (not verifiable via the loaded tools)"
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed closely. The repo does contain from-facts/ GRAPH processing code (the README and commit 3c1e5a96 name the cached-signature provider issue the description alludes to) and gaps-kernel/ with a seven-layer governance pipeline adapter, and the README self-describes as a provisional-name integration baseline, not a finished product. One omission in t"
+  },
+  {
+   "repo": "GSA",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "5 (EXACT)",
+   "tests_dir": false,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "Claude_History",
+    "CoPilot_History",
+    "DIT",
+    "GSA-815",
+    "Gemini_Extraction"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 51 tests actually pass (no execution performed; claims are from README/PROVENANCE/commit messages only)",
+    "Contents of .github/workflows/ci.yml, K8S_VALIDATION_REPORT.md, PRODUCTION_READINESS.md, REALITY_CHECK.md, RUNBOOK.md, K8S_DEPLOYMENT.md, and all .py source bodies (not opened in this shallow pass)",
+    "Whether any file in the tree embeds transcript excerpts internally (only file names/sizes and the four text files above were inspected)",
+    "Whether the referenced original GSA repo state (commit 54f2479, GSA.py v5.0.0) or GSA-815 @ 02a977b actually exist as described; not verified",
+    "Whether PR #1 exists on GitHub as referenced by commit 7a5afb7 (no PR listing performed)"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test. API metadata otherwise matches observation: language Python (dominant by file count and size), default branch main, created 2026-09-11 (matches oldest commit 2026-09-11T21:18:54Z), pushed 2026-09-12 (matches newest commit 2026-09-12T05:08:16Z), private. Size 139 KB is plausible against the listed file sizes. Internal discrep"
+  },
+  {
+   "repo": "GSA-2",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no description, no README)",
+    "Whether this was meant as a successor/duplicate of GSA or other GSA-* repos (repo name is not evidence)",
+    "Any relation to other corpus repos (no files to scan)"
+   ],
+   "description_vs_observed": "Enumeration metadata gives description null, size_kb 0, language null, created_at and pushed_at both 2026-09-11. Observed state is fully consistent: the repository is empty with no refs or commits. No discrepancy. Note that pushed_at equal to created_at with zero commits is consistent with repository creation only, not an actual push of content."
+  },
+  {
+   "repo": "GSA-815",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "46 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "CNS",
+    "CODE",
+    "Conservation_Kernel",
+    "DGK",
+    "DIT",
+    "GOVERNANCE-CONTROL-PLANE",
+    "GSA",
+    "GSA-2",
+    "GSA-Master-Kernel",
+    "ICEBERG",
+    "PERCEIVE",
+    "RADAR",
+    "ghost_tools",
+    "observe-perceive",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the vendor/sentinel_os submodule currently resolves (the submodule pointer's target SHA and the sentinel_os repo were not fetched)",
+    "Whether the test suite actually passes today; README says 121 pass and DEPENDENCIES.md says 127 passed -- both are author claims, and CI run results were not queried",
+    "Full contents of claude/cns-live-path branch beyond its root listing (whether its files differ from main beyond README size)",
+    "Contents of .ghost_baseline.json, the 3.8 MB CSV, the 88 KB investigation doc, and all Python source files (not opened; listings and sizes only)",
+    "Whether lowercase/variant names (governance-control-plane, conservation-kernel, Citadel, Iceberg, PERCEIVE) in docs refer to the same-named corpus repos or merely to directories/terms",
+    "Total branch count beyond the 3 returned (perPage=100 returned 3, so likely complete, but not independently confirmed)"
+   ],
+   "description_vs_observed": "Partial match. The enumeration description (\"Governed execution and learning architecture for controlled AI action, incorporating evidence, authorization & governance constraints\") is generic and aspirational. What was observed is a concrete Python IVR / call-center (\"Iceberg\") application extracted from the sentinel_os kernel, with Twilio ingestion, a Claude-based governor client, queue/RL/Bayes "
+  },
+  {
+   "repo": "GSA-GATEWAY1",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content of any kind to inspect; the name is not evidence)",
+    "Whether the repository was created as a placeholder for content that exists elsewhere (e.g., in other GSA-* repos) \u2014 no observable evidence either way",
+    "Any relationship to other corpus repositories \u2014 no files exist to mention them"
+   ],
+   "description_vs_observed": "Enumeration metadata (description null, size_kb 0, language null, created_at == pushed_at 2026-09-11) is consistent with what was observed: the repository is completely empty with no branches, commits, or tags. No discrepancy. The absence of a description means there is no author claim to test."
+  },
+  {
+   "repo": "GSA-GOVERNANCE-CORE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "1 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CNS",
+    "GSA-815",
+    "GSA-Master-Kernel",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the two scripts actually run as the README/PROVENANCE claim (exit 0 for the main module, exit 1 with 9 flaws for the harness) \u2014 not executed in this read-only phase.",
+    "Whether the file is byte-identical to GSA-815 commit 44ee595's gsa-governance-core/GSA_Governance_Operating_Core_Enterprise.py as PROVENANCE claims \u2014 cross-repo comparison was out of scope.",
+    "Whether the private package `cns` referenced in PROVENANCE.md is the corpus repository CNS.",
+    "Whether the repository is archived or has open issues/PRs (not queried; only the four allowed tool types were used).",
+    "Why the enumeration size_kb (23) is smaller than the raw file sizes (~97 KB total) \u2014 presumably git packing, but not verified."
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test there. The remaining metadata matches observation: language Python (both code files are Python), default branch main (the only branch), created_at 2026-09-11 and pushed_at 2026-09-12 are consistent with the single commit dated 2026-09-12T11:46:06Z (repo creation preceding the first push by a day is plausible but the creation "
+  },
+  {
+   "repo": "GSA-Master-Kernel",
+   "access": "OK",
+   "purpose": "CONVERSATION_OR_TRANSCRIPT_ARCHIVE",
+   "eligibility": "EXCLUDED_CONVERSATION_ARCHIVE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "2 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "AC-HCCSE",
+    "CITADEL",
+    "DIT",
+    "GSA-2",
+    "GSA-815",
+    "RADAR"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "TRANSCRIPT.md was not opened (178 KB); its actual content and the claim that it is a verbatim Gemini conversation rest on README/PROVENANCE self-description and commit messages, not direct inspection.",
+    "artifact_1.py through artifact_4.py, artifact_6.py, and artifact_8.py through artifact_15.py were not opened; their nature and execution behaviour are taken from PROVENANCE.md, not verified.",
+    "Whether the GitHub repository archived flag is set: the enumeration metadata carries no 'archived' field and the tools used do not expose it; 'Archived' here is the author's description plus the .ghost_archive marker.",
+    "PROVENANCE.md states 'This repo was created on 2026-08-13 from a pre-existing artifact', while the first git commit is 2026-09-03 and README says split out 2026-09-03; the 2026-08-13 date may refer to the material's earlier life inside GSA-815/GSA-2/, but this could not be verified from this repository alone.",
+    "Whether the source transcript GSA-2.txt or the 'exported chat history' used for the recovered-originals branch exists in any other corpus repo (e.g. Gemini_History, Gemini_Extraction, TAKEOUT1) was not checked; no such repo is named in this repository's files.",
+    "Origin date and model of the underlying Gemini conversation (PROVENANCE states both are unknown).",
+    "Whether commit 8030006 ('#1') corresponds to a merged pull request from claude/archive-marker; PR state was not queried."
+   ],
+   "description_vs_observed": "The enumeration description ('Archived Gemini transcript \u2014 GSA (Governance Systems Architecture) Master Kernel; split out of GSA-815') matches what was observed: README.md, PROVENANCE.md, .ghost_archive, and both commit messages all describe an archived Gemini transcript split out of the GSA-2/ subdirectory of GSA-815. The 'Python' language tag is consistent with the 15 artifact_*.py files, though"
+  },
+  {
+   "repo": "HERALD",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "36 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the tests actually pass or the README claim of '312 tests passing, 25 skipped' is current (tests not executed; CI run status not queried)",
+    "Contents of the Python source and test files (listed but not opened)",
+    "Contents and commit histories of the three non-default branches beyond their root listings (list_commits was run only on main)",
+    "Whether the 'ghost_buster'/'ghost_writer' tooling referenced in README, ARCHITECTURE_GHOSTS.md and the head commit corresponds to the corpus repo ghost_tools (the file contents never spell the repo name 'ghost_tools')",
+    "Contents of .ghost_baseline.json (107 KB; not opened)",
+    "Whether any consuming project (e.g. sentinel_os) is actually wired to HERALD (README states none is yet)"
+   ],
+   "description_vs_observed": "The enumeration description ('Evidence-preserving natural-language interpretation layer for extracting, binding, validating, and handing off candidate claims') is reproduced verbatim as the description field in pyproject.toml, and the observed layout matches it: herald/ contains extract.py, binding.py, source.py, gate.py, claim.py and handoff.py, README and CONSTITUTION.md describe exactly this ca"
+  },
+  {
+   "repo": "HTTP",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "7 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Gemini_Extraction",
+    "Gemini_History"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 102-test claim is accurate or whether the suite currently passes (tests not executed; CI run status not queried, as actions tools were outside the allowed set)",
+    "Contents and correctness of the individual .py source and test files (listed by name and size only, not opened)",
+    "Whether the cited archive files (e.g. Claude_History/transcripts/8cdf517a-...md, Gemini_Extraction/chronology/events.jsonl) actually exist in those other repositories",
+    "Whether the deleted PR branch claude/http-repo-recreation-siaxl2 still exists remotely (list_branches returned only main)",
+    "Repository archived status and private flag were not independently verifiable via the allowed tools; enumeration metadata says private"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author description to test. Other metadata matches observation: language Python (all 15 code files are .py), default branch main (only branch), created 2026-09-11 and pushed 2026-09-12 consistent with the observed commit dates (first commit 2026-09-11T23:44:18Z, last 2026-09-12T18:38:50Z), and size 53 KB is plausible for ~100 KB of listed file co"
+  },
+  {
+   "repo": "ICEBERG",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content exists to evaluate)",
+    "Relationship, if any, to ICEBERG-SIM or ICEBURG repos in the same corpus (no files to check for mentions)",
+    "Whether content was ever pushed and later removed (API exposes no reflog; the 409 indicates no refs currently exist)"
+   ],
+   "description_vs_observed": "Enumeration metadata gives description null, size_kb 0, language null, created_at and pushed_at both 2026-09-11. Observation is consistent: the repository is empty with no branches, commits, or tags. No discrepancy. Note that pushed_at equal to created_at with an empty repo suggests no push ever carried content, but this is an inference from metadata, not an observed fact."
+  },
+  {
+   "repo": "ICEBERG-SIM",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no description)",
+    "Whether the name relates to the ICEBERG or ICEBURG repositories in the corpus (name is not evidence; no files mention them)",
+    "Any dates of commits (none exist); only the enumeration metadata created_at/pushed_at 2026-09-11 is available and was not verified by observed git history"
+   ],
+   "description_vs_observed": "Enumeration metadata reports description null, language null, size_kb 0, default_branch main. Observation is fully consistent: the repository is empty (409 empty-repository responses, zero branches, zero tags, zero commits). The metadata's default_branch \"main\" refers to a configured default that has no ref behind it. No discrepancy."
+  },
+  {
+   "repo": "ICEBURG",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "4 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the 119 tests actually pass (no execution performed; read-only)",
+    "Whether the 'verbatim recovered' code genuinely matches transcripts in Claude_History etc. (cross-repo verification out of scope for Phase 1)",
+    "Exact source line count (README claims 2,031 lines; not counted)",
+    "Whether the ICEBERG / ICEBERG-SIM corpus repos are related: README/docs use 'Iceberg' as the product name throughout but never reference a repo by that name, so no repo mention was recorded",
+    "Whether PR #1 had review comments or other metadata (PR/issue tools not used per read-only tool restriction)",
+    "Bodies of the other 12 test files and remaining source modules were not read; counts are from directory listings only"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. Metadata language=Python, size_kb=67, created 2026-09-11, pushed 2026-09-12, default branch main all match observations (Python source, small tree, commits dated 2026-09-11 to 2026-09-12). One nuance: the repository's own README and PROVENANCE.md state that the code was reconstructed from AI conversation-history repos and that t"
+  },
+  {
+   "repo": "innovation_os",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "208 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ATS",
+    "CCC",
+    "Conservation_Kernel",
+    "GSA",
+    "OBSERVE",
+    "PERCEIVE",
+    "TBCA",
+    "TOUCHSTONE",
+    "URE",
+    "VANGUARD",
+    "ghost_tools",
+    "observe-perceive",
+    "sentinel_os",
+    "synapsis"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Exact Python source file count: no recursive listing was performed across the ~68 subpackages; 341 is CODEX_CONTEXT.md's documented figure as of 2026-08-03 and may be stale.",
+    "Exact test file count: only 15 test files were directly observed; ~100 test subdirectories were not listed.",
+    "Whether the tests actually pass at HEAD (no execution performed; passing counts come only from commit messages and a README badge).",
+    "Contents of CEE-0001/conversation_original.txt (93 KB, not opened) and whose conversation it records.",
+    "Contents of .ghost_baseline.json, the intelligence_v2_*.txt inventories, docs/fingerprints/ and docs/architecture/ on the side branch, and memory/*.yaml records (not opened).",
+    "Whether a 'master' branch ever existed and was deleted: merge commit aa1e628 (2026-09-07) states 'master is GitHub's default here ... one commit, last touched 2026-08-24', but list_branches now shows only main and the claude/ branch, and enumeration metadata says default_branch is main.",
+    "Which commits the 65 tags point to relative to main history (tag SHAs were listed but not resolved).",
+    "Whether the description-level 'CCC' acronym in commit d8fd9b8 refers to the corpus repository named CCC (the file spells it 'Cognitive Continuity Constitution')."
+   ],
+   "description_vs_observed": "The enumeration description ('Governed innovation operating system for capturing, connecting, evaluating, reviewing, approving & developing ideas through traceable decision workflows') matches the README, ARCHITECTURE.md and CODEX_CONTEXT.md and the observed package structure (problem/, ideation/, review/, decision/, branches/, solution/, governance/, provenance/, lineage/ subpackages). Language=P"
+  },
+  {
+   "repo": "KAGGLE",
+   "access": "OK",
+   "purpose": "CONVERSATION_OR_TRANSCRIPT_ARCHIVE",
+   "eligibility": "EXCLUDED_CONVERSATION_ARCHIVE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 4,
+   "commits": "4 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ARCHIVE",
+    "DGK",
+    "DIT",
+    "GSA",
+    "GSA-2",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Origin date of the underlying Gemini conversation (PROVENANCE.md states no date appears in the transcript; git history reflects only the 2026-08-13 archival date)",
+    "Whether the artifacts actually behave as PROVENANCE.md reports (not executed in this phase; read-only)",
+    "Full contents of the non-default claude/* branches beyond their root listings (only names/sizes observed; artifact_9.recovered.py and artifact_9.py.flattened not opened)",
+    "Whether the transcript's 'GSA Universal Adapter' phrase refers to the corpus repo GSA or is just an in-conversation term",
+    "Byte-level identity between main and claude/artifact-9-original (only names and sizes compared)"
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed closely: TRANSCRIPT.md is a Gemini transcript with exactly 30 User prompt/Response pairs about a Kaggle image-texture classifier (Sobel/LBP/GLCM + LightGBM) for the-freuid-challenge-2026-ijcai-ecai; PROVENANCE.md exists and describes 14 extracted artifacts (artifact_1..15 with no artifact_14). Minor discrepancies: (1) the description implies '1"
+  },
+  {
+   "repo": "OBSERVE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 6,
+   "commits": "195 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "DGK",
+    "GSA",
+    "GSA-815",
+    "ICEBURG",
+    "PERCEIVE",
+    "innovation_os",
+    "observe-perceive",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suites actually pass at HEAD (CI status not queried; tests not executed).",
+    "Contents/purpose of .ghost_baseline.json (982KB, not opened) and sentinel_os/data.json (378KB, not opened).",
+    "Contents of the .patch/.bundle/.diff/.tar.gz/.zip artifacts in sentinel_os/ (not opened).",
+    "Exact source/test file counts (estimated from listings; sentinel_os subdirectories Deploy, Domain, k8s, Latent, Model, Sim, Training, cassettes, regulatory_cassettes, lua were not individually listed and were taken from VENDORED.md's table).",
+    "Whether the 'unique' files listed in VENDORED.md are truly absent upstream (VENDORED.md is an author-generated claim).",
+    "Nature of the 'certs' symlink target.",
+    "Whether the claude/* branches are merged into main or contain divergent work beyond the root-level file variants observed."
+   ],
+   "description_vs_observed": "The enumeration description ('Governance observability and monitoring layer for tracking system behavior, outcomes, drift, evidence & post-execution state') matches the root README.md's self-description and the root observe_consolidated.py engine plus adapters/tests. However, the description understates what the repository actually is: by file volume the bulk of the repo (402 of ~430 files, per VE"
+  },
+  {
+   "repo": "observe-perceive",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "48 (EXACT)",
+   "tests_dir": false,
+   "ci": true,
+   "mentions": [
+    "ANVIL",
+    "AUGUR",
+    "CCC",
+    "CITADEL",
+    "Conservation_Kernel",
+    "GEMS",
+    "GRAPH",
+    "GSA-815",
+    "Governance_Gateway",
+    "HERALD",
+    "OBSERVE / PERCEIVE",
+    "TBCA",
+    "TIE",
+    "VANGUARD",
+    "fortress-kernel",
+    "ghost_tools",
+    "innovation_os",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes (no execution performed; README, CI comments and state doc claim green runs but this was not verified)",
+    "Whether the CI workflow has ever run successfully (actions not queried; it requires a LIBRARY_READ_TOKEN secret whose presence is unknown)",
+    "Contents of the 42 test files, 37 source modules, CHANGELOG.md, GOVERNANCE_ORCHESTRATION.md, GOVERNANCE_STACK_AUDIT_PROMPT.md, RED_TEAM_REPORT.md, .ghost_baseline.json and all docs/ files (listed only, not opened)",
+    "Whether the branch 'claude/prompt-red-blue-team-sj9a31' named in CLAUDE_ARCHITECTURE_STATE.md ever existed (only main is present now)",
+    "Whether OBSERVE and PERCEIVE in this repo relate to the separate corpus repos named OBSERVE and PERCEIVE, or are purely internal component names",
+    "Whether the legacy/ directory referenced in pytest.ini exists anywhere (not in the root listing)",
+    "Whether the git+https sibling dependencies (Conservation_Kernel, CCC, AUGUR, GEMS, Governance_Gateway, fortress-kernel) actually resolve and are importable"
+   ],
+   "description_vs_observed": "The enumeration description ('Perception and governance orchestration layer for evaluating incoming artifacts through structured evidence and multi-gate decision processes') is consistent with observed contents: pyproject.toml describes 'the governed action gate: admission, screen, policy gates, Conservation Kernel approval, execution, observation, record, with a verifiable hash chain', README des"
+  },
+  {
+   "repo": "PERCEIVE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "4 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "DGK",
+    "FORTRESS1",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "HTTP",
+    "OBSERVE",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or whether CI has ever run (CI triggers on push to main, which is empty, and on pull_request; no PR or Actions state was queried)",
+    "Contents and quality of the 10 source modules and 5 test files (only directory listings were taken)",
+    "Whether the '131 tests' figure in README/commit messages is accurate",
+    "Whether any pull request exists from the claude/ branch to main (not queried; list_pull_requests not among permitted tools)",
+    "Content of .gitignore (not read)",
+    "Whether the cited transcript line numbers in PROVENANCE.md (e.g. Claude_History/transcripts/2e330101-...md line 14695) correspond to real files in those repos"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. Metadata language 'Python' matches observed (all source and test files are .py). size_kb 45 is consistent with the listed file sizes (~110 KB of text across src/tests/docs is plausible within a 45 KB packed repo). Default branch 'claude/http-repo-recreation-siaxl2' matches list_branches; notably the conventional 'main' branch is"
+  },
+  {
+   "repo": "RADAR",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no README, code, or description exists)",
+    "Whether the name RADAR relates to any other corpus repo (no files to inspect; names are not evidence)",
+    "Commit dates and head SHA (no commits exist)"
+   ],
+   "description_vs_observed": "Enumeration metadata gave description=null, language=null, size_kb=0, created_at and pushed_at both 2026-09-11. Observations are fully consistent: the repository is empty on all branches with zero commits, zero branches, and zero tags. No discrepancy. Note that pushed_at equal to created_at with zero commits suggests no push ever carried content, but that is an inference from metadata, not observe"
+  },
+  {
+   "repo": "Resume_OS",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "5 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the tests pass or run at all (not executed; read-only).",
+    "Actual contents and line counts of the .py and .sql files (not opened); whether the code fully implements what README and commit messages claim.",
+    "Contents of sources/Full_resume_engine_transcript.txt beyond its size (1,019,039 B) and manifest description; not opened.",
+    "The tail of README.md after the 'Repository Layout' block (API response was truncated).",
+    "Whether the repository's 'Update README.md' commit on 2026-08-24 changed anything other than README (diff not fetched).",
+    "Whether any dependencies beyond the Python standard library are required (no requirements file present; code not read)."
+   ],
+   "description_vs_observed": "The enumeration description ('Evidence-based resume and professional-record system preserving source provenance, human promotion decisions & validated document state') matches what was observed: README, spec, module names (ingest/load_extraction/review/match/generate/polish/validate), schema.sql, and commit messages all describe a provenance-tracking, human-promotion-gated resume-generation pipeli"
+  },
+  {
+   "repo": "SAGE-K",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "3 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "Claude_History",
+    "FORTRESS1 / fortress-kernel (term 'Fortress' only; exact repo names not observed)",
+    "GSA (term only; cannot confirm it refers to the GSA repo)",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "sentinel_os (term 'Sentinel' only; exact repo name not observed)"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually runs or passes (README claims 43 tests; tests were not executed and test file contents were not read)",
+    "Whether ci.yml has ever run or its run status (workflow runs not queried)",
+    "Contents of docs/GEMINI_SOURCE_RECORD.md and docs/SEAM_INVENTORY.md (not opened; whether GEMINI_SOURCE_RECORD.md is purely a code record or includes conversational transcript material is unverified)",
+    "Contents of RECONSTRUCTION.md and the specific divergences it documents",
+    "Whether the 'Fortress', 'GSA', and 'Sentinel' terms in README/PROVENANCE refer to the corpus repos FORTRESS1/fortress-kernel, GSA*, sentinel_os, or are just shared vocabulary",
+    "Whether the original (lost) repository and commit baf5ec8 referenced in PROVENANCE.md ever existed on GitHub",
+    "Exact line counts of modules (README/commit messages cite them; not verified)"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test. API metadata otherwise matches: language Python (11 .py in sage_k, 3 in examples, 2 in tests), default branch main, created 2026-09-11 and pushed 2026-09-12 match the observed first/last commit dates, and size 97 KB is consistent with the observed file sizes (~260 KB uncompressed across sage_k, docs, tests, examples and top-"
+  },
+  {
+   "repo": "sentinel_os",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 8,
+   "commits": "284 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "CNS",
+    "Conservation_Kernel",
+    "DIT",
+    "GEMS",
+    "GSA-815",
+    "HERALD",
+    "SAGE-K",
+    "ghost_tools",
+    "observe-perceive"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes: no tests were executed; pass/fail figures are README self-reports",
+    "Contents of .github/workflows/tests.yml (not opened; behavior known only from CONTRIBUTING.md/SECURITY.md descriptions)",
+    "Contents of the 2.78 MB sample CSV, .ghost_baseline.json (478 KB), fortress_audit.log (110 KB), APPLY_authorized_by_attestation.md, and docs/prompts/*.txt (not opened)",
+    "Exact file count in sentinel_os/interpretation/Tests/ and sentinel_os/sage_k/examples/ (not listed)",
+    "Whether the git-pinned private dependencies (cns, DIT) are reachable; README says CNS is private",
+    "Commit counts on non-main branches (only main was paged)",
+    "What fortress_audit.log contains and whether it relates to corpus repos fortress-kernel/FORTRESS1 (filename only; not opened, no textual mention observed)"
+   ],
+   "description_vs_observed": "Enumeration description ('Governed AI execution framework for evidence-bound processing, approval, auditability, and controlled downstream action') is broadly consistent with observed contents: a governance kernel with an evidence ledger, attestation, twin witness, cassette/regulatory lenses, and queue workers. Observed README positions it more narrowly as 'the custody ledger stage of the governan"
+  },
+  {
+   "repo": "SOONG_protocol",
+   "access": "OK",
+   "purpose": "DOCS_OR_PAPERS",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "1 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "DIT",
+    "GSA",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "VSA"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Actual contents of APPENDIX_A_SOURCE_TEXTS.md and GAP_5_1_INVESTIGATION.md (not opened; characterised only from their commit messages)",
+    "Whether the SHA-256 seal in the derivation document actually verifies (not executed; read-only procedure)",
+    "Whether the non-default branch was ever merged or is intended to be (no PR listing performed)",
+    "Whether the cited archive repositories and commits (a3f01fe, 1414b89, 5b1c42e, etc.) exist and match the claimed hashes (outside this repo's scope)",
+    "Repository description in GitHub metadata is null, so no author claim about purpose exists beyond the README"
+   ],
+   "description_vs_observed": "The enumeration metadata has description=null and language=null; both are consistent with what was observed (Markdown-only content, which GitHub does not report as a language). size_kb=93 is consistent with the ~67KB on main; the 225KB appendix on the non-default branch would push total repo size higher than 93KB, which is a minor unexplained discrepancy (possibly compression or how size is comput"
+  },
+  {
+   "repo": "STRIDE",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no description, no README)",
+    "Why the repo was created on 2026-09-11 with no push (created_at and pushed_at are metadata claims only; no commits exist to corroborate)"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test. The metadata size_kb=0, language=null, and default_branch=main are consistent with observation, except that the default branch 'main' does not actually exist as a git ref (list_branches is empty; the ref lookup fails with 409). No discrepancy beyond that nominal default-branch setting."
+  },
+  {
+   "repo": "SWIZZLE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "24 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ghost_tools",
+    "wizzle"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suites actually pass (no execution performed; CI run results not queried)",
+    "Contents of corpus/minimized and corpus/rejected (not listed)",
+    "Contents of fixtures/wizzle-forensics/histories (not listed) and of the corpus/fixtures JSON files (not opened)",
+    "Whether the WIZZLE subsystem here is the same code as the corpus repo named `wizzle` (only the subsystem name and 'retained as provenance' wording observed; no explicit repo reference)",
+    "Whether the lab/* branches diverge from main in any file content beyond the root-level absence of fixtures/ and tools/ (their heads are in main's history, suggesting merged, but per-file diff not checked)",
+    "Exact non-test vs test line counts; the file counts are estimates from listings",
+    "Reason for the README v0.4.0 vs pyproject 0.7.1 version discrepancy"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test. Metadata language=Python, default_branch=main, created 2026-09-12 and pushed 2026-09-14 all match observation (Python-dominated tree; first commit 2026-09-12T10:18:46Z, last 2026-09-14T03:09:38Z; main exists and is default). size_kb=769 is plausible for the observed file sizes but was not verified. Internal discrepancy noted"
+  },
+  {
+   "repo": "synapsis",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "23 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "AC-HCCSE",
+    "ATS",
+    "DGK",
+    "Ecology",
+    "GRAPH",
+    "GSA-GATEWAY1",
+    "STRIDE",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the surviving pipeline or the 5 tests actually pass (no execution performed; file bodies not read)",
+    "Exact byte size of the committed .venv/ tree and whether it alone accounts for the 14935 KB repo size",
+    "Whether the repository is flagged archived in GitHub repo settings (only the description string says ARCHIVED; repo metadata flag not queried)",
+    "Contents of the config/*.yaml files and whether any are consumed by surviving code (only config/loader.py is referenced by commit message)",
+    "Whether claude/parses and claude/recovered-originals differ from master beyond their tip commits (only tip commits and root listings compared; no diff performed)",
+    "Whether the FACTS, SECURE and WRAPPER repos named in commit 538f5456 exist (they are not in the supplied corpus list)"
+   ],
+   "description_vs_observed": "Largely matches. Description says 'Python repository-analysis experiment; most of the module tree was unimplemented stubs; working parts (gitignore-aware scanner, Python AST chunking) salvaged into the Ecology repo.' Observed: Python package for repository scanning/AST analysis; README and commit 92c4fb27 confirm the stub-heavy scaffold was pruned and the scanner/AST chunking ported to Ecology. Di"
+  },
+  {
+   "repo": "TAKEOUT1",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no contents, no description, no README)",
+    "Whether the repository name relates to a data export ('takeout') -- names are not evidence and nothing was pushed",
+    "Any commit dates or head SHA (no commits exist)"
+   ],
+   "description_vs_observed": "Enumeration metadata gave description null, size_kb 0, language null, default_branch main, created_at and pushed_at both 2026-09-11. Observations are consistent: the repository is empty (409 Git Repository is empty), has no branches, commits, or tags, so size 0 and null language match. The only nuance is that the default branch 'main' is declared in metadata but no such ref actually exists on the "
+  },
+  {
+   "repo": "TBCA",
+   "access": "OK",
+   "purpose": "MIXED_AMBIGUOUS",
+   "eligibility": "AMBIGUOUS_INVESTIGATE",
+   "confidence": "MEDIUM",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "3 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ARCHIVE",
+    "CITADEL",
+    "KAGGLE"
+   ],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether `npm install && node generate.js` actually produces a valid .docx \u2014 README/PROVENANCE and commit 2fb37da claim it was verified, but nothing was executed in this read-only pass",
+    "Whether src/paper-content.js is byte-identical to the PAPER_CONTENT literal in TRANSCRIPT.md (claimed in PROVENANCE.md with a SHA-256; not verified)",
+    "Which AI tool/model produced the transcript and when \u2014 PROVENANCE.md explicitly states this is unknown; the transcript carries no tool URL, model name, or date",
+    "Whether the personal-data check described in PROVENANCE.md is accurate (not independently re-run)",
+    "Contents of the five src/*.js module bodies and package-lock.json (listed by name/size only; not opened)",
+    "Whether the original TBCA.txt at commit df408a31 differs from TRANSCRIPT.md (commit ca98c172 claims a byte-identical rename; the initial-commit tree was not inspected)"
+   ],
+   "description_vs_observed": "Largely matches but is stale/incomplete relative to HEAD. Confirmed: TRANSCRIPT.md is a single-turn transcript beginning with 'Thoughts?' followed by one Node.js docx-generator script embedding the TBCA whitepaper; the archived script as stored in TRANSCRIPT.md does not run because template-literal backticks are stripped (only 2 backticks in the file; four console.log lines with bare ${...}) \u2014 obs"
+  },
+  {
+   "repo": "TBCA1",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no description, no README).",
+    "Whether the repository is related to the corpus repo 'TBCA' (name similarity is not evidence; no observed content links them).",
+    "Why the repository was created on 2026-09-11 and left empty (pushed_at equals created_at in metadata, but this is API metadata, not observed content)."
+   ],
+   "description_vs_observed": "The enumeration metadata has a null description, size_kb 0, and language null. Observations are fully consistent with this: the repository is empty on all refs with no commits, branches, or tags. No discrepancy. The metadata's pushed_at (2026-09-11) could not be corroborated from commit history because there are no commits."
+  },
+  {
+   "repo": "TIE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "9 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "ghost_tools",
+    "observe-perceive"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes (tests were not executed; '9 passed' is an author claim in BUILD_STATUS.md / FINAL_BUILD_REPORT.txt).",
+    "Contents of unread files: docs/COVERAGE.md, DATA_MODEL.md, EPISTEMIC_MODEL.md, HANDOFF.md, PROVENANCE.md, VALIDATION.md; recovery/DECISION_LEDGER.md, MISSING_ARTIFACTS.md; schemas/tie_package.reconstructed.schema.json; all source modules except src/tie/__init__.py; all test files. Corpus-repo mentions inside these unread files are therefore unknown.",
+    "Whether the repository is currently private or public (metadata says private; a 2026-09-02 commit message calls it a public repo).",
+    "Whether the 'five user-supplied TIE forensic summaries' referenced throughout docs/ and recovery/ exist anywhere in this or another corpus repository; they are not present in this repo.",
+    "Whether the audit/governance-stack-2026-09 branch has any commits not on main (its head sha appears in main's history, suggesting it is fully merged, but a branch-specific commit listing was not run)."
+   ],
+   "description_vs_observed": "The enumeration description ('Reconstructed Transcript Intelligence Engine baseline for evidence-preserving ingestion, reconstruction, validation, identity, relationships & typed handoff') matches what was observed: pyproject.toml name/description, README, BUILD_STATUS.md, and recovery/ ledgers all describe a reconstructed TIE baseline, and src/tie/ has packages named for each listed stage. Langua"
+  },
+  {
+   "repo": "TOUCHSTONE",
+   "access": "OK",
+   "purpose": "SPECIMEN_OR_DATA_CORPUS",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "14 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ATS",
+    "CCC",
+    "CITADEL",
+    "CODE",
+    "Conservation_Kernel",
+    "DGK",
+    "EDDP",
+    "GSA-815",
+    "HERALD",
+    "STRIDE",
+    "TIE",
+    "URE",
+    "VANGUARD",
+    "VSA",
+    "ghost_tools",
+    "observe-perceive"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether verify_manifest.py actually passes 26/26 at HEAD (not executed; read-only pass)",
+    "Whether the flattened sources still have 0 newlines and whether governance_os_security_source.py really imports cleanly and defines nothing (file contents of specimens not opened; only MANIFEST/commit claims seen)",
+    "Contents of .ghost_baseline.json beyond its 111,285 B size (not opened)",
+    "Contents of the two larger TRANSCRIPT.md files (uztc, wrapper) beyond directory listing; only secure/TRANSCRIPT.md was read",
+    "Whether the claude/archive-marker branch is byte-identical to main beyond the root listing matching (per-file SHAs not compared)",
+    "Contents and commit history of the claude/governance-stack-reconciliation-sehefr branch beyond its root listing",
+    "Whether the repository is flagged archived at the GitHub level (enumeration metadata did not include an archived flag; .ghost_archive is a tool marker, not GitHub archive status)",
+    "Whether the three Gemini transcripts contain any PII or content beyond code drafting (uztc PROVENANCE.md mentions a 'TOTAL_PII_PURGE_EXECUTED' framing; not verified)"
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed in almost every particular: README.md opens with 'A specimen corpus. Not a system.'; specimens/pairs holds five reconstruction pairs (11 files, including a documented second solvar reconstruction); specimens/progressions/uztc holds a v1.0->v1.1->v1.2 progression; MANIFEST.md \u00a73 names exactly five failure modes (silent pass, overclaim, flattenin"
+  },
+  {
+   "repo": "Triad-42",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 1,
+   "commits": "12 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "FORTRESS (not an exact corpus name; corpus has FORTRESS1 and fortress-kernel)",
+    "GSA",
+    "GSA-815",
+    "STRIDE",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes (100 vs 105 claimed in different documents); tests were not executed.",
+    "Contents and quality of the 14 package modules and 3 test files (not opened); IMPLEMENTED/TESTED signals rest on file listings, README, and commit messages.",
+    "Which corpus repository the local path '/home/wking53214/FORTRESS' corresponds to (corpus lists FORTRESS1 and fortress-kernel, not FORTRESS).",
+    "Whether 'GSA' in 'FORTRESS/GSA findings' refers to the repo named GSA or is shorthand for GSA-815.",
+    "Whether FACTS (referenced as a source family) corresponds to any corpus repository; no corpus repo named FACTS exists.",
+    "Relationship to the corpus repo TRIAD-PLUS-42; README uses 'Triad+42' as the framework name but no file references that repository.",
+    "Contents of .ghost_baseline.json (not opened; 56 KB JSON)."
+   ],
+   "description_vs_observed": "The enumeration description matches what was observed. The README, pyproject.toml, module names (findings.py, lenses.py, deepthought.py, provenance.py, retrieval.py, review.py), and commit messages all describe the same thing: an advisory harness enforcing Red/Gray/Green/42 stage order, epistemic labels, severity accumulation rules, and append-only provenance, with the reasoning layer deliberately"
+  },
+  {
+   "repo": "TRIAD-PLUS-42",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content, no description, no README).",
+    "Whether content was ever pushed and later removed (no git history is accessible via API; enumeration metadata created_at == pushed_at == 2026-09-11 and size_kb 0 are consistent with never-pushed, but this is metadata, not observed content).",
+    "Relationship, if any, to the similarly named corpus repo Triad-42 (names are not evidence)."
+   ],
+   "description_vs_observed": "The enumeration description is null (no author claim to test). Enumeration metadata (size_kb 0, language null, created_at and pushed_at both 2026-09-11) is consistent with what was observed: an empty repository with no branches, commits, tags, or files. No discrepancy found."
+  },
+  {
+   "repo": "URE",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "7 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ARCHIVE",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "GSA",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "ghost_tools",
+    "innovation_os",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the claimed 278 tests actually exist/pass (test files not opened, CI run results not checked)",
+    "Whether the non-default branch claude/ure-repo-recreation-otb996 differs from main beyond README.md size (only root listings compared)",
+    "Contents of .ghost_baseline.json, .gitignore, docs/ARCHITECTURE.md and all .py source files (not opened)",
+    "Whether the GSA references in README/PROVENANCE refer to the wking53214/GSA repository specifically or only to the GSA system/archive generally",
+    "Whether the archive claims in RECONSTRUCTION.md/PROVENANCE.md (863 transcripts, cited transcript file paths in ChatGPT_History/ARCHIVE) are accurate; not verified against those repos"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author description to test. Metadata language 'Python' matches observed contents (all code files are .py). size_kb 265 is consistent with the ~350 KB of listed text files after git compression. created_at 2026-09-11 and pushed_at 2026-09-12 are consistent with all 7 commits dated 2026-09-11 (the pushed_at date is one day later than the last commit da"
+  },
+  {
+   "repo": "UTEP",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "4 (EXACT)",
+   "tests_dir": false,
+   "ci": true,
+   "mentions": [
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the CI workflow (.github/workflows/lint.yml) actually passes; body not read and no actions runs queried",
+    "Whether the linter runs cleanly against the current tree (README claims 0 errors, 1 warning; not executed)",
+    "Whether the non-default branch tree is byte-identical to main beyond root entry names (only root listing compared; branch sha 4b1135d9 is the pre-merge commit of the merged PR, so likely identical, but not verified)",
+    "Whether the cited primary transcript path exists in ChatGPT_History and whether the VERBATIM line citations are accurate (out of scope for this repo, not checked)",
+    "Contents of kernel/, variants/, memories/, gems/, modules/, core/, standards/, deployments/ files (bodies not opened)",
+    "Meaning of 'ztgkt' in the branch name and whether it relates to the ZTGKT corpus repo",
+    "True first commit date: author date of a4b941e9 (2026-09-11T23:44:24Z) predates the 'Initial commit' 53d79906 (2026-09-12T01:07:05Z), consistent with an amended/rebased commit, but the sequence was not reconstructed"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author description to test. API metadata: language 'Python' is technically true but misleading in emphasis; only 1 of ~52 files is Python (tools/utep_lint.py), and the repository is overwhelmingly Markdown and plain-text instruction artifacts. size_kb 45 is consistent with the file sizes observed (roughly 70 KB of listed file bytes uncompressed). cre"
+  },
+  {
+   "repo": "VANGUARD",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "5 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "DGK",
+    "DIT",
+    "GSA",
+    "GSA-GATEWAY (NOT in corpus list verbatim; corpus list has GSA-GATEWAY1)",
+    "ghost_tools"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     false
+    ]
+   ],
+   "contested": true,
+   "material_correction": [
+    {
+     "lens": "REFUTE",
+     "model": "claude-opus-5",
+     "eligibility": "NO_CHANGE",
+     "purpose": "SPECIMEN_OR_DATA_CORPUS",
+     "confidence": "MEDIUM"
+    }
+   ],
+   "contested_reason": "primary_purpose: SUBSTANTIVE_SYSTEM is not supported by the observed content. On the default branch the entire payload is (1) vanguard-unified-governance-wrapper.py, 46 lines that define one class and contain ZERO import statements while; confidence: HIGH confidence is not warranted for the purpose label. The repo sits on a genuine boundary - the flattened blob does encode a full module's worth of implementation logic (anomaly scoring, regime classification, HMAC aud",
+   "could_not_determine": [
+    "Whether the GSA-GATEWAY repo linked in README is the same as corpus entry GSA-GATEWAY1 (not verifiable from this repo)",
+    "Whether the claimed reconstruction in GSA-GATEWAY (governance-stack/vanguard-behavioral-simulation.py, sovereign_kernel.py) actually exists (not checked; out of scope for this repo)",
+    "Whether the recovered file on claude/recovered-originals truly round-trips to the flattened file (claimed in commit message; not verified since no execution allowed)",
+    "Actual parse/run behavior of either file (not executed; read-only inspection only)",
+    "Content of the removed 555-line README from commit 0906846 (not fetched)",
+    "Whether the repo is flagged 'archived' in GitHub repository settings (metadata not provided; README and .ghost_archive only declare it retired)"
+   ],
+   "description_vs_observed": "The description largely matches. Observed: a wrapper file of roughly 50 lines (description says ~45; close) that delegates to classes it does not define (PipelineCycleManager, UnifiedSovereignKernel), and a single-line flattened behavioral-simulation file; commit e032951 states neither runs standalone, consistent with the description. Discrepancies/omissions: (1) the description says the wrapper d"
+  },
+  {
+   "repo": "VSA",
+   "access": "OK",
+   "purpose": "EMPTY_SHELL",
+   "eligibility": "EMPTY",
+   "confidence": "HIGH",
+   "empty_all_branches": true,
+   "branches": 0,
+   "commits": "0 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [],
+   "verifiers": [
+    [
+     "COST_OF_EXCLUSION",
+     "claude-fable-5-1",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Intended purpose of the repository (no content to inspect; name 'VSA' is not evidence)",
+    "Whether any content was ever pushed and later removed (API exposes no history for an empty repo)",
+    "first_commit_date / last_commit_date / head_sha (no commits exist)"
+   ],
+   "description_vs_observed": "Enumeration metadata (description null, language null, size_kb 0, created_at and pushed_at both 2026-09-11) is consistent with what was observed: the repository is completely empty with no branches, commits, or tags. No discrepancy."
+  },
+  {
+   "repo": "WhitePapers",
+   "access": "OK",
+   "purpose": "DOCS_OR_PAPERS",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 3,
+   "commits": "21 (EXACT)",
+   "tests_dir": false,
+   "ci": false,
+   "mentions": [
+    "ANVIL",
+    "ATS",
+    "AUGUR",
+    "CCC",
+    "CNS",
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Conservation_Kernel",
+    "DIT",
+    "Ecology",
+    "GEMS",
+    "GRAPH",
+    "GSA",
+    "GSA-815",
+    "GSA-Master-Kernel",
+    "Gemini_Extraction",
+    "Gemini_History",
+    "Governance_Gateway",
+    "HERALD",
+    "ICEBERG",
+    "ICEBURG",
+    "OBSERVE",
+    "SAGE-K",
+    "SOONG_protocol",
+    "TIE",
+    "TOUCHSTONE",
+    "Triad-42",
+    "URE",
+    "VANGUARD",
+    "content-polish-pipeline",
+    "fortress-kernel",
+    "ghost_tools",
+    "innovation_os",
+    "observe-perceive",
+    "sentinel_os"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     false
+    ]
+   ],
+   "contested": true,
+   "material_correction": [],
+   "contested_reason": "observed.branches / evidence item \"Three branches exist ... claude/consolidate-code-fable-prompt-8t1xce (af57368)\": The recorded head SHA for that branch is wrong as of now: list_branches returns 17e4ad7b41660e2eed3d25861e0c1a10ec77f4af, not af57368. (main e9dae0f9... and claude/frontier-agent-benchmark-62fd2d 9aee30851fd07f1be5b80570; observed.top_level_entries / evidence item \"papers/ contains ten subdirectories\" (as a repo-wide statement): True on main only. On the non-default branch claude/consolidate-code-fable-prompt-8t1xce, papers/ contains ELEVEN subdirectories: the extra one is papers/corpus-investigation, holding PHASE-0-capability-reconnaissance.md; classification.confidence = HIGH: Overstated relative to coverage. 88,219,384 of roughly 88.5 MB of tracked content \u2014 over 99% of the repository by bytes \u2014 is the single file papers/co-v-co2-test/co.v.co2.test.md, which the inspector never opened and who",
+   "could_not_determine": [
+    "Nature and content of papers/co-v-co2-test/co.v.co2.test.md (88 MB; not opened per size rule). Its commit message (fa9fb45 'Add C0 vs C02 cross-repository investigation') is an author claim only; whether it is a report, a transcript dump, or something else is UNKNOWN.",
+    "Whether the two non-main branches differ from main below the root level (only root listings fetched; their head SHAs differ from main).",
+    "Contents of PAPER.md, BLUE_TEAM.md, RED_TEAM.md, GHOST_PROTOCOL.md, evidence/SOONG_GOVERNING_CONSTRAINT_DERIVATION.md, data/ files, and the five paper markdown files not opened (Agentic_prompt.md, Biomedical Scientific Reasoning Stress Test.md, Autonomous_Adversarial_Research_Agent.md, Prompt.md, anthropic_fable51_frontier_benchmark_research_20260914.md, RACE-FABLE 5 1.BioMedical.md, RACE REVIEW Bio_medical_research.md).",
+    "Whether the two Python scripts run: they depend on an external CNS checkout and a library directory that are not in this repo; nothing was executed.",
+    "Why enumeration pushed_at is 2026-09-16 while the newest main commit is 2026-09-15; the non-main branches' commit dates were not listed.",
+    "Whether Prompt.md (26,445 B) in frontier-agent-evaluation and Agentic_prompt.md (26,445 B) in agentic-prompt are identical files (same size; contents not compared)."
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author description to test. API metadata claims language 'Python': observed content is overwhelmingly Markdown (roughly 20 .md/.txt files) with only two small Python scripts (~8 KB combined), so 'Python' as primary language is a linguist artifact that does not reflect the repository's actual character. size_kb 20923 is consistent with the single 88 M"
+  },
+  {
+   "repo": "wizzle",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "2 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "SWIZZLE",
+    "ghost_tools",
+    "wizzle"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether any tests actually pass (no execution performed; read-only)",
+    "Whether the commit hashes cited in FORENSICS_SCENARIOS.md (16e9923, 3e2ddc3, ce544ad, a1a1356, b923f37, 742f7fe, d409716, 8143675, a927298, 39b1274) ever existed in any reachable history of this repo; they do not appear in the observed 2-commit main or 22-commit branch",
+    "Contents of the JSON result files, planning docs (IMPLEMENTATION_PLAN.md, PHASE_2_CONTINUATION.md, PHASE_3_BASELINE.md, COMPLETION_SUMMARY.md), histories/phantom-history.md, and the wizzle/*.py modules (listed but not opened)",
+    "Whether the branch claude/ghost-tools-clone-j3frq0 was ever intended to be merged into main",
+    "Whether 'Ghost'/'ghost_buster' referenced in the docs corresponds to the corpus repo ghost_tools (path /home/user/ghost_tools strongly suggests so, but ghost_tools itself was not inspected)",
+    "License status (no LICENSE file observed)"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. Metadata language=Python matches observed (.py files dominate on the branch; main has 2 .py + 2 .md). size_kb=133 is consistent with the ~262 KB of branch package files plus docs being packed (not verifiable precisely). default_branch=main confirmed by list_branches/get_file_contents. created_at and pushed_at 2026-09-12 match ob"
+  },
+  {
+   "repo": "ZTGKT",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "4 (EXACT)",
+   "tests_dir": true,
+   "ci": true,
+   "mentions": [
+    "ChatGPT_History",
+    "Claude_History",
+    "CoPilot_History",
+    "Gemini_Extraction",
+    "Gemini_History"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the tests actually pass (CI results not queried; tests not executed)",
+    "Actual test count (README claims 47; only 6 test files were listed, contents not read)",
+    "Whether the reference/ verbatim extracts and PRESERVED modules faithfully match the cited transcript sources (source transcripts not accessed)",
+    "Contents of docs/, examples/, tests/, and ztgkt/ source files beyond names and sizes",
+    "Whether the non-default branch differs in content from main beyond the root listing (both roots identical; deeper diff not performed)"
+   ],
+   "description_vs_observed": "Enumeration description is null, so there is no author claim to test. Metadata language=Python matches the observed Python package. size_kb=37 is consistent with the observed file sizes (~75 KB of listed files uncompressed; plausible for a 37 KB packed repo). created_at 2026-09-11 and pushed_at 2026-09-12 match the observed commit dates (2026-09-11T23:37:22Z to 2026-09-12T10:10:00Z). default_branc"
+  },
+  {
+   "repo": "ZTS",
+   "access": "OK",
+   "purpose": "SUBSTANTIVE_SYSTEM",
+   "eligibility": "ELIGIBLE",
+   "confidence": "HIGH",
+   "empty_all_branches": false,
+   "branches": 2,
+   "commits": "3 (EXACT)",
+   "tests_dir": true,
+   "ci": false,
+   "mentions": [
+    "CITADEL",
+    "ChatGPT_History",
+    "Claude_History",
+    "GSA",
+    "Gemini_Extraction",
+    "HTTP",
+    "VSA"
+   ],
+   "verifiers": [
+    [
+     "REFUTE",
+     "claude-opus-5",
+     true
+    ]
+   ],
+   "contested": false,
+   "material_correction": [],
+   "contested_reason": "",
+   "could_not_determine": [
+    "Whether the test suite actually passes or whether the README's '98 tests' figure is accurate (no execution permitted; only file listings and one test file inspected)",
+    "Whether a pull request exists from claude/zts-repo-recreation-82d08u into main (PR tools not used per read-only tool restriction)",
+    "Whether the cited source files in Gemini_Extraction, Claude_History and ChatGPT_History actually exist with the referenced content (not checked; outside this repo)",
+    "Contents of the remaining source modules (sieve.py, tower.py, cli.py, etc.) and the other four test files were not opened; source/test counts are from listings only",
+    "Whether the 'HTTP', 'VSA', 'GSA', 'CITADEL' mentions in PROVENANCE.md refer to the corpus repositories of those names or only to same-named design phases"
+   ],
+   "description_vs_observed": "The enumeration description is null, so there is no author claim to test. Metadata language=Python matches observation (all source files are .py). size_kb=50 is plausible for the observed content. created_at 2026-09-11 and pushed_at 2026-09-12 match the observed commit dates (first commit 2026-09-11T23:43:17Z, last 2026-09-12T00:57:18Z). One discrepancy worth noting: the default branch 'main' is e"
+  }
+ ]
+}
