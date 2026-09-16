@@ -1,0 +1,368 @@
+{
+  "_provenance": {
+    "source": "Workflow run wf_12a0d1ef-bae",
+    "date": "2026-09-16",
+    "model": "claude-opus-5",
+    "subagent_tokens": 148591
+  },
+  "critic": {
+    "coverage_statement": "ACCESS: 71/71 rows record access=OK; no row reports 403/404/rate-limit. The corpus boundary itself is well founded and is the strongest part of Phase 1: two independent enumerations in the same evidence directory agree exactly on 71 repos (corpus-enumeration.raw.json, list_repos, has_more=false; corpus-enumeration.github-search.json, search_repositories, api_total_count=71, incomplete_results=false), and the second source records fork=false and archived=false for all 71, visibility 69 private / 2 public (WhitePapers, sentinel_os). No forks means no upstream-content complication. Table row count (71) matches both enumerations with no set difference.\n\nVERIFIER COVERAGE: every row has at least one verifier. 84 verdicts over 71 rows: lens REFUTE 56, COST_OF_EXCLUSION 28; model claude-fable-5-1 55, claude-opus-5 29. 58 rows are single-lens (43 REFUTE-only, 15 COST_OF_EXCLUSION-only), 13 rows two-lens. Critically, all 13 two-lens rows (ARCHIVE, Anvil.clean, ChatGPT_History, CITADEL, Claude_History, CODE, CoPilot_History, Data_files, Ecology, EDDP, FORTRESS1, Gemini_Extraction, Gemini_History) were verified twice by the SAME model, claude-fable-5-1. No row anywhere in the table was verified by two different models, so there is zero cross-model agreement in the corpus; all 29 claude-opus-5 rows are single-lens REFUTE. Model-specific bias is untested end to end.\n\nEMPTY VERDICTS: all 14 EMPTY rows carry empty_all_branches=true with branches=0 and commits \"0 (EXACT)\". \"Verified on all branches\" is vacuously satisfied \u2014 there are no branches \u2014 but the underlying verdicts show the emptiness probes were independently re-executed, not merely copied: list_branches -> [] (with page=2 for Anvil.clean), list_tags -> [], list_commits -> HTTP 409 \"Git Repository is empty\", root listing with no ref, ref=refs/heads/main AND an extra ref=refs/heads/master probe for hidden default branches. That is adequate. Residual limit, stated in the rows themselves: the GitHub API cannot distinguish never-pushed from force-emptied; created_at == pushed_at == 2026-09-11 supports never-pushed but is metadata, not observed content. Anvil.clean and FORTRESS1 got two lenses; the other 12 empties got COST_OF_EXCLUSION only.\n\nWHAT SINGLE-LENS LEAVES UNCHECKED: (a) the 43 REFUTE-only rows \u2014 all ELIGIBLE, mostly SUBSTANTIVE_SYSTEM \u2014 were never asked the cost-of-exclusion question, i.e. whether the label sidelines forensically valuable material; (b) the 15 COST_OF_EXCLUSION-only rows were never subjected to the adversarial REFUTE attack. The (b) group contains the two highest-stakes calls in the phase: the only two exclusions, GSA-Master-Kernel (EXCLUDED, MEDIUM confidence) and KAGGLE (EXCLUDED), plus TBCA (MIXED, MEDIUM). An exclusion decision verified only by the lens that asks \"what does excluding cost?\" and never by the lens that asks \"is this classification wrong?\" is one-sided in the direction that matters least.\n\nRECORD INTEGRITY (affects everything above): description_vs_observed is hard-truncated at 400 characters in 60 of 71 rows and contested_reason is truncated in all 4 contested rows, so the table cannot carry the discrepancy findings it cites (e.g. PERCEIVE ends mid-sentence at \"the conventional 'main' branch is\"; ZTS at \"the default branch 'main' is e\"). The table also omits first/last commit dates, head SHAs, branch names, repo sizes, created_at and the enumeration metadata, so no row can support chronological lineage ordering. Full text exists in the sibling evidence files (inspections-and-verdicts.partial-run3.json, refute-eligible.opus.json, targeted-verify.run4.json) and is recoverable by re-merge without any GitHub call.",
+    "gaps": [
+      {
+        "gap": "Commit counts are main-branch-only but labelled EXACT at repository level. No row carries LOWER_BOUND, so the prompt's LOWER_BOUND concern does not arise in this form \u2014 the real defect is worse, because the counts read as authoritative. ARLF is the proven case: the table says 6 (EXACT) and last commit 2026-09-12T01:06:59Z, but list_commits on claude/arlf-repo-recreation-68ldf3 returns 7, and the repository's newest commit on any ref is 0949d88 at 2026-09-12T02:09:08Z. CNS, ghost_tools, HERALD, Conservation_Kernel and content-polish-pipeline all state explicitly that list_commits was run only on main. Any Phase 4 ordering by first/last commit date built on this column is unsafe.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "ARLF",
+          "CNS",
+          "ghost_tools",
+          "HERALD",
+          "Conservation_Kernel",
+          "content-polish-pipeline",
+          "ATS",
+          "CCC",
+          "CODE",
+          "CoPilot_History",
+          "Ecology",
+          "GRAPH",
+          "GSA-815",
+          "Gemini_Extraction",
+          "KAGGLE",
+          "TOUCHSTONE",
+          "WhitePapers",
+          "fortress-kernel"
+        ]
+      },
+      {
+        "gap": "The only two exclusions from the corpus rest on unread files and a single lens. GSA-Master-Kernel is EXCLUDED_CONVERSATION_ARCHIVE at MEDIUM confidence with TRANSCRIPT.md (178 KB) never opened and artifact_1..4, artifact_6, artifact_8..15 (.py) never opened \u2014 its 'verbatim Gemini conversation' character is taken from README/PROVENANCE/commit messages, i.e. author claims, which the investigation's own rules say are not evidence. Its own record also flags an unexplained date conflict (PROVENANCE says created 2026-08-13; first commit 2026-09-03). KAGGLE's transcript was read (30 prompt/response pairs confirmed) but its claude/* branches, including artifact_9.recovered.py and artifact_9.py.flattened, were not. Excluding a repo containing 15 Python artifacts on unread evidence is the single most consequential unverified call in Phase 1.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "GSA-Master-Kernel",
+          "KAGGLE"
+        ]
+      },
+      {
+        "gap": "SUBSTANTIVE_SYSTEM rows that hold in-repo conversation/transcript material nobody opened \u2014 exactly the MIXED_AMBIGUOUS decision boundary, untested. Resume_OS carries sources/Full_resume_engine_transcript.txt at 1,019,039 B, unopened (and Resume_OS is the only SUBSTANTIVE_SYSTEM row at MEDIUM confidence, has no cross-repo mentions at all, and is single-lens). innovation_os carries CEE-0001/conversation_original.txt (93 KB), unopened, 'whose conversation it records' unknown. SAGE-K records that it cannot tell whether docs/GEMINI_SOURCE_RECORD.md is a code record or conversational transcript. Ecology's corpus/ (~360 files, PROVENANCE says 'harvested from other systems and conversations') was never broken down transcript-vs-code, and corpus/synapsis-master.zip (18.2 MB) is unopened. OBSERVE has .ghost_baseline.json (982 KB), sentinel_os/data.json (378 KB) and a set of .patch/.bundle/.diff/.tar.gz/.zip artifacts under sentinel_os/, all unopened.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "Resume_OS",
+          "innovation_os",
+          "SAGE-K",
+          "Ecology",
+          "OBSERVE",
+          "CCC",
+          "GSA"
+        ]
+      },
+      {
+        "gap": "One file is 88.2 MB and unread: WhitePapers papers/co-v-co2-test/co.v.co2.test.md is 88,219,384 of roughly 88.5 MB tracked \u2014 over 99% of the repository by bytes \u2014 and its nature is recorded as UNKNOWN, characterised only by commit message fa9fb45 ('Add C0 vs C02 cross-repository investigation'), an author claim. The verifier downgraded confidence on precisely this ground and noted a file of that size in this account is the shape a transcript dump takes. WhitePapers is also the repository hosting this investigation, which makes an unread 99%-of-bytes artifact a self-audit problem, not only a coverage one.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "WhitePapers"
+        ]
+      },
+      {
+        "gap": "Content that exists only on non-default branches was not enumerated in 16 repos, and the table's per-row booleans are main-only and demonstrably wrong at repository level. ARLF's row still says tests_dir=false while claude/arlf-repo-recreation-68ldf3 carries proposals/reference/arlf/ (8 Python modules, ~33 KB) and proposals/reference/tests/ (5 test modules, ~27 KB), both opened and confirmed as real code by the verifier. WhitePapers' papers/corpus-investigation exists only on claude/consolidate-code-fable-prompt-8t1xce. PERCEIVE's default branch is claude/http-repo-recreation-siaxl2 and main is empty. wizzle's main holds only 2 .py + 2 .md while the package lives on a branch. CNS cannot say whether ghost/operate-20260911-094424 is an ancestor of main or a divergent earlier snapshot.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "ARLF",
+          "WhitePapers",
+          "PERCEIVE",
+          "wizzle",
+          "CNS",
+          "ATS",
+          "CCC",
+          "CODE",
+          "CoPilot_History",
+          "Conservation_Kernel",
+          "Ecology",
+          "GRAPH",
+          "GSA-815",
+          "Gemini_Extraction",
+          "HERALD",
+          "KAGGLE",
+          "TOUCHSTONE",
+          "fortress-kernel",
+          "ghost_tools",
+          "ZTGKT",
+          "URE",
+          "UTEP",
+          "SOONG_protocol",
+          "TIE"
+        ]
+      },
+      {
+        "gap": "Purpose classifications rest on README/PROVENANCE/commit-message author claims that were never executed or cross-checked. 35 of 71 rows state tests or behaviour were not executed. The entire 'reconstructed from transcript' family cites line numbers in transcripts that Phase 1 never opened (e.g. PERCEIVE cites Claude_History/transcripts/2e330101-...md line 14695; HTTP cites Claude_History/transcripts/8cdf517a-...md and Gemini_Extraction/chronology/events.jsonl; UTEP cites a primary transcript path in ChatGPT_History; ICEBURG claims 'verbatim recovered' code matching Claude_History; AC-HCCSE claims a lost prior repo and a Gemini activity record in Gemini_History/Gemini_Extraction). Every inspector declared cross-repo verification out of scope, so not one citation in the corpus has been tested against its cited source.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "AC-HCCSE",
+          "ICEBURG",
+          "DGK",
+          "TIE",
+          "UTEP",
+          "ZTGKT",
+          "URE",
+          "SAGE-K",
+          "PERCEIVE",
+          "HTTP",
+          "GSA-GOVERNANCE-CORE",
+          "CNS",
+          "content-polish-pipeline",
+          "Data_files",
+          "ARCHIVE",
+          "VANGUARD",
+          "CODE"
+        ]
+      },
+      {
+        "gap": "Five empty repositories are named inside other repositories' content, and Phase 1 recorded the mentions without ever trying to locate the referenced material. Counting exact name matches and excluding ChatGPT_History (whose export name-drops essentially every repo): VSA is named in 7 repos, ICEBERG in 5, STRIDE in 5, GSA-2 in 4, RADAR in 4, FORTRESS1 in 4 (plus ARCHIVE and Triad-42 referring to a bare 'FORTRESS'), GSA-GATEWAY1 in 2 (plus ARCHIVE, CODE and VANGUARD referring to a bare 'GSA-GATEWAY'), GOVERNANCE-CONTROL-PLANE in 1, TRIAD-PLUS-42 in 1. The sharpest unreconciled contradiction: VANGUARD's .ghost_archive reads verbatim 'Retired: content folded into GSA-GATEWAY. Kept as a record.' while corpus repo GSA-GATEWAY1 has zero commits on zero branches. Either the fold never happened, it went to a repo outside this corpus, or it was folded and then erased.",
+        "severity": "HIGH",
+        "affected_repos": [
+          "GSA-GATEWAY1",
+          "VANGUARD",
+          "VSA",
+          "ICEBERG",
+          "STRIDE",
+          "RADAR",
+          "GSA-2",
+          "FORTRESS1",
+          "GOVERNANCE-CONTROL-PLANE",
+          "TRIAD-PLUS-42",
+          "ARCHIVE",
+          "CODE",
+          "Data_files",
+          "synapsis",
+          "CITADEL",
+          "TOUCHSTONE",
+          "Triad-42",
+          "GSA-815"
+        ]
+      },
+      {
+        "gap": "History-rewrite signals were noticed but never tested, which matters because the same mechanism could explain the 14 empties. 13 rows record created_at preceding the first commit \u2014 ATS, CITADEL and Data_files all show created_at 2026-07-04 against first commits 2026-08-13/14, a six-week gap the inspectors flagged as 'history rewrite, force-push, or an empty period'. ChatGPT_History records a tag Full-zip reaching 4 commits and names earlier private-repo commits (9758661, ee52190, 9215f7d) said to hold un-redacted strings, and cannot say whether further unreachable pre-rewrite objects exist. DGK's PROVENANCE states 'the GitHub repo of that name is empty' before reconstruction, i.e. a repo in this account was empty and then re-pushed. Nothing in Phase 1 probed for dangling or rewritten history.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ATS",
+          "CITADEL",
+          "Data_files",
+          "ChatGPT_History",
+          "DGK",
+          "CNS",
+          "CoPilot_History",
+          "Gemini_History",
+          "WhitePapers",
+          "fortress-kernel",
+          "GSA-Master-Kernel",
+          "EDDP"
+        ]
+      },
+      {
+        "gap": "description_vs_observed discrepancies were recorded and then dropped. GSA-815's description ('governed execution and learning architecture...') is called generic and aspirational against an observed Twilio IVR / call-center 'Iceberg' application extracted from the sentinel_os kernel \u2014 a description/content mismatch that also touches the ICEBERG name group. OBSERVE's description 'understates what the repository actually is' with the bulk of files (roughly 402 of ~430) being something other than the described observability layer, including a sentinel_os/ directory inside OBSERVE. Governance_Gateway's README claims '105 adversarial attacks, 100 defended / 5 exposed' against only 3 test files totalling ~11 KB observed. ARCHIVE's description says nine JSON payloads where eight files exist. CITADEL and TBCA have descriptions stale relative to HEAD. WhitePapers is tagged Python by linguist while being overwhelmingly Markdown. None of these was followed up.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "GSA-815",
+          "OBSERVE",
+          "Governance_Gateway",
+          "ARCHIVE",
+          "CITADEL",
+          "TBCA",
+          "WhitePapers",
+          "ATS",
+          "sentinel_os"
+        ]
+      },
+      {
+        "gap": "A recurring could_not_determine item is already answered by evidence sitting in the same directory. Twelve rows list 'whether the repository is flagged archived on GitHub' as undetermined, but corpus-enumeration.github-search.json records archived=false (and fork=false) for all 71 repositories. This needs no re-inspection and no GitHub call \u2014 only a re-merge that joins the enumeration metadata into the rows. As it stands, twelve rows carry a false unknown.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ANVIL",
+          "ARCHIVE",
+          "CITADEL",
+          "CODE",
+          "EDDP",
+          "GSA-Master-Kernel",
+          "Gemini_History",
+          "HTTP",
+          "TOUCHSTONE",
+          "VANGUARD",
+          "content-polish-pipeline",
+          "synapsis"
+        ]
+      },
+      {
+        "gap": "The most frequent unresolved item across the corpus is referential: 'does this token refer to the corpus repository of that name?'. It appears in at least 12 rows and is the load-bearing question for every lineage hypothesis \u2014 ARLF (GSA, VSA, Citadel), CITADEL (ZTS, VSA), SAGE-K (Fortress, GSA, Sentinel), VANGUARD and CODE and Data_files and ARCHIVE (GSA-GATEWAY vs GSA-GATEWAY1), ARCHIVE and Triad-42 (FORTRESS vs FORTRESS1/fortress-kernel), innovation_os, ZTS, KAGGLE ('GSA Universal Adapter'), AC-HCCSE ('GSA' in PROVENANCE possibly a template name), HERALD (ghost_buster/ghost_writer vs ghost_tools \u2014 the file contents never spell 'ghost_tools'). Phase 1 correctly refused to guess; nothing in Phase 1 was designed to settle it.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ARLF",
+          "CITADEL",
+          "SAGE-K",
+          "VANGUARD",
+          "CODE",
+          "Data_files",
+          "ARCHIVE",
+          "Triad-42",
+          "innovation_os",
+          "ZTS",
+          "KAGGLE",
+          "AC-HCCSE",
+          "HERALD",
+          "GSA-2",
+          "GSA-GATEWAY1",
+          "ICEBERG-SIM",
+          "TBCA1",
+          "VSA"
+        ]
+      },
+      {
+        "gap": "PII and redaction state is unknown in the six repos most likely to contain personal data, which is a handling risk for later phases rather than a classification risk. tools/redact_pii.py exists in several, but commit messages state it had not been run at the time it was added and no later commit on main touches the data; ChatGPT_History's tools/third_party_names.txt is 'expected to hold personal names' and was not opened; Gemini_Extraction notes a 'PII-redacted second copy' claim it could not check; TOUCHSTONE notes an unverified 'TOTAL_PII_PURGE_EXECUTED' framing.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ChatGPT_History",
+          "Claude_History",
+          "CoPilot_History",
+          "Gemini_Extraction",
+          "Gemini_History",
+          "TOUCHSTONE"
+        ]
+      },
+      {
+        "gap": "Table schema and truncation defects make the record unusable as a standalone input to Phase 4. description_vs_observed is cut at 400 characters in 60 of 71 rows, mid-sentence; contested_reason is cut in all 4 contested rows; material_correction is empty for ARLF and WhitePapers even though both are flagged contested, so a reader sees contested=true with no correction and a truncated reason and cannot act. The schema carries no commit dates, head SHAs, branch names, file sizes or created_at, so lineage cannot be ordered in time from the table alone. All of the missing text exists in inspections-and-verdicts.partial-run3.json, refute-eligible.opus.json and targeted-verify.run4.json.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ARCHIVE",
+          "ARLF",
+          "VANGUARD",
+          "WhitePapers",
+          "PERCEIVE",
+          "ZTS",
+          "wizzle",
+          "SWIZZLE"
+        ]
+      },
+      {
+        "gap": "MIXED_AMBIGUOUS is applied inconsistently, and the rule it encodes was never audited across rows. The rule is 'transcripts PLUS substantive tooling'. ARCHIVE was labelled MIXED while its second verifier independently established there is no tooling anywhere in it (root has 14 entries, no scripts/, no root *.py, no manifests, no .github/) \u2014 the label was applied to a transcript-plus-specimens repo. Conversely TBCA (transcript plus a Node docx generator), CITADEL (transcript plus 4 .py drafts) and CODE (transcript plus a reconstructed source file) are MIXED on thin tooling, while Resume_OS and innovation_os hold transcripts alongside genuinely substantive systems and are not MIXED at all. No row was checked against the others for consistent rule application.",
+        "severity": "MEDIUM",
+        "affected_repos": [
+          "ARCHIVE",
+          "TBCA",
+          "CITADEL",
+          "CODE",
+          "Data_files",
+          "EDDP",
+          "Ecology",
+          "Resume_OS",
+          "innovation_os",
+          "ChatGPT_History",
+          "Claude_History",
+          "CoPilot_History",
+          "Gemini_History",
+          "Gemini_Extraction"
+        ]
+      }
+    ],
+    "name_collision_assessment": [
+      {
+        "group": "ICEBERG / ICEBERG-SIM / ICEBURG",
+        "resolved_by_phase1": false,
+        "note": "Partially informative, not resolved. ICEBERG and ICEBERG-SIM are both EMPTY (0 branches, 0 tags, 0 commits, created 2026-09-11, never pushed on the evidence available), so no in-repo content can link them to anything; both rows say so explicitly ('names are not evidence'). ICEBURG is substantive (4 commits, 2 branches, tests) and its README/PROVENANCE claim the code was reconstructed from AI conversation-history repos \u2014 it names ChatGPT_History, Claude_History, CoPilot_History, Gemini_Extraction, Gemini_History and sentinel_os, but never ICEBERG or ICEBERG-SIM. Meanwhile 'Iceberg' as a system name appears in content elsewhere: GSA-815's observed payload is a Twilio IVR/call-center 'Iceberg' application, ARCHIVE holds extracted/report_9/IcebergProductionHarness.py, and DIT, Ecology, Gemini_Extraction and WhitePapers name ICEBERG. So the named thing exists in the corpus as code inside other repos, while the two repos bearing the name hold nothing. Relation between ICEBURG and the two empties: UNKNOWN."
+      },
+      {
+        "group": "ANVIL / Anvil.clean",
+        "resolved_by_phase1": false,
+        "note": "Unresolved and unresolvable from Phase 1 evidence. Anvil.clean is EMPTY with zero refs; its row states plainly that whether it was meant as a cleaned copy of ANVIL cannot be determined because 'the name suggests it, but repo names are not evidence and no content confirms it'. ANVIL is a single-file 9-commit system (ANVIL.py, ~69 KB, inspected only by pattern extraction) whose mentions are GSA and ghost_tools \u2014 it never names Anvil.clean. No 'renamed from' or 'salvaged from' statement was observed on either side."
+      },
+      {
+        "group": "TBCA / TBCA1",
+        "resolved_by_phase1": false,
+        "note": "Unresolved. TBCA1 is EMPTY (0 refs) and its row explicitly records 'whether the repository is related to the corpus repo TBCA (name similarity is not evidence; no observed content links them)'. TBCA is MIXED_AMBIGUOUS at MEDIUM confidence, single-lens (COST_OF_EXCLUSION only, never attacked by REFUTE): a single-turn transcript plus a Node.js docx generator, mentioning ARCHIVE, CITADEL and KAGGLE but not TBCA1. TBCA1 is the only empty repository in the corpus named by no other repo's content at all."
+      },
+      {
+        "group": "fortress-kernel / FORTRESS1 / AUGUR",
+        "resolved_by_phase1": false,
+        "note": "Partially resolved on one edge, open on the rest. A genuine in-repo rename statement was observed: AUGUR's README carries a rename block stating the rename from FORTRESS on 2026-09-07, together with the veto-only governance rule. But which FORTRESS is not established \u2014 FORTRESS1 is EMPTY (0 refs) and fortress-kernel is a separate 17-commit system, and AUGUR's own row leaves the referent open. SAGE-K likewise cannot say whether its 'Fortress' token means FORTRESS1 or fortress-kernel; ARCHIVE and Triad-42 both reference a bare 'FORTRESS' that the inspectors annotated as not matching either corpus name exactly. fortress-kernel's mentions are only ghost_tools and observe-perceive; it never names FORTRESS1 or AUGUR. FORTRESS1 is named in content by CoPilot_History, Gemini_Extraction, PERCEIVE and SAGE-K while holding nothing."
+      },
+      {
+        "group": "Governance_Gateway / GSA-GATEWAY1 / TOUCHSTONE / VANGUARD",
+        "resolved_by_phase1": false,
+        "note": "Open, and Phase 1 surfaced a hard contradiction rather than a resolution. VANGUARD's .ghost_archive reads verbatim 'Retired: content folded into GSA-GATEWAY. Kept as a record.' and its README points at a claimed reconstruction in GSA-GATEWAY (governance-stack/vanguard-behavioral-simulation.py, sovereign_kernel.py) \u2014 yet corpus repo GSA-GATEWAY1 is EMPTY with zero commits. ARCHIVE, CODE and Data_files independently reference a 'GSA-GATEWAY' holding a governance-stack file, and synapsis names GSA-GATEWAY1 exactly; all four rows flag that the name does not match the corpus entry exactly. Governance_Gateway (underscore) is a distinct 16-commit system whose only mentions are itself and ghost_tools \u2014 nothing observed connects it to GSA-GATEWAY1 or VANGUARD. TOUCHSTONE names VANGUARD among 16 cross-references but the nature of the link was not examined. Either a GSA-GATEWAY repo outside this corpus exists, or content was folded in and later erased."
+      },
+      {
+        "group": "Triad-42 / TRIAD-PLUS-42",
+        "resolved_by_phase1": false,
+        "note": "Unresolved. TRIAD-PLUS-42 is EMPTY (0 refs) and its row records the relation to Triad-42 as undetermined ('names are not evidence'). Triad-42 is substantive (12 commits, 1 branch, tests) and names FORTRESS, GSA, GSA-815, STRIDE and ghost_tools \u2014 never TRIAD-PLUS-42. The one third-party datum: GEMS contains cognition/triad42.py described as 'Triad+42 review', so the '+42' form exists as a concept in content, but that is a module name inside GEMS, not evidence of a repository relationship."
+      },
+      {
+        "group": "GSA / GSA-2 / GSA-815 / GSA-Master-Kernel / GSA-GOVERNANCE-CORE",
+        "resolved_by_phase1": false,
+        "note": "Partially resolved. One lineage edge is documented in-repo from the derived side: GSA-Master-Kernel's README, PROVENANCE.md and both commit messages state it was split out of the GSA-2/ subdirectory of GSA-815 on 2026-09-03, and GSA-815 reciprocally names GSA-2 and GSA-Master-Kernel. That creates a name collision the table does not resolve: 'GSA-2' is both a directory inside GSA-815 and an EMPTY repository \u2014 DIT and KAGGLE also name GSA-2 and it is impossible to tell which referent they mean. The edge is also dated inconsistently (PROVENANCE says the repo was created 2026-08-13 from a pre-existing artifact; first commit is 2026-09-03). GSA itself (5 commits) names GSA-815 but not the others; GSA-GOVERNANCE-CORE (1 commit) names GSA-815, GSA-Master-Kernel, CNS and sentinel_os. GSA-815's own description/content mismatch (generic governance language vs an observed Twilio IVR app extracted from sentinel_os) means even its own identity is not settled. 23 repos name a bare 'GSA', which no row could disambiguate."
+      },
+      {
+        "group": "OBSERVE / observe-perceive / PERCEIVE",
+        "resolved_by_phase1": false,
+        "note": "Mutual awareness established, relationship not. OBSERVE names PERCEIVE and observe-perceive; observe-perceive names 'OBSERVE / PERCEIVE'; PERCEIVE names OBSERVE. But nothing in the rows says which came from which. The three are structurally very different \u2014 OBSERVE 195 commits over 6 branches with the bulk of its files (roughly 402 of ~430) being material the description does not cover plus a sentinel_os/ directory; observe-perceive 48 commits on a single branch describing itself as 'the governed action gate'; PERCEIVE only 4 commits with an EMPTY main and default branch claude/http-repo-recreation-siaxl2. No content diff or shared-file check was attempted between any pair, and OBSERVE's .ghost_baseline.json (982 KB) and sentinel_os/ archive artifacts (.patch/.bundle/.tar.gz/.zip) were never opened."
+      },
+      {
+        "group": "SWIZZLE / wizzle",
+        "resolved_by_phase1": false,
+        "note": "Best-supported group after CODE/content-polish-pipeline, still not resolved. Both repos name each other (SWIZZLE mentions wizzle; wizzle mentions SWIZZLE), and a third-party datum argues they are distinct rather than a typo pair: composition-engine registers four adapters named swizzle, ghost_tools, wizzle and innovation_os, i.e. one system treats them as two separate components. ghost_tools also carries a branch fix/swizzle-findings. What is missing is direction and mechanism: SWIZZLE has 24 commits over 3 branches (2026-09-12 to 2026-09-14) and wizzle only 2 commits with its package on a non-default branch while main holds 2 .py + 2 .md, and no file-level comparison was made. composition-engine's row also notes it could not confirm the four adapters actually call those systems."
+      },
+      {
+        "group": "Data_files / EDDP",
+        "resolved_by_phase1": false,
+        "note": "Resolved in one direction only, on author claims. Data_files' README, its .ghost_archive marker and its commit history all state it is the archived, superseded predecessor of EDDP, and commit 6dd34d3 \u2014 the claimed shared-history point \u2014 was confirmed to exist in Data_files' own history. But the row states plainly that EDDP was not accessed to test whether the shared history is real, and EDDP's own mentions (ATS, CODE, GRAPH, OBSERVE, PERCEIVE, RADAR, ghost_tools, synapsis) do not include Data_files. So the claim is unilateral and unverified from the EDDP side; a one-call check of whether 6dd34d3 is in EDDP's history would settle it."
+      },
+      {
+        "group": "Gemini_History / Gemini_Extraction / ARCHIVE",
+        "resolved_by_phase1": false,
+        "note": "Partially resolved between the first two, open for ARCHIVE. Gemini_History and Gemini_Extraction name each other, and Gemini_History's README attributes its analysis to Gemini_Extraction (unverified \u2014 the row says the external repo was not accessed). Both repos additionally carry identically named branches claude/ghost-tools-clone-j3frq0 and claude/gsa-repo-recreation-rrzvir pointing at their own main SHAs, and Claude_History carries a claude/gsa-repo-recreation-rrzvir branch too: that is an agent-workflow fingerprint across three repos, not established lineage, and the rows say the branches' purpose is unknown. ARCHIVE is a Gemini transcript plus 43 extracted code fragments and names CITADEL, CODE, DIT, EDDP, FORTRESS, GSA, GSA-815, GSA-GATEWAY, OBSERVE, STRIDE, URE, ghost_tools, sentinel_os and synapsis \u2014 but neither Gemini_History nor Gemini_Extraction. Its own row cannot say whether its source conversation appears in either Gemini repo."
+      },
+      {
+        "group": "synapsis / Ecology",
+        "resolved_by_phase1": false,
+        "note": "Best-evidenced group in the corpus, and the closest to resolved, but still on author claims plus one unopened artifact. synapsis' description, README and commit 92c4fb27 state the stub-heavy scaffold was pruned and the working parts (gitignore-aware scanner, Python AST chunking) were salvaged into Ecology, and Ecology reciprocally names synapsis and matches on content (requirements.txt with ollama/chromadb/pypdf, code_scanner.py, history_loader.py, preprocess.py). The decisive artifact was not opened: Ecology holds corpus/synapsis-master.zip at 18.2 MB, skipped under the size rule. Opening or hashing it would convert a claimed salvage into an observed one."
+      },
+      {
+        "group": "CODE / content-polish-pipeline",
+        "resolved_by_phase1": false,
+        "note": "Bidirectional and well documented, one step from resolved. content-polish-pipeline's PROVENANCE.md confirms descent from the filter classes in the CODE repo, and CODE reciprocally names content-polish-pipeline; CODE's transcript opens with a Gemini modularization prompt whose pasted code begins with ContentPolishPipeline. What is missing is the artifact comparison: CODE's content-pipeline-user-source.py.flattened (66,419 B) was never opened, the middle ~114 KB of its TRANSCRIPT.md and ~60 KB of the reconstructed source were never read, and content-polish-pipeline's three non-default branches were not diffed. ARCHIVE independently asserts the absence of these filter classes in CODE \u2014 a testable cross-claim nobody tested."
+      },
+      {
+        "group": "GLCM1 / KAGGLE",
+        "resolved_by_phase1": false,
+        "note": "Open, but Phase 1 gives the strongest available hint and cannot follow it. GLCM1 is EMPTY (0 refs) and its row records the relation to any other repo as undetermined. KAGGLE's transcript was read and confirmed to be 30 prompt/response pairs about a Kaggle image-texture classifier using Sobel/LBP/GLCM plus LightGBM \u2014 so 'GLCM' is a technique that demonstrably appears in KAGGLE's content, and ChatGPT_History references a bare 'GLCM'. That makes the topical connection plausible, but GLCM1 holds nothing and the rules forbid treating the name as evidence. Note KAGGLE is also one of the two EXCLUDED repos, so if this link matters, it points into material currently outside scope."
+      },
+      {
+        "group": "HTTP / PERCEIVE",
+        "resolved_by_phase1": false,
+        "note": "Partially resolved, on weak evidence. PERCEIVE's DEFAULT branch is claude/http-repo-recreation-siaxl2 and its conventional main is empty, and PERCEIVE names HTTP among its mentions; ZTS also names HTTP. That branch name is a workflow artifact, not content, and the rules treat names as claims \u2014 but unlike a repo name it is a structural fact about where PERCEIVE's content lives. Against it: HTTP is an independent 7-commit single-branch repo (15 .py files) whose mentions are only the four history repos and Gemini_Extraction, never PERCEIVE, and no file-level comparison between the two trees was made. PERCEIVE's PROVENANCE cites Claude_History transcript line numbers that were never checked. Both rows are single-lens REFUTE."
+      },
+      {
+        "group": "STRIDE / sentinel_os / CITADEL",
+        "resolved_by_phase1": false,
+        "note": "Open, with an asymmetry worth carrying forward. STRIDE is EMPTY (its row has the shortest could_not_determine list in the corpus \u2014 only two items \u2014 because there is nothing to be uncertain about) yet it is named in content by five repos: ARCHIVE, CITADEL, TOUCHSTONE, Triad-42 and synapsis. CITADEL names STRIDE, VSA, ZTS and ghost_tools and is itself MIXED at MEDIUM confidence, single-lens for one of its two verdicts, with the run status of its four .py files unknown and its 'ZTS'/'vsa' tokens unresolved. sentinel_os (284 commits, 8 branches) names neither STRIDE nor CITADEL \u2014 its mentions are CNS, Conservation_Kernel, DIT, GEMS, GSA-815, HERALD, SAGE-K, ghost_tools, observe-perceive. So no observed link joins CITADEL to sentinel_os at all; the group is held together only by STRIDE being referenced from CITADEL and by ARCHIVE naming both STRIDE and sentinel_os."
+      },
+      {
+        "group": "RADAR, VSA, TAKEOUT1, GOVERNANCE-CONTROL-PLANE (empties with no obvious twin)",
+        "resolved_by_phase1": false,
+        "note": "All four confirmed EMPTY to a good standard (zero branches, zero tags, 409 on commits, main and master both probed), which is what Phase 1 owed them. Phase 1 did not establish \u2014 and could not \u2014 whether they ever held content. The important finding the table contains but does not draw out is that three of the four are referenced by name in other repositories' content: VSA in 7 repos (ARLF, CCC, CITADEL, Gemini_Extraction, SOONG_protocol, TOUCHSTONE, ZTS) and singled out as an investigation subject in Gemini_Extraction's per-system directories; RADAR in 4 (Data_files, EDDP, GSA-815, GSA-Master-Kernel); GOVERNANCE-CONTROL-PLANE in 1 (GSA-815). TAKEOUT1 is referenced only through ChatGPT_History's blanket name-dropping (a bare 'takeout'), so it stands genuinely alone alongside TBCA1. 'Referenced but empty' is a stronger forensic signal than 'empty', and the record does not mark it."
+      }
+    ],
+    "contested_classifications_assessment": "First, a defect in the flag itself: 'contested' conflates two different things. ARCHIVE is the only true inter-verifier disagreement (REFUTE upheld, COST_OF_EXCLUSION refuted, same model). ARLF, VANGUARD and WhitePapers each have a single verifier whose classification_upheld=false \u2014 those are corrections, not contests. Worse, ARLF and WhitePapers show contested=true with an EMPTY material_correction array and a truncated contested_reason, so a reader of the table alone cannot tell what was corrected or act on it. The flag should be split into CONTESTED (verifiers disagree) and CORRECTED (single verifier overturned the inspector), and material_correction should record observed-field corrections, not only enum changes.\n\nARCHIVE \u2014 the correction is better evidenced; adopt it but keep the flag. The COST_OF_EXCLUSION verifier's argument is a rule-application argument backed by independently executed checks the REFUTE verifier does not rebut: MIXED_AMBIGUOUS is defined as transcripts PLUS substantive tooling, and the verifier confirmed there is no tooling anywhere (root has 14 entries, no scripts/, no root *.py, no manifests, no .github/; extracted/ holds only extraction outputs, each headed 'Extracted verbatim from artifact_N.json ... not repaired'). Decisively, the inspector's own rationale concedes the point ('It contains no extraction pipeline or analysis code, so it is not the tooling case either'), and the REFUTE verifier's own notes independently volunteer that a specimen-corpus reading is defensible. Both verifiers agree on every re-checked fact and both agree the repo must stay in scope. The forensic value cited is concrete and checkable: extracted/report_9 as a pre-refactor snapshot of ClaudeGovernanceDecider/IcebergProductionHarness claimed to have drifted from live GSA-815/sentinel_os, and report_8/UGPISOmegaController.py as the only observed cross-system integration blueprint. RECOMMENDATION: record SPECIMEN_OR_DATA_CORPUS / ELIGIBLE at MEDIUM confidence. Keep CONTESTED until TRANSCRIPT.md is opened \u2014 it is roughly 95% of the repo by bytes, was read by neither verifier, and is the only thing that could still tip the primary-purpose reading.\n\nARLF \u2014 the correction is better evidenced on the observed layer, and it is not a classification dispute at all. The verifier executed calls on the named non-default branch and opened two files, reporting names and byte sizes (proposals/reference/arlf/: 8 modules ~33 KB, resolution.py confirmed as real code with an Enum and a frozen dataclass; proposals/reference/tests/: 5 test modules ~27 KB, test_loop_of_the_absurd.py confirmed a genuine unittest suite), and it resolved by one list_commits call an item the inspector had merely filed as undetermined (7 commits on the branch, newest 0949d88 at 2026-09-12T02:09:08Z, so the repo's latest commit is not main's 01:06:59Z). The inspector's figures were right for main and wrong when read as repository-level, which is exactly how the table presents them. The verifier explicitly declined to upgrade the purpose because the branch code is self-labelled 'NEW WORK ... not evidence about ARLF' and is unmerged \u2014 a restrained and well-reasoned call. RECOMMENDATION: keep DOCS_OR_PAPERS / ELIGIBLE, downgrade confidence to MEDIUM, and correct the observed fields in the row (tests_dir true on the branch, commits 7 across refs, latest commit 2026-09-12T02:09:08Z, primary languages to include Python, state signal qualified as 'DOCUMENTED ONLY on main'). Retire CONTESTED and re-file as CORRECTED \u2014 neither purpose nor eligibility is in dispute.\n\nVANGUARD \u2014 the correction is clearly better evidenced; adopt it and retire the flag. The verifier re-fetched both files in full and reports specifics the inspector did not: the wrapper is 46 lines with zero import statements referencing six undefined names (PipelineCycleManager, UnifiedSovereignKernel, SystemInputStructure, system_logger, Dict, Any), and the behavioral-simulation file is confirmed to be one single whitespace-collapsed line that cannot parse. It cites the repo's own artifacts against the label \u2014 README says the files are 'preserved as evidence' / 'raw VANGUARD material', .ghost_archive reads verbatim 'Retired: content folded into GSA-GATEWAY. Kept as a record.' \u2014 and it notes the inspector's own state signals (BROKEN, SUPERSEDED, PARTIALLY IMPLEMENTED, UNTESTED) contradict its own SUBSTANTIVE_SYSTEM label. It also adds a new observation that cuts against even the recovered copy on claude/recovered-originals: the literal token 'from __future import annotations' (missing underscores, unresolvable) and an __init__ annotated '-> PipelineCycleManager'. The inspector's original label is supported by nothing comparable. RECOMMENDATION: record SPECIMEN_OR_DATA_CORPUS / ELIGIBLE at MEDIUM confidence, noting MIXED_AMBIGUOUS as the named runner-up because the flattened blob does encode real implementation logic. Retire CONTESTED: eligibility is ELIGIBLE under every reading, so corpus scope is unaffected. Carry the .ghost_archive 'folded into GSA-GATEWAY' claim forward as an open cross-repo contradiction (GSA-GATEWAY1 is empty), not as a classification question.\n\nWhitePapers \u2014 the correction is better evidenced and should stand, and this row should stay flagged. The verifier refuted only confidence, upholding DOCS_OR_PAPERS / ELIGIBLE, and its three points are all concrete and reproducible: the recorded branch head SHA no longer reproduces (list_branches returns 17e4ad7b\u2026, not af57368, which also explains the pushed_at the inspector filed as unexplained); papers/ has eleven subdirectories on claude/consolidate-code-fable-prompt-8t1xce versus ten on main, the extra being papers/corpus-investigation, and the differing tree SHAs show that identical ROOT listings prove nothing; and 88,219,384 of roughly 88.5 MB \u2014 over 99% by bytes \u2014 is one unread file whose nature the inspector itself records as UNKNOWN. It also did the right reasoning about the worst case: even a transcript dump there yields MIXED_AMBIGUOUS, never EXCLUDED, so the enums survive. RECOMMENDATION: keep DOCS_OR_PAPERS / ELIGIBLE at MEDIUM confidence, and keep the row flagged (as CORRECTED plus an explicit OPEN-EVIDENCE marker) until co.v.co2.test.md is characterised. Two extra reasons to keep it visible: this is the repository hosting the investigation itself, so an unread 99%-of-bytes artifact is a self-audit exposure, and it is the one row where a cited value is already known to have gone stale, which argues for re-reading rather than trusting the record.",
+    "recommended_followups": [
+      "P0 \u2014 Re-merge the table without truncation and join the enumeration metadata, with no GitHub calls. Restore full description_vs_observed (60 of 71 rows are cut at 400 chars) and full contested_reason (all 4), add first/last commit date, head SHA, branch names, size_kb, created_at, visibility, and archived=false / fork=false from corpus-enumeration.github-search.json. That alone closes the 'GitHub archived flag unknown' item in ANVIL, ARCHIVE, CITADEL, CODE, EDDP, GSA-Master-Kernel, Gemini_History, HTTP, TOUCHSTONE, VANGUARD, content-polish-pipeline and synapsis, and gives Phase 4 the dates it needs to order lineage. Split the 'contested' flag into CONTESTED (ARCHIVE) and CORRECTED (ARLF, VANGUARD, WhitePapers) and populate material_correction for ARLF and WhitePapers.",
+      "P0 \u2014 Re-open the two exclusions under the REFUTE lens and a second model. GSA-Master-Kernel: open TRANSCRIPT.md (178 KB) and artifact_1..4, artifact_6, artifact_8..15 (.py); the exclusion currently rests on author claims at MEDIUM confidence with one lens. KAGGLE: list and open the claude/* branches, including artifact_9.recovered.py and artifact_9.py.flattened. Exclusion is the only irreversible decision Phase 1 makes and neither repo was ever attacked from the direction that could overturn it.",
+      "P0 \u2014 Characterise WhitePapers papers/co-v-co2-test/co.v.co2.test.md (88,219,384 B). Head/tail/slice it rather than fetching whole; decide transcript dump vs report. It is over 99% of the repository by bytes, it is the repo hosting this investigation, and it is the sole reason WhitePapers' confidence was downgraded. While there, diff papers/corpus-investigation on claude/consolidate-code-fable-prompt-8t1xce against main and re-read the branch head SHAs, one of which has already moved.",
+      "P0 \u2014 Test the MIXED_AMBIGUOUS boundary in the four SUBSTANTIVE_SYSTEM repos that hold unread conversation material: Resume_OS (sources/Full_resume_engine_transcript.txt, 1,019,039 B \u2014 also the only SUBSTANTIVE_SYSTEM row at MEDIUM confidence and the only row with no cross-repo mentions), innovation_os (CEE-0001/conversation_original.txt, 93 KB), SAGE-K (docs/GEMINI_SOURCE_RECORD.md \u2014 is it a code record or a transcript?), and Ecology (per-file transcript-vs-code breakdown of corpus/, ~360 files). Any of these may be a MIXED repo currently recorded as a clean system.",
+      "P1 \u2014 Resolve the GSA-GATEWAY contradiction, the corpus's sharpest open lead. VANGUARD's .ghost_archive states 'Retired: content folded into GSA-GATEWAY. Kept as a record.' while GSA-GATEWAY1 has zero commits on zero branches. ARCHIVE, CODE, Data_files and synapsis independently reference a GSA-GATEWAY holding a governance-stack/ file. Determine whether a GSA-GATEWAY repo exists outside this corpus (the enumeration is complete for wking53214, so it would be elsewhere), whether the content landed in Governance_Gateway, or whether it was pushed and erased. Bring Governance_Gateway, TOUCHSTONE and observe-perceive in as content comparators.",
+      "P1 \u2014 Re-derive commit counts and first-commit dates across all refs for every non-empty repo, replacing the main-only counts the table labels EXACT. Start with the repos that said so explicitly (CNS, ghost_tools, HERALD, Conservation_Kernel, content-polish-pipeline) and the proven case ARLF (7 not 6; latest commit 2026-09-12T02:09:08Z). Also fix ARLF's tests_dir=false, which is wrong at repository level. Without this, any chronological lineage claim in Phase 4 is built on a branch-scoped column.",
+      "P1 \u2014 Probe for rewritten and dangling history in the repos where created_at precedes the first commit: ATS, CITADEL and Data_files (created 2026-07-04, first commits 2026-08-13/14), plus CNS, CoPilot_History, DGK, Gemini_History, WhitePapers, fortress-kernel. Include ChatGPT_History's tag Full-zip and the named pre-rewrite commits 9758661, ee52190 and 9215f7d said to hold un-redacted strings. This is the same mechanism that could explain the 14 empties, and DGK's PROVENANCE already states a repo in this account was empty before being re-pushed.",
+      "P1 \u2014 Close the 'referenced but empty' set by locating the referenced content, treating emptiness as a finding rather than an endpoint: VSA (named in ARLF, CCC, CITADEL, Gemini_Extraction, SOONG_protocol, TOUCHSTONE, ZTS, and given its own investigation directory inside Gemini_Extraction), ICEBERG (DIT, Ecology, GSA-815, Gemini_Extraction, WhitePapers \u2014 and 'Iceberg' code observed inside GSA-815 and ARCHIVE), STRIDE (ARCHIVE, CITADEL, TOUCHSTONE, Triad-42, synapsis), FORTRESS1 (CoPilot_History, Gemini_Extraction, PERCEIVE, SAGE-K), GSA-2 (DIT, GSA-815, GSA-Master-Kernel, KAGGLE \u2014 noting GSA-2 is also a directory inside GSA-815), RADAR (Data_files, EDDP, GSA-815, GSA-Master-Kernel), GOVERNANCE-CONTROL-PLANE (GSA-815), TRIAD-PLUS-42 (GEMS). Deprioritise Anvil.clean, GLCM1, ICEBERG-SIM, TAKEOUT1 and TBCA1, which no repo's content references.",
+      "P1 \u2014 Verify the salvage and descent claims that are already bidirectional, converting author claims into observed facts with cheap checks: open or hash Ecology's corpus/synapsis-master.zip (18.2 MB) against synapsis; check whether commit 6dd34d3 exists in EDDP's history as Data_files claims (EDDP never names Data_files back); and compare CODE's content-pipeline-user-source.py.flattened (66,419 B) and the unread middle of its TRANSCRIPT.md against content-polish-pipeline's filter classes, which ARCHIVE separately asserts are absent from CODE.",
+      "P2 \u2014 Run the first cross-repo citation audit. Nothing in Phase 1 tested a single citation against its cited source. Start with the reconstruction family whose purposes rest entirely on them: PERCEIVE (Claude_History/transcripts/2e330101-\u2026md line 14695), HTTP (Claude_History/transcripts/8cdf517a-\u2026md, Gemini_Extraction/chronology/events.jsonl), UTEP (a primary transcript path in ChatGPT_History), ICEBURG ('verbatim recovered' code vs Claude_History), AC-HCCSE (the Gemini activity record in Gemini_History/Gemini_Extraction plus the claim that a prior AC-HCCSE repo existed and was lost), URE (863 transcripts and paths in ChatGPT_History/ARCHIVE), ZTGKT, TIE, DGK, SAGE-K.",
+      "P2 \u2014 Enumerate and diff non-default branches for the 16 repos where they were never listed, prioritising the ones where the repo-level picture is already known to differ: PERCEIVE (default branch claude/http-repo-recreation-siaxl2, main empty), wizzle (package on a branch, main holds 2 .py + 2 .md), CNS (is ghost/operate-20260911-094424 an ancestor or a divergent earlier snapshot?), then CODE, CoPilot_History, Gemini_Extraction, Gemini_History, TOUCHSTONE, KAGGLE, GSA-815, ghost_tools, HERALD, Ecology, Conservation_Kernel, GRAPH, fortress-kernel. Note the repeated claude/ghost-tools-clone-j3frq0 and claude/gsa-repo-recreation-rrzvir branch names across Gemini_Extraction, Gemini_History and Claude_History \u2014 establish whether that is an agent-workflow fingerprint or content.",
+      "P2 \u2014 Follow up the description-vs-observed mismatches that were recorded and dropped: GSA-815 (generic governance description vs an observed Twilio IVR/call-center 'Iceberg' app extracted from sentinel_os \u2014 read the 3.8 MB CSV and the 88 KB investigation doc), OBSERVE (roughly 402 of ~430 files outside the described purpose, plus a sentinel_os/ directory and unopened .patch/.bundle/.tar.gz/.zip artifacts and a 982 KB .ghost_baseline.json), Governance_Gateway (README claims 105 adversarial attacks against 3 test files totalling ~11 KB), ARCHIVE (nine payloads described, eight files observed), CITADEL and TBCA (descriptions stale relative to HEAD).",
+      "P2 \u2014 Audit MIXED_AMBIGUOUS for consistent rule application across all 12 rows plus the candidates in item 4, using the rule as written (transcripts PLUS substantive tooling). ARCHIVE was labelled MIXED with no tooling in it at all; TBCA, CITADEL and CODE are MIXED on thin tooling; Resume_OS and innovation_os hold transcripts beside real systems and are not MIXED. Decide once, apply uniformly, and record the tooling test per row.",
+      "P3 \u2014 Before any phase handles the history repos' contents, settle PII exposure in ChatGPT_History (including tools/third_party_names.txt, expected to hold personal names), Claude_History, CoPilot_History, Gemini_History, Gemini_Extraction (the claimed 'PII-redacted second copy') and TOUCHSTONE (the unverified 'TOTAL_PII_PURGE_EXECUTED' framing). Several rows record that tools/redact_pii.py was added but not run.",
+      "P3 \u2014 Give at least a sample of rows a second-model verification. No row in the corpus was verified by two different models, and all 13 dual-lens rows were double-verified by claude-fable-5-1 alone. Sample across the boundary cases rather than the easy ones: ARCHIVE, VANGUARD, TBCA, CITADEL, Resume_OS, GSA-Master-Kernel, KAGGLE, and one or two HIGH-confidence SUBSTANTIVE_SYSTEM rows as controls."
+    ]
+  }
+}
