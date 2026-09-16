@@ -4,7 +4,7 @@ Session: https://claude.ai/code/session_01Noy6zmvbm6oPm6ZxtfM3mL
 Date: 2026-09-16
 Status: COMPLETE (re-verified after mid-session model and effort change; see §3)
 
-Labels follow `Consolidated-Super-Prompt.md` §2: operational status
+Labels follow `papers/super-prompt/AGENT-TASK-SPEC.md` §1: operational status
 EXECUTED / INSPECTED / INFERRED / UNKNOWN; evidence class `[EXTERNAL SOURCE]`
 for fetched documentation, `[REPOSITORY HISTORY]` for tool output about the
 corpus, `[INFERENCE]` where stated.
