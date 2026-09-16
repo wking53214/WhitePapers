@@ -1,0 +1,579 @@
+{
+  "_provenance": {
+    "source": "Workflow run wf_6832545a-496 (targeted, budget-limited)",
+    "date": "2026-09-16",
+    "model": "claude-fable-5-1",
+    "effort": "xhigh (ultracode); EMPTY verifiers at medium",
+    "subagent_tokens": 1050052,
+    "note": "Cost-of-exclusion lens only; the REFUTE lens for these repos is deferred. sentinel_os re-inspected after attachment; its verifier is still outstanding."
+  },
+  "verdicts": [
+    {
+      "repo": "wking53214/GOVERNANCE-CONTROL-PLANE",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=GOVERNANCE-CONTROL-PLANE, perPage=100) -> [] (zero branches; matches inspector claim)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=GOVERNANCE-CONTROL-PLANE, perPage=100) -> [] (zero tags; matches inspector claim)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=GOVERNANCE-CONTROL-PLANE, perPage=100) -> HTTP 409 'Git Repository is empty' (zero commits; matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(path=/, no ref) -> 409 'Git Repository is empty' while resolving default branch heads/main",
+        "EXECUTED: mcp__github__get_file_contents(path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (additional probe beyond inspector's; no hidden master branch)"
+      ],
+      "notes": "Independent re-execution of every emptiness probe confirms the repository has no branches, no tags, no commits, and no files reachable through the API. Because list_branches returned an empty list, there was no per-branch root listing to perform beyond the explicit main/master probes, both of which returned GitHub's 409 'Git Repository is empty'. No content exists to test against the exclusion criterion, and nothing observed suggests conversation-archive purpose or substantive tooling. Verdict EMPTY / EMPTY_SHELL holds; under the rules this is recorded, not excluded, so the repo stays in the corpus record (a later re-check would be warranted if pushed_at changes, since a repository can be populated after creation; INFERRED, not observed). Nothing was cloned, written, or mutated.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/GLCM1",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=GLCM1, perPage=100) -> [] (matches inspector claim of zero branches)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=GLCM1, perPage=100) -> [] (matches inspector claim of zero tags)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=GLCM1, perPage=100) -> 409 'Git Repository is empty' (matches inspector claim of zero commits)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=GLCM1, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector claim; no root listing on main)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=GLCM1, path=/, no ref) -> 409 'Git Repository is empty' when resolving default branch",
+        "EXECUTED (extra probe beyond inspector): mcp__github__get_file_contents(path=/, ref=refs/heads/master) -> 409 'Git Repository is empty'; mcp__github__list_commits(sha=master, perPage=10) -> 409 'Git Repository is empty'. No hidden ref found.",
+        "INSPECTED: /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/GLCM1.json \u2014 inspector's four cited calls re-executed above; all results reproduced."
+      ],
+      "notes": "Every branch enumeration, commit listing, tag listing, and root-listing call independently confirms GitHub reports the repository as containing no git objects (HTTP 409 'Git Repository is empty'). There are zero branches, so per-branch inspection is inapplicable; probes for refs/heads/main and refs/heads/master both fail with the same 409. No commit, tag, or file exists on any ref, so there is nothing that could be sidelined by the EMPTY verdict. EMPTY is a recorded (not excluded) state; the repo stays in the corpus record as an empty shell. UNKNOWN: whether unpushed content exists locally on the author's machine or whether the repo name relates to other corpus repos (name is an author claim, not evidence). No refutations found.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/GSA-2",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches owner=wking53214 repo=GSA-2 perPage=100 -> [] (zero branches; matches inspector evidence #2)",
+        "EXECUTED: mcp__github__list_commits owner=wking53214 repo=GSA-2 perPage=100 -> HTTP 409 'Git Repository is empty' (matches inspector evidence #3)",
+        "EXECUTED: mcp__github__list_tags owner=wking53214 repo=GSA-2 perPage=100 -> [] (zero tags; matches inspector evidence #4)",
+        "EXECUTED: mcp__github__get_file_contents owner=wking53214 repo=GSA-2 path=/ (no ref, default branch) -> 409 'Git Repository is empty' while resolving heads/main",
+        "EXECUTED: mcp__github__get_file_contents owner=wking53214 repo=GSA-2 path=/ ref=refs/heads/main -> 409 'Git Repository is empty' (matches inspector evidence #1)",
+        "EXECUTED: mcp__github__get_file_contents owner=wking53214 repo=GSA-2 path=/ ref=refs/heads/master -> 409 'Git Repository is empty' (extra probe for a non-default branch name; also empty)"
+      ],
+      "notes": "Independent re-observation confirms the repository has no refs, no commits, no tags, and no files on any branch. list_branches returned an empty array, so there is no per-branch enumeration beyond the probes of main and master (both 409 empty). The 409 'Git Repository is empty' response is GitHub's definitive signal for a repository with no git objects, not an access failure; the repo itself is reachable (list_branches and list_tags returned 200 with []). Nothing exists to keep in forensic scope as content. EMPTY is a record, not an exclusion, so the repository remains in the corpus ledger; recommend the orchestrator re-probe if pushed_at changes after 2026-09-11, since an empty shell named GSA-2 could receive content later (INFERRED from enumeration metadata cited in the inspector record, not observed here).",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/GSA-GATEWAY1",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=GSA-GATEWAY1, perPage=100) -> [] (zero branches; matches inspector)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=GSA-GATEWAY1, perPage=100) -> [] (zero tags; matches inspector)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=GSA-GATEWAY1, perPage=100, no sha -> default branch) -> HTTP 409 'Git Repository is empty' (matches inspector)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=GSA-GATEWAY1, path=/, no ref) -> 409 'Git Repository is empty' when resolving default branch heads/main (matches inspector)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=GSA-GATEWAY1, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector)",
+        "EXECUTED (additional, beyond inspector): mcp__github__get_file_contents(owner=wking53214, repo=GSA-GATEWAY1, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (rules out a non-default 'master' branch holding content)"
+      ],
+      "notes": "Independent re-execution of all four inspector calls plus one extra probe (refs/heads/master) reproduced the inspector's observations exactly: zero branches, zero tags, and the GitHub API's explicit 409 'Git Repository is empty' response for both the commit list and the root tree. Because list_branches returned an empty array, there is no branch on which content could exist, so per-branch root listing beyond main/master is not possible (INFERRED from list_branches -> [] combined with EXECUTED 409 responses). No commit, tag, or file was found anywhere. EMPTY_SHELL -> EMPTY is the correct verdict; under the corpus rules this is recorded, not excluded, so no forensic evidence is lost. Under the cost-of-exclusion lens, the only residual risk is that the repository is later pushed to (created_at == pushed_at 2026-09-11 per inspector's enumeration metadata, INSPECTED from the inspection file, not independently verified); recommend re-checking this repo before any final corpus freeze. The repo name 'GSA-GATEWAY1' is an author claim and was not treated as evidence.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/ICEBERG",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches owner=wking53214 repo=ICEBERG perPage=100 -> [] (zero branches; matches inspector claim)",
+        "EXECUTED: mcp__github__list_tags owner=wking53214 repo=ICEBERG perPage=100 -> [] (zero tags; matches inspector claim)",
+        "EXECUTED: mcp__github__list_commits owner=wking53214 repo=ICEBERG perPage=100 -> HTTP 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents owner=wking53214 repo=ICEBERG path=/ (no ref, default branch) -> 409 'Git Repository is empty' resolving heads/main",
+        "EXECUTED: mcp__github__get_file_contents owner=wking53214 repo=ICEBERG path=/ ref=refs/heads/main -> 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED (additional, beyond inspector): mcp__github__get_file_contents owner=wking53214 repo=ICEBERG path=/ ref=refs/heads/master -> 409 'Git Repository is empty'",
+        "INSPECTED: /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/ICEBERG.json (inspector record; all four cited calls re-executed with identical results)"
+      ],
+      "notes": "Verdict EMPTY / EMPTY_SHELL is upheld from independent observation. Every branch check is trivially complete because list_branches returned an empty list, so there is no branch on which content could exist; the per-branch root read requirement cannot be applied to any branch, and explicit probes of refs/heads/main and refs/heads/master both returned the API's 409 empty-repository signal. No commits and no tags exist. Under the COST_OF_EXCLUSION lens, nothing observable could keep this repo in active forensic scope: there is no file, commit, tag, or ref to analyze. EMPTY is a recorded status, not an exclusion, so the repo remains logged in the corpus. Caveats (UNKNOWN, not observed): the API cannot show whether content was ever pushed and later force-removed; only current refs are visible. Repo name 'ICEBERG' and any relation to ICEBERG-SIM / ICEBURG are author claims/name similarities only and were not treated as evidence. Recommend re-probing this repo at the end of Phase 1 in case content is pushed after 2026-09-11.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/ICEBERG-SIM",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=ICEBERG-SIM, perPage=100) -> [] (matches inspector evidence #2; zero branches, so no per-branch root listing is possible)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=ICEBERG-SIM, perPage=100) -> [] (matches inspector evidence #4)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=ICEBERG-SIM, perPage=100) -> error 409 'Git Repository is empty' (matches inspector evidence #3)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=ICEBERG-SIM, path=/, ref=refs/heads/main) -> error 409 'Git Repository is empty' (matches inspector evidence #1)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=ICEBERG-SIM, path=/, no ref) -> error 409 'Git Repository is empty' when resolving default branch heads/main",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=ICEBERG-SIM, path=/, ref=refs/heads/master) -> error 409 'Git Repository is empty' (extra probe for a non-default branch name; none exists)"
+      ],
+      "notes": "All six independent read-only API calls agree with the inspector's record: the repository has zero branches, zero tags, zero commits, and no readable tree under any ref; GitHub returns 409 'Git Repository is empty' for every content/commit query. No refutation possible from observed content. EMPTY_SHELL -> EMPTY is the correct recorded state (recorded, not excluded). Caveats (UNKNOWN, not observed): a repo with no git objects could still carry non-git metadata (issues, wiki, description) that the permitted tool set cannot inspect; and the name's resemblance to ICEBERG/ICEBURG corpus repos is an author claim, not evidence. Recommend the orchestrator keep the repo in the recorded ledger and re-probe if pushed_at changes after 2026-09-11.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/GSA-Master-Kernel",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED mcp__github__list_branches owner=wking53214 repo=GSA-Master-Kernel -> exactly 3 branches: main (8030006b), claude/archive-marker (edeaafce), claude/recovered-originals (858452bd); matches inspector.",
+        "EXECUTED mcp__github__list_tags owner=wking53214 repo=GSA-Master-Kernel -> [] (no tags); matches inspector.",
+        "EXECUTED mcp__github__list_commits sha=main perPage=100 -> 2 commits: b407801e (2026-09-03, 'Archived Gemini transcript ... Split out of wking53214/GSA-815 ... Born archived') and 8030006b (2026-09-11, 'Mark this repository as an archive for ghost_tools (#1)'); matches inspector's EXACT count of 2.",
+        "EXECUTED mcp__github__list_commits sha=claude/recovered-originals and sha=claude/archive-marker -> each has 2 commits (b407801e plus 858452bd 'Recovered originals for 5 flattened file(s)' / edeaafce 'Mark this repository as an archive for ghost_tools'); matches inspector. The 858452bd message names the external tool 'blackhole-extrapolator --recover-from' and source files 'myactivity.json' and 'conversations-005.json' that are NOT present in this repository.",
+        "EXECUTED mcp__github__get_file_contents path=/ ref=refs/heads/main -> 20 entries, all files, no subdirectories: .ghost_archive (81 B), LICENSE, PROVENANCE.md (15,337 B), README.md (1,718 B), TRANSCRIPT.md (178,391 B), artifact_1..15.py (117 B to 34,794 B). No scripts/, tests/, .github/, manifests, pyproject, requirements, or Makefile. Same 20 entries on refs/heads/claude/archive-marker. refs/heads/claude/recovered-originals has 24 entries: no .ghost_archive, plus artifact_1/3/5/9/14.recovered.py; matches inspector.",
+        "INSPECTED README.md (main) -> 'An archived Google Gemini transcript ... This is not a system. It is a preserved design conversation'; describes TRANSCRIPT.md, PROVENANCE.md, artifact_1..15.py as extracted code blocks 'Copied byte-for-byte ... not cleaned up or made to run'; states GSA-815's removed root files and gsa-governance-core/ runtime 'descend from this conversation'; matches inspector quote.",
+        "INSPECTED PROVENANCE.md (main) -> source GSA-2.txt, Gemini URL a096b251a4ee9b90, 10-turn description, 15-row artifact table (turn/source/contents), per-file run results (artifact_4 and artifact_10 run with output; 6/8/13/15 run silently; 11/12 self-raise SystemError; 1/3/5/7/9/14 SyntaxError), 'No tests exist for any of the fifteen artifacts'; matches inspector.",
+        "INSPECTED .ghost_archive (main) -> 'Archived transcript artifacts of the GSA master kernel. A record, not a program.'; matches inspector.",
+        "INSPECTED TRANSCRIPT.md (main; 186,123-char API result saved locally, examined via Grep on the saved tool-result file) -> first line 'GSA (Governance Systems Architecture) Master Kernel', contains 'gemini.google.com/app/a096b251a4ee9b90', exactly 10 'User prompt:' and 10 'Response:' markers, and the bare 'I cannot fulfill this request.' refusal. This independently confirms the file is a 10-turn Gemini chat export, which the inspector had only taken from README/PROVENANCE (their UNKNOWN item is now resolved as INSPECTED).",
+        "INSPECTED artifact_12.py (main, 34,794 B, largest code file) -> a single 631-line AI-generated script headed '\"\"\"Program Name: GovernanceSystemsArchitectureMasterKernel', FastAPI + Pydantic + dataclasses, SHA-256/HMAC 'forensic signature', hash-chained 'AuditLedger', a 3-attempt retry loop that raises SystemError('GSA_PIPELINE_COLLAPSE...'), a simulated inference gateway, and an __main__ sandbox harness. It is transcript payload (turn 7 response per PROVENANCE), not tooling that processes the archive.",
+        "INSPECTED artifact_11.py (main, 29,590 B) -> near-duplicate of artifact_12.py under different identifier names ('GSA_Unified_Kernel', SystemError 'CITADEL_COLLAPSE', session id 'DIT-LOOP-'); same FastAPI title 'Deterministic Integrity Tower (DIT) - Unified Node'. Transcript payload (turn 6 response).",
+        "INSPECTED artifact_4.py (main, 6,749 B; one of the 4 PROVENANCE says runs) -> 188-line demo: GSASubstrateState, GSABlackBox hash chain, IntegrityAuditRedTeam keyword filter, ChronosForesightEngine, Orchestrator, with __main__ printing 'STABILIZE_SYSTEM' / 'INJECT_DESTRUCTIVE_SUBROUTINE' results; consistent with PROVENANCE's described output. Toy demo, no tests, no I/O.",
+        "INSPECTED artifact_1.recovered.py (claude/recovered-originals, 10,078 B) -> whitespace-restored version of the user's turn-1 paste: repeated '====== SYSTEM / System Name: GSA / Component: core/orchestrator.py ... Final Python Code:' banners wrapping gsa_runtime.* modules (orchestrator, trace_store, linter, decorators, exceptions, api/server, routes, schemas, middleware). Prose banners are interleaved so it does not parse, as the branch commit states. It is recovered transcript content, not tooling."
+      ],
+      "notes": "VERDICT: The exclusion holds. Every file on every branch is one of (a) the verbatim Gemini transcript (now directly verified as a 10-turn chat export with the Gemini URL header), (b) code blocks extracted byte-for-byte from that transcript (artifact_1..15.py, plus whitespace-restored copies of five of them on claude/recovered-originals), or (c) metadata about the transcript (README.md, PROVENANCE.md, .ghost_archive, LICENSE). I looked for the tooling that an exclusion would hide and found none: no scripts/, no process/extraction code, no schemas or manifests describing the archive, no tests, no CI, no dependency/packaging files. The extraction described in PROVENANCE.md and the recovery described in commit 858452bd were performed by tools that live elsewhere ('blackhole-extrapolator', session 01YFcGznMwPNrJCufXPYMBR4), not in this repository. The artifact_*.py files, although sizeable (~143 KB, and artifact_11/12 are 600+ line FastAPI/HMAC/hash-ledger programs), are duplicates of text already inside TRANSCRIPT.md; they are the conversation's payload, so they do not satisfy the MIXED_AMBIGUOUS condition (tooling operating on or alongside the transcripts). Primary purpose is conversation-archive storage; no refutation of any inspector field. COST-OF-EXCLUSION CAVEATS for the orchestrator (do not change eligibility, but should not be lost): (1) README.md states GSA-815's removed root files (gsa-master-kernel-base-flattened.py, interlock wrappers) and its gsa-governance-core/ reference runtime 'descend from this conversation' -- this repo is therefore the lineage/provenance source for GSA-815 code, and any forensic claim about GSA-815 code origin (AI-generated in a Gemini chat vs. hand-written) is answerable from TRANSCRIPT.md and PROVENANCE.md here; the GSA-815 analysis should be allowed to cite this repo as evidence even though it is excluded as a unit of analysis. (2) Commit 858452bd on claude/recovered-originals names two chat-export source files ('myactivity.json', 'conversations-005.json') and a recovery tool ('blackhole-extrapolator --recover-from') that exist outside this repo; these are leads for locating the Gemini/Google Takeout export repos and the tool repo in the corpus. (3) PROVENANCE.md cross-references the user's 'RADAR', 'CLIP', and 'AC-HCCSE' archives and says the turn-9 'mega-prompt' and turn-10 AST-graph-extractor paste recur across other archived transcripts -- useful for de-duplication and pattern analysis across the excluded-archive set. (4) The 2026-08-13 'repo was created' date in PROVENANCE.md predates the first commit (2026-09-03) and refers to the material's earlier life inside GSA-815/GSA-2/, per the b407801e commit message; the GitHub 'archived' flag could not be checked with the permitted tools. All API calls succeeded; no calls failed.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/RADAR",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=RADAR, perPage=100) -> [] (zero branches; matches inspector)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=RADAR, perPage=100) -> HTTP 409 'Git Repository is empty' (matches inspector)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=RADAR, perPage=100) -> [] (zero tags; matches inspector)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=RADAR, path=/) with no ref -> 409 'Git Repository is empty' resolving default branch heads/main",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=RADAR, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=RADAR, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (extra probe for an alternate default branch name; nothing found)"
+      ],
+      "notes": "Emptiness independently confirmed on every branch (there are none), via commit listing (409 empty-repo signal) and tag listing (empty). No commit, tag, or file exists anywhere the API exposes, so there is nothing an EMPTY verdict could sideline. The 409 responses are GitHub's explicit empty-repository signal, not access denials, so UNKNOWN_ACCESS does not apply. Read local inspector record at /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/RADAR.json; all four of its EXECUTED evidence items reproduced exactly. INFERRED (not observed): the repo is a created-but-never-pushed shell; its intended purpose cannot be established from content, and the name RADAR is an author claim only. Recommendation: keep the EMPTY record in the corpus ledger (recorded, not excluded) and re-probe if later enumeration shows pushed_at advancing or size_kb > 0.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/KAGGLE",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [
+        {
+          "field": "observed.mentions_of_other_corpus_repos",
+          "reason": "Incomplete, not wrong. The commit on branch claude/recovered-originals (sha 2f6c4edcd0a3c45d3b8dfa81828744e2ffc92a3a) names a second external tool, `blackhole-extrapolator --recover-from`, and a source file `messages.jsonl` from an exported chat history; the inspector recorded only ghost_tools (from commit a7cd8fca). Whether blackhole-extrapolator is a corpus repo is UNKNOWN to me (no search permitted), but the name should be carried into cross-repo mapping. This does not affect eligibility: the tooling lives outside this repo. STATUS: EXECUTED (list_commits sha=claude/recovered-originals).",
+          "evidence_path_or_call": "mcp__github__list_commits(owner=wking53214, repo=KAGGLE, sha=claude/recovered-originals, perPage=20) -> commit 2f6c4edc message"
+        }
+      ],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED mcp__github__list_branches(wking53214/KAGGLE): exactly 4 branches (claude/artifact-9-original @187eba1e, claude/parses @a280ddbe, claude/recovered-originals @2f6c4edc, main @82ce4e5b) \u2014 matches inspector.",
+        "EXECUTED mcp__github__list_commits(sha=main, perPage=100): exactly 4 commits, oldest abb117e4 2026-08-13T18:27:48Z 'Archive of pre-existing artifact. Preserved verbatim, unmodified.', newest 82ce4e5b 2026-09-11T10:09:02Z 'artifact_9.py: the original, recovered from the Gemini export (#3)'; commit a7cd8fca cites 'ghost_tools' pre-flight sweep' \u2014 matches inspector's commit_count=4 EXACT, dates, head_sha and ghost_tools mention.",
+        "EXECUTED mcp__github__list_commits on claude/parses (3 commits), claude/recovered-originals (3 commits), claude/artifact-9-original (4 commits): each branch is main's early history plus one Claude-authored commit that only renames/recovers artifact_9/artifact_4/artifact_15; no commit adds scripts, tests, manifests or directories.",
+        "EXECUTED mcp__github__list_tags: [] \u2014 no tags, matches inspector.",
+        "EXECUTED mcp__github__get_file_contents(path=/, ref=refs/heads/main): 18 entries, all type=file, no directories; names/sizes match inspector's top_level_entries exactly (artifact_9.py 2160 bytes, TRANSCRIPT.md 89463, PROVENANCE.md 15136, README.md 2229, LICENSE 11342). No scripts/, tests/, .github/, pyproject/setup/requirements/Makefile/Dockerfile.",
+        "EXECUTED mcp__github__get_file_contents(path=/) on refs/heads/claude/parses (18 files; artifact_9.py.flattened 1989 instead of artifact_9.py), refs/heads/claude/recovered-originals (19 files; artifact_4.py, artifact_15.py, artifact_9.py 1989, artifact_9.recovered.py 2161), refs/heads/claude/artifact-9-original (18 files, same names/sizes as main) \u2014 all match inspector; still no directories or tooling on any branch.",
+        "INSPECTED README.md (main): opens '# KAGGLE / An archived single conversation: a **30-turn Google Gemini session**\u2026'; Files table describes artifact_1..15 as '14 code fragments extracted in transcript order', TRANSCRIPT.md as 'The complete 30-turn conversation, verbatim' \u2014 matches inspector's readme_first_lines.",
+        "INSPECTED PROVENANCE.md (main): source GLCM.txt, Gemini URL, per-artifact turn/source table, per-file execution results, 'No tests exist for any of the 14 artifacts', cross-references to DIT, ARCHIVE, DGK, GSA-2 \u2014 matches inspector.",
+        "INSPECTED candidate tooling #1 artifact_2.py (main, 1853 bytes): Kaggle feature-extraction loop (cv2 Sobel, skimage LBP/GLCM -> pandas DataFrame) hard-coded to /root/.cache/kagglehub/competitions/the-freuid-challenge-2026-ijcai-ecai/train/train/. Notebook snippet from the chat; does not touch transcripts.",
+        "INSPECTED candidate tooling #2 artifact_9.py (main, 57 lines) and artifact_9.recovered.py (claude/recovered-originals): identical training script (same extraction loop + LGBMClassifier(n_estimators=1500,...).fit). User's own pasted Kaggle script; not repo tooling.",
+        "INSPECTED candidate tooling #3 artifact_4.txt (main): MD5 duplicate-file remover over the Kaggle train dir plus Jupyter '!rm -rf /tmp/joblib_*' shell-magic; artifact_15.txt is the same two functions re-emitted with the 'for root, , files in os.walk' syntax defect. Chat-generated notebook cells, not a pipeline.",
+        "INSPECTED artifact_13.json (main): single-line JSON with code_modules/segments/workflows/architecture/risks/notes/commands keys whose bodies quote the turn-11 dedupe functions; contains unescaped b\"\" \u2014 it is the transcript's turn-28 output, not a schema or manifest.",
+        "INSPECTED artifact_11.py (main): os.walk path-discovery diagnostic with literal 'PASTE_THE_PATH_HERE/' placeholder and a kagglehub.competition_download call \u2014 a chat snippet, not tooling."
+      ],
+      "notes": "Verdict holds under the cost-of-exclusion lens. I independently listed every branch's root and every branch's commit log and opened 7 of the 14 artifact files (artifact_2.py, artifact_9.py, artifact_9.recovered.py, artifact_4.txt, artifact_15.txt, artifact_13.json, artifact_11.py). Every executable-looking file is a Kaggle/Colab notebook fragment cut verbatim out of the Gemini conversation (hard-coded kagglehub cache paths, Jupyter shell-magic, unfilled placeholders, a syntax error carried through from the chat). None of them reads, parses, indexes, validates or transforms TRANSCRIPT.md or any transcript; there is no pipeline, schema, manifest generator, test, CI, or directory structure on any of the 4 branches. The MIXED_AMBIGUOUS carve-out therefore does not apply: the code is the archived conversation's payload, not tooling built around it. Primary purpose is storing one AI-assistant transcript plus its extracted fragments, which is the sole exclusion criterion. Two things worth preserving for the wider investigation even though the repo is excluded: (1) repository history (not files) names external tools that operated on this repo \u2014 ghost_tools (commit a7cd8fca, 'pre-flight sweep (unassessable_file)', 'RECOVERY.md manifest') and blackhole-extrapolator --recover-from (commit 2f6c4edc on claude/recovered-originals, recovering from 'messages.jsonl' in a Gemini Takeout export); the inspector omitted the second name. (2) PROVENANCE.md cross-references sibling archived transcripts DIT, ARCHIVE, DGK, GSA-2, confirming a series of same-pattern archive repos. Not done: I did not re-open TRANSCRIPT.md (89 KB) since its nature is established by README/PROVENANCE and the inspector's marker counts; the artifact files I did not open (1,3,5,6,7,8,10,12) are 91-984 bytes each and are described consistently by PROVENANCE.md \u2014 INFERRED to be more of the same, not observed.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/STRIDE",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=STRIDE, perPage=100) -> [] (zero branches; matches inspector evidence #2)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=STRIDE, perPage=100) -> [] (zero tags; matches inspector evidence #4)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=STRIDE, perPage=100) -> GitHub 409 'Git Repository is empty' (matches inspector evidence #3)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=STRIDE, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' on ref lookup (matches inspector evidence #1)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=STRIDE, path=/) with no ref -> 409 'Git Repository is empty' resolving default branch main",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=STRIDE, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (no hidden master branch)"
+      ],
+      "notes": "Independently re-ran all four API classes the inspector cited plus two extra root lookups (no-ref default and refs/heads/master). Every call returned either an empty list or GitHub's 409 'Git Repository is empty', which is the API's authoritative signal that the repository has no git objects. With zero branches there are no per-branch trees to enumerate, so the per-branch check is vacuously complete. No commit, tag, or file exists anywhere to pull this repo into scope; EMPTY_SHELL -> EMPTY (recorded, not excluded) is correct. Cost-of-exclusion note: the EMPTY verdict carries no risk of hiding tooling or transcripts because there is nothing observable to hide. INFERRED (not observed): the repo is a created-but-never-pushed shell; its intended purpose cannot be established from content. Recommend it remain recorded in the corpus inventory so a later push would be caught on re-enumeration.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/TAKEOUT1",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=TAKEOUT1, perPage=100) -> [] (zero branches; matches inspector claim)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=TAKEOUT1, perPage=100) -> [] (zero tags; matches inspector claim)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=TAKEOUT1, perPage=100, default branch) -> HTTP 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TAKEOUT1, path=/) with no ref -> 409 'Git Repository is empty' when resolving heads/main",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TAKEOUT1, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TAKEOUT1, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (extra check for an undeclared legacy default branch; none exists)"
+      ],
+      "notes": "Independent verification confirms the repository has no refs of any kind: list_branches and list_tags both return empty arrays, and every commit/tree request (default branch, refs/heads/main, refs/heads/master) returns GitHub's explicit 409 'Git Repository is empty' signal rather than an access error (403/404). With zero branches there are no per-branch trees to enumerate, so emptiness on 'every branch' is established by the empty branch list itself (EXECUTED), not by inference. No commit, tag, or file exists anywhere, so there is nothing to exclude or sideline and no hidden tooling or transcripts are possible. Under the cost-of-exclusion lens the EMPTY verdict is a recording, not an exclusion; the repo stays in the corpus record. Caveat (INFERRED, not observed): the name 'TAKEOUT1' and its 2026-09-11 creation date suggest a possibly intended data-export destination; if the account later pushes content, the repo should be re-inspected, and the investigation may want to note the empty-shell creation event itself as a timeline datum. UNKNOWN: whether any content exists outside git refs (e.g. unreachable objects, wiki, releases assets) since those are not observable through the allowed read-only calls.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/TBCA1",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=TBCA1, perPage=100) -> [] (zero branches; matches inspector evidence #2)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=TBCA1, perPage=100) -> [] (zero tags; matches inspector evidence #4)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=TBCA1, perPage=100) -> HTTP 409 'Git Repository is empty' (matches inspector evidence #3)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TBCA1, path=/, no ref) -> 409 'Git Repository is empty' resolving default branch heads/main (matches inspector evidence #1)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TBCA1, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty'",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TBCA1, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (extra probe beyond inspector's record; no hidden master branch)",
+        "INSPECTED: /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/TBCA1.json (inspector record read in full; all four EXECUTED evidence entries reproduced identically)"
+      ],
+      "notes": "Verdict holds. The repository is reachable (no 403/404) but GitHub returns its canonical empty-repository 409 for the default-branch ref, an explicit main ref, an explicit master ref, and the commit list; list_branches and list_tags both return empty arrays. Since list_branches returned [], there are no branches to iterate for per-branch tree checks; the main/master probes were done anyway as a safeguard. No commit, tag, or file exists on any ref, so there is nothing to bring into forensic scope and no content on which the conversation-archive exclusion could even be evaluated. EMPTY_SHELL -> EMPTY is correct and is a record-only status, not an exclusion. Caveat (INFERRED, not observed): the repo's relationship to any sibling corpus repo (e.g. one named 'TBCA') cannot be established from content because there is none; the name alone is an author claim. If a later phase observes a push to this repo (enumeration metadata pushed_at changes), it should be re-inspected, since the empty verdict is time-bound to these calls on 2026-09-16.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/TBCA",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED list_branches owner=wking53214 repo=TBCA -> exactly one branch 'main' at sha 2fb37da43486afb9fd7110c791ff2e7ff19f7f48; matches inspector.",
+        "EXECUTED list_commits owner=wking53214 repo=TBCA perPage=100 -> exactly 3 commits (df408a31 'Initial commit' 2026-07-04T13:25:10Z; ca98c172 archival restructuring PR #1 2026-09-03T00:09:53Z; 2fb37da4 decomposition PR #2 2026-09-03T00:22:48Z), both later commits co-authored 'Claude Sonnet 5' and citing Claude-Session session_01G5nLNvE4Gf4XXutEW89pRC; commit ca98c172 message names sibling repos CITADEL, ARCHIVE, KAGGLE; matches inspector.",
+        "EXECUTED list_tags owner=wking53214 repo=TBCA -> empty array; matches inspector.",
+        "EXECUTED get_file_contents path=/ ref=refs/heads/main -> .gitignore(21), LICENSE(11342), PROVENANCE.md(6801), README.md(2271), TRANSCRIPT.md(64575), generate.js(1237), package-lock.json(8009), package.json(364), src/(dir); matches inspector's top_level_entries exactly.",
+        "EXECUTED get_file_contents path=src ref=refs/heads/main -> document.js(35052), hash-table.js(1924), helpers.js(2408), paper-content.js(23519), theme.js(320); matches inspector.",
+        "INSPECTED get_file_contents path=generate.js ref=refs/heads/main -> entry point requiring docx Packer, ./src/paper-content, ./src/document; computes sha256 of PAPER_CONTENT.trim(); writes .docx to argv[2] or TBCA_White_Paper.docx; uses correct template-literal backticks; matches inspector.",
+        "INSPECTED get_file_contents path=package.json ref=refs/heads/main -> name tbca-whitepaper v1.0.0 private, main generate.js, scripts.generate='node generate.js', dependency docx ^9.0.0, no test script; matches inspector.",
+        "INSPECTED get_file_contents path=src/hash-table.js ref=refs/heads/main (NOT opened by inspector) -> exports hashTable(hash, ts): builds a 5-row docx Table (ALGORITHM/DIGEST/SCOPE/TIMESTAMP/PURPOSE) with labelCell/valueCell helpers; real executable module code.",
+        "INSPECTED get_file_contents path=src/helpers.js ref=refs/heads/main (NOT opened by inspector) -> exports heading1/2/3, body, italic, labeledPara, bullet, spacer, pageBreak paragraph builders over docx primitives; real executable module code.",
+        "INSPECTED get_file_contents path=src/theme.js ref=refs/heads/main (NOT opened by inspector) -> exports 7 colour constants BLUE, LIGHT_BLUE, DARK, MID, LIGHT, WHITE, RULE_COLOR.",
+        "INSPECTED get_file_contents path=PROVENANCE.md ref=refs/heads/main -> confirms inspector's summary: source TBCA.txt from Downloads, producing tool 'not stated', origin date unknown, single-turn 'Thoughts?' + one Node script, three fixes (backticks, new PageNumber(), DARK import), no tests, PII check none found, notes PAPER_CONTENT vs Document assembly are two non-identical copies of the paper.",
+        "INSPECTED get_file_contents path=README.md ref=refs/heads/main -> matches inspector's readme_first_lines verbatim; documents the decomposed runnable project and 'npm install && node generate.js'.",
+        "EXECUTED get_file_contents path=/ sha=df408a31b612cc2ff8eff3d267cb1c55f52d674c (initial commit tree; inspector listed this as could_not_determine) -> single file TBCA.txt, 64575 B, same byte size as TRANSCRIPT.md at HEAD (size equality observed; byte identity INFERRED from commit ca98c172's rename claim, not verified).",
+        "EXECUTED get_file_contents path=/ sha=ca98c172b3be6b2e8342c223047f41b76600b72c (intermediate tree) -> LICENSE, PROVENANCE.md(5490), README.md(1626), TRANSCRIPT.md(64575), artifact_1.js(64565); confirms an intermediate state with the monolithic extracted script artifact_1.js that was later removed at 2fb37da4.",
+        "INSPECTED get_file_contents path=.gitignore ref=refs/heads/main -> 'node_modules/' and '*.docx'; matches inspector."
+      ],
+      "notes": "Verdict AMBIGUOUS_INVESTIGATE / MIXED_AMBIGUOUS is upheld; the repo stays in scope. Independent observation confirms HEAD is a hybrid: one verbatim transcript file (TRANSCRIPT.md, 64,575 B, whose 'conversation' is a one-word prompt plus one code response) alongside a decomposed, runnable Node project (generate.js + 5 src/ modules ~63 KB + package.json/package-lock.json with docx ^9) and a detailed PROVENANCE.md. I opened three src modules the inspector had not (hash-table.js, helpers.js, theme.js): all are genuine executable module code with require/module.exports wiring, not transcript text. Under the cost-of-exclusion lens, the case for staying in scope is strong on several independent grounds: (1) substantive tooling exists (MIXED rule); (2) the 'transcript' contains essentially no dialogue, so the repo functions more as a whitepaper-generator code project with an archived origin than as a chat-history store, meaning ELIGIBLE would also be a defensible verdict, and in no reading does the sole exclusion criterion apply; (3) history evidence is forensically relevant: two PR merges co-authored by 'Claude Sonnet 5' with a Claude-Session URL, a commit message explicitly linking this repo to sibling repos CITADEL/ARCHIVE/KAGGLE and describing a 'repo family'-wide backtick-stripping corruption, and PROVENANCE.md's claim that the producing tool is unknown; (4) an intermediate tree at ca98c172 held a 64,565 B artifact_1.js monolith that was later deleted, which is recoverable history a forensic pass should examine. Not verified in this read-only pass: runnability of the decomposed project, byte identity of TBCA.txt vs TRANSCRIPT.md (only equal size observed), contents of src/document.js, src/paper-content.js and package-lock.json. All API calls succeeded; no failures to record.",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/TRIAD-PLUS-42",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=TRIAD-PLUS-42, perPage=100) -> [] (zero branches; matches inspector claim)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=TRIAD-PLUS-42, perPage=100) -> [] (zero tags; matches inspector claim)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=TRIAD-PLUS-42, perPage=100) -> HTTP 409 'Git Repository is empty' (zero commits; matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TRIAD-PLUS-42, path=/, ref=refs/heads/main) -> HTTP 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TRIAD-PLUS-42, path=/, no ref) -> HTTP 409 'Git Repository is empty' resolving default branch heads/main (additional check beyond inspector)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=TRIAD-PLUS-42, path=/, ref=refs/heads/master) -> HTTP 409 'Git Repository is empty' (additional check beyond inspector; no hidden master branch)",
+        "INSPECTED: /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/TRIAD-PLUS-42.json (inspector record; all four cited calls re-run with identical results)"
+      ],
+      "notes": "Emptiness independently confirmed on every axis: list_branches returned an empty array, so there are no branches to enumerate per-branch; list_tags returned an empty array; list_commits and every get_file_contents root attempt (default ref, refs/heads/main, refs/heads/master) returned GitHub's explicit 409 'Git Repository is empty' signal. No commit, tag, or file exists on any branch, so there is nothing that could be hidden by the EMPTY verdict. Cost-of-exclusion concern is minimal here because EMPTY is recorded rather than excluded; the repo remains on record. UNKNOWN: whether content was ever pushed and later removed cannot be established via the API (no reflog/history accessible); the similarity of the name to the corpus repo Triad-42 is an author-claim signal only and was not used as evidence. Recommend the orchestrator re-poll this repo at the end of Phase 1 in case content is pushed later (enumeration metadata created_at == pushed_at == 2026-09-11 is recent).",
+      "model": "claude-fable-5-1"
+    },
+    {
+      "repo": "wking53214/VSA",
+      "lens": "COST_OF_EXCLUSION",
+      "classification_upheld": true,
+      "refutations": [],
+      "corrected_eligibility": "NO_CHANGE",
+      "corrected_primary_purpose": "NO_CHANGE",
+      "confidence": "HIGH",
+      "independent_checks": [
+        "EXECUTED: mcp__github__list_branches(owner=wking53214, repo=VSA, perPage=100) -> [] (zero branches; matches inspector claim)",
+        "EXECUTED: mcp__github__list_tags(owner=wking53214, repo=VSA, perPage=100) -> [] (zero tags; matches inspector claim)",
+        "EXECUTED: mcp__github__list_commits(owner=wking53214, repo=VSA, perPage=100) -> HTTP 409 'Git Repository is empty' (matches inspector claim; commit_count 0)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=VSA, path=/) with no ref -> 409 'Git Repository is empty' resolving default branch heads/main",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=VSA, path=/, ref=refs/heads/main) -> 409 'Git Repository is empty' (matches inspector claim)",
+        "EXECUTED: mcp__github__get_file_contents(owner=wking53214, repo=VSA, path=/, ref=refs/heads/master) -> 409 'Git Repository is empty' (extra probe for an unlisted legacy default branch; also empty)",
+        "INSPECTED: /tmp/claude-0/-home-user-WhitePapers/c8ad53e2-f163-5503-b3af-3307ce5bc427/scratchpad/insp/VSA.json (inspector record; all five evidence entries re-executed above and reproduced)"
+      ],
+      "notes": "Emptiness independently confirmed via every available channel: branch list is empty (so there is no per-branch tree to enumerate), tag list is empty, commit listing and root-tree fetches on the default ref, refs/heads/main, and refs/heads/master all return GitHub's 409 'Git Repository is empty'. No commit, tag, or file exists on any branch, so there is nothing for forensic analysis to lose; EMPTY_SHELL -> EMPTY (recorded, not excluded) is the correct verdict. The repo name 'VSA' and null description are author claims/metadata only and were not used as evidence. UNKNOWN: whether content was ever pushed and force-removed; the API exposes no reflog for an empty repo, so this cannot be established read-only. Recommendation: keep the repo recorded in the corpus ledger and re-probe at a later phase in case content is pushed after 2026-09-11 creation.",
+      "model": "claude-fable-5-1"
+    }
+  ],
+  "inspections": [
+    {
+      "repo": "wking53214/sentinel_os",
+      "access_status": "OK",
+      "access_notes": "All GitHub API calls succeeded: get_file_contents on \"/\" for main and all 7 other branches, list_branches, list_tags, list_commits pages 1-3, plus directory listings and file reads on main. The page-1 list_commits result exceeded the tool output limit and was saved to a local file by the harness; it was parsed read-only with a python one-liner to extract count and dates. No clone, no git, no writes, no search tools used.",
+      "observed": {
+        "is_empty_on_default_branch": false,
+        "is_empty_on_all_branches": false,
+        "top_level_entries": [
+          ".ghost_baseline.json (477840 B)",
+          ".github/",
+          ".gitignore",
+          ".gitleaks.toml",
+          "APPLY_authorized_by_attestation.md (28715 B)",
+          "CODE_OF_CONDUCT.md",
+          "CONTRIBUTING.md",
+          "LICENSE",
+          "README.md (30732 B)",
+          "SECURITY.md",
+          "TROUBLESHOOTING.md",
+          "certs (symlink)",
+          "docs/",
+          "fortress_audit.log (109746 B)",
+          "sample_data/",
+          "sentinel_os/",
+          "tools/"
+        ],
+        "readme_present": true,
+        "readme_first_lines": "Sentinel OS\n\n> **Unfrozen 2026-09-11.** sentinel_os is the custody ledger stage of the governance stack: artifact origin, custody, and a Postgres-backed ledger. It is the second sellable unit after the governed action gate in [observe-perceive](https://github.com/wking53214/observe-perceive), and it is not deployable from a clone today: it declares no dependencies (the suite needs psycopg2, anthropic, httpx, redis, cryptography, yaml), it imports the Conservation Kernel package at module level, and without Postgres 228 tests skip, 39 fail, and 38 error (measured 2026-09-09 from a clone at `5341e3d`, 968 collected, 658 passing without those services).\n>\n> The 90-day freeze set on 2026-09-08 is lifted early, by the owner's decision. ... the private `CNS` package ... and `ghost_tools`' kernel scan ...\n\nProblem\n\nGovernance is fractured. ... Thesis: Sentinel OS decouples governance from the systems being governed ... What Sentinel OS is: a domain-agnostic governance architecture for automated decisions ... What Sentinel OS is NOT: AI governance checklist, static compliance document system, ... AI model, agent framework, prompt management system ... Governance Cassettes ... Evidence Ledger (append-only, hash-chained) ... The Twin (independent witness replica) ... Known Limitations ... Current Implementation Status: 270 tests passing in July 2026 CI, suite since grown to 968 collected (measured 2026-09-09) ... License: Apache-2.0",
+        "manifests": [
+          "sentinel_os/requirements.txt",
+          "sentinel_os/Dockerfile",
+          "sentinel_os/docker-compose.yml",
+          "sentinel_os/.dockerignore",
+          "sentinel_os/.env.example",
+          "sentinel_os/bandit.yaml",
+          "sentinel_os/production_config.yaml",
+          ".gitleaks.toml",
+          ".github/workflows/tests.yml"
+        ],
+        "has_tests_dir": true,
+        "test_file_count_estimate": 62,
+        "has_ci": true,
+        "source_file_count_estimate": 110,
+        "primary_languages": [
+          "Python",
+          "Lua (10 Redis scripts in sentinel_os/lua/)",
+          "SQL (3 files)",
+          "Shell (4 scripts)",
+          "Markdown (extensive docs)"
+        ],
+        "largest_dirs": [
+          "sentinel_os/ (kernel package: ~60 top-level .py incl. regulatory_checks.py 78 KB, test_twin_live.py 60 KB, twin_receiver.py 41 KB; subdirs governance/ with ledger_postgres.py 166 KB, Tests/ 50 files, sage_k/, interpretation/, conservation/, cassettes/, lua/)",
+          "sample_data/ (mortgage_cassette_synthetic_customers_v2.csv 2,783,534 B - not opened)",
+          "docs/ (~700 KB Markdown across architecture/, pass3/, audit/, prompts/, CHANGELOG.md)",
+          ".ghost_baseline.json (477,840 B root file)",
+          "fortress_audit.log (109,746 B root file)"
+        ],
+        "commit_count": 284,
+        "commit_count_kind": "EXACT",
+        "first_commit_date": "2026-07-04T03:31:01Z",
+        "last_commit_date": "2026-09-12T01:57:07Z",
+        "head_sha": "c2b4c8012e24191298d663ef3dad2fcf8fbdb5bb",
+        "branches": [
+          "main",
+          "audit/governance-stack-2026-09",
+          "claude/ci-cns-token",
+          "claude/cns-graph",
+          "claude/dit-repo-recreation-92grbe",
+          "claude/herald-campaign-record",
+          "claude/readme-test-count",
+          "herald-adversarial-campaign-2026-08-26"
+        ],
+        "tags": [
+          "v1-soft-release",
+          "v0.4.0-governor-hardening",
+          "harness-complete-verified"
+        ],
+        "notice_or_license_present": true,
+        "provenance_file_present": true,
+        "mentions_of_other_corpus_repos": [
+          {
+            "repo": "observe-perceive",
+            "where": "README.md (root, main) - link https://github.com/wking53214/observe-perceive and reference to docs/audit/COMMERCIAL_RED_TEAM_2026-09-08.md in observe-perceive"
+          },
+          {
+            "repo": "Conservation_Kernel",
+            "where": "sentinel_os/requirements.txt - 'conservation-kernel @ git+https://github.com/wking53214/Conservation_Kernel.git@e377093...'; README.md mentions 'imports the Conservation Kernel package at module level'"
+          },
+          {
+            "repo": "CNS",
+            "where": "sentinel_os/requirements.txt - 'cns @ git+https://github.com/wking53214/cns.git@9f8f3fe...'; README.md mentions 'the private CNS package'; branch names claude/ci-cns-token, claude/cns-graph (list_branches)"
+          },
+          {
+            "repo": "DIT",
+            "where": "sentinel_os/requirements.txt - 'dit @ git+https://github.com/wking53214/DIT.git@26cee7b...'; sentinel_os/epistemic/dit_gate.py exists; branch claude/dit-repo-recreation-92grbe; HEAD commit message 'Gate the governor's reasoning through DIT before it is sealed'"
+          },
+          {
+            "repo": "ghost_tools",
+            "where": "README.md (root) - 'ghost_tools' kernel scan'; CONTRIBUTING.md - '.ghost_baseline.json ... produced by the ghost_buster tool'"
+          },
+          {
+            "repo": "GSA-815",
+            "where": "sentinel_os/README.md, CONTRIBUTING.md, SECURITY.md, docs/sentinel-os-status-v1.md - IVR/Iceberg application extracted to https://github.com/wking53214/GSA-815 (PR #30, 2026-08-28); sentinel_os/Tests/test_gsa815_contract.py"
+          },
+          {
+            "repo": "GEMS",
+            "where": "docs/audit/HERALD_CAMPAIGN_2026-08-26.PROVENANCE.md - 'conservation/transport/, vendored from GEMS with its own PROVENANCE.md'"
+          },
+          {
+            "repo": "HERALD",
+            "where": "docs/audit/HERALD_CAMPAIGN_2026-08-26.md and .PROVENANCE.md; branches herald-adversarial-campaign-2026-08-26 and claude/herald-campaign-record (list_branches); HERALD_CAMPAIGN_RESULTS.md at root of herald-adversarial-campaign branch"
+          },
+          {
+            "repo": "SAGE-K",
+            "where": "sentinel_os/README.md - 'SAGE-K interpretation: interpretation/, sage_k/'; sentinel_os/sage_k/ package directory exists"
+          }
+        ]
+      },
+      "classification": {
+        "primary_purpose": "SUBSTANTIVE_SYSTEM",
+        "purpose_summary": "A Python governance-kernel codebase: a Postgres-backed hash-chained evidence ledger with an independent twin replica, a cassette framework (mortgage/banking/IVR cassettes, CFPB Reg B regulatory lens, DPA contract lens), a Redis/Lua transmission queue with worker and FastAPI ingress, a conservation-boundary transport layer, a SAGE-K interpretation subsystem, a DIT epistemic gate, roughly 60 test files, a GitHub Actions CI workflow, Docker deployment files, a 2.8 MB synthetic mortgage CSV fixture, and a large body of architecture/audit/investor Markdown documentation. No chat or transcript content observed.",
+        "eligibility": "ELIGIBLE",
+        "eligibility_rationale": "Observed contents are a substantive software system (kernel package with ~110 source files, ~62 test files, CI workflow, requirements/Docker manifests, SQL, Lua) plus documentation and one synthetic data fixture. Nothing observed on any of the 8 branches is conversation history, chat history, or AI-assistant transcript archives; docs/prompts/ holds two prompt-template .txt files (not opened), which are not transcript archives. The sole exclusion criterion does not apply.",
+        "preliminary_state_signals": [
+          "IMPLEMENTED",
+          "TESTED",
+          "PARTIALLY IMPLEMENTED",
+          "CONTRADICTORY"
+        ],
+        "confidence": "HIGH"
+      },
+      "evidence": [
+        {
+          "claim": "Default branch main is non-empty with 17 top-level entries including sentinel_os/ package, docs/, tools/, sample_data/, .github/, README.md, LICENSE",
+          "evidence_class": "[CODE]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__get_file_contents owner=wking53214 repo=sentinel_os path=/ ref=refs/heads/main"
+        },
+        {
+          "claim": "8 branches exist; all 7 non-main branches have non-empty root listings similar to main (herald-adversarial-campaign-2026-08-26 is an older snapshot lacking .ghost_baseline.json/fortress_audit.log/.gitleaks.toml and having HERALD_CAMPAIGN_RESULTS.md)",
+          "evidence_class": "[REPOSITORY HISTORY]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__list_branches; mcp__github__get_file_contents path=/ on refs/heads/{audit/governance-stack-2026-09, claude/ci-cns-token, claude/cns-graph, claude/dit-repo-recreation-92grbe, claude/herald-campaign-record, claude/readme-test-count, herald-adversarial-campaign-2026-08-26}"
+        },
+        {
+          "claim": "Exactly 284 commits on main: page1=100, page2=100, page3=84 (<100, so exhausted). HEAD c2b4c8012e24191298d663ef3dad2fcf8fbdb5bb dated 2026-09-12T01:57:07Z ('Merge pull request #51 ... claude/dit-repo-recreation-92grbe'); root commit cff373e1bf83bc937e0ab9c12cfeed93a3aac4ee dated 2026-07-04T03:31:01Z ('Initial Sentinel OS upload', author William King wking53214@gmail.com)",
+          "evidence_class": "[REPOSITORY HISTORY]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__list_commits perPage=100 page=1,2,3; mcp__github__list_commits sha=cff373e1bf83bc937e0ab9c12cfeed93a3aac4ee perPage=1; page-1 output parsed from saved tool-result file via python (read-only)"
+        },
+        {
+          "claim": "3 tags exist: v1-soft-release, v0.4.0-governor-hardening, harness-complete-verified",
+          "evidence_class": "[REPOSITORY HISTORY]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__list_tags owner=wking53214 repo=sentinel_os"
+        },
+        {
+          "claim": "sentinel_os/ package contains ~60 top-level .py files (including 10 test_*.py), plus subpackages governance/ (9 files, ledger_postgres.py 165,955 B), cassettes/ (3 cassettes), regulatory_cassettes/ (cfpb_reg_b.py), contract_cassettes/ (reference_dpa.py), conservation/ (+transport/ 7 files with PROVENANCE.md), epistemic/ (dit_gate.py), interpretation/ (7 py + Tests/), sage_k/ (11 py + Tests/), lua/ (10 .lua), scripts/ (3), archive/ (1), Tests/ (50 files: conftest.py + 49 test_*.py)",
+          "evidence_class": "[CODE]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github_get_file_contents on sentinel_os, sentinel_os/Tests, sentinel_os/governance, sentinel_os/cassettes, sentinel_os/regulatory_cassettes, sentinel_os/contract_cassettes, sentinel_os/conservation, sentinel_os/conservation/transport, sentinel_os/epistemic, sentinel_os/interpretation, sentinel_os/sage_k, sentinel_os/sage_k/Tests, sentinel_os/lua, sentinel_os/scripts, sentinel_os/archive (all ref=refs/heads/main)"
+        },
+        {
+          "claim": "Test file count ESTIMATE ~62: 49 test_*.py in sentinel_os/Tests/, 10 test_*.py at sentinel_os/ top level, 1 in sentinel_os/sage_k/Tests/, 1 in tools/wiring_verify/tests/, plus sentinel_os/interpretation/Tests/ (not listed). Source (non-test) file count ESTIMATE ~110 Python files plus 10 Lua, 3 SQL, 4 shell",
+          "evidence_class": "[INFERENCE]",
+          "status": "INFERRED",
+          "source_path_or_call": "Counted from directory listings above; interpretation/Tests not enumerated"
+        },
+        {
+          "claim": "CI exists: .github/workflows/tests.yml (13,103 B). CONTRIBUTING.md and SECURITY.md describe it running pytest against real PostgreSQL/Redis plus ruff, bandit, pip-audit, gitleaks gates. Workflow file content itself not opened; the described behavior is a self-report",
+          "evidence_class": "[TEST]",
+          "status": "INSPECTED",
+          "source_path_or_call": "mcp__github__get_file_contents path=.github/workflows ref=refs/heads/main; CONTRIBUTING.md; SECURITY.md"
+        },
+        {
+          "claim": "sentinel_os/requirements.txt pins fastapi, uvicorn, psycopg2-binary, anthropic, httpx, pytest, numpy, pydantic, opentelemetry, redis, cryptography, and three git-pinned sibling repos: Conservation_Kernel, cns, DIT (all under github.com/wking53214)",
+          "evidence_class": "[CODE]",
+          "status": "INSPECTED",
+          "source_path_or_call": "mcp__github__get_file_contents path=sentinel_os/requirements.txt ref=refs/heads/main"
+        },
+        {
+          "claim": "No pyproject.toml, setup.py, setup.cfg, package.json, or Makefile at repo root or in sentinel_os/; Dockerfile and docker-compose.yml are in sentinel_os/. CONTRIBUTING.md states 'The repo has no ruff/pyproject config'",
+          "evidence_class": "[CODE]",
+          "status": "EXECUTED",
+          "source_path_or_call": "Root and sentinel_os/ directory listings on refs/heads/main; CONTRIBUTING.md"
+        },
+        {
+          "claim": "LICENSE is Apache License 2.0 (11,357 B). No NOTICE file at root. No root PROVENANCE.md, but provenance files exist at docs/audit/HERALD_CAMPAIGN_2026-08-26.PROVENANCE.md and sentinel_os/conservation/transport/PROVENANCE.md",
+          "evidence_class": "[CODE]",
+          "status": "INSPECTED",
+          "source_path_or_call": "mcp__github__get_file_contents path=LICENSE; root listing; docs/audit listing; sentinel_os/conservation/transport listing"
+        },
+        {
+          "claim": "sample_data/ holds a 2,783,534 B synthetic mortgage CSV (10,000 rows, 36 columns per its README) and DEMO_OUTPUT_v1.txt; sample_data/README.md states 'Nothing here is real data'. CSV not opened (size_kb > 5000 rule)",
+          "evidence_class": "[CODE]",
+          "status": "INSPECTED",
+          "source_path_or_call": "mcp__github__get_file_contents path=sample_data and path=sample_data/README.md ref=refs/heads/main"
+        },
+        {
+          "claim": "docs/ contains CHANGELOG.md, architecture/ (8 Markdown files incl. MORTGAGE_REGULATORY_LENS_FRAMEWORK v1-v4, directory map, inventory), pass3/ (9 investor/engineering/auditor briefs v3 + POST_SNAPSHOT_CORRECTIONS), audit/ (HERALD campaign record + provenance), prompts/ (README_prompt.txt, SYSTEM_OVERRIDE_PROMPT_HUMAN_FORENSIC_CAMO.txt - not opened), sentinel-os-status-v1.md",
+          "evidence_class": "[CODE]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__get_file_contents on docs, docs/architecture, docs/pass3, docs/audit, docs/prompts ref=refs/heads/main"
+        },
+        {
+          "claim": "README self-reports (not executed by me): 968 tests collected, 658 passing without Postgres/Redis, 228 skip, 39 fail, 38 error, measured 2026-09-09; earlier July 2026 status recorded 270 passing on CI. README also lists Known Limitations (cassette-tamper rejection not automatic, one twin forgery scenario uncaught, no bias-testing mechanism, no adverse-action specificity mechanism)",
+          "evidence_class": "[INFERENCE]",
+          "status": "INSPECTED",
+          "source_path_or_call": "README.md (root, main); docs/sentinel-os-status-v1.md"
+        },
+        {
+          "claim": "Contradiction: SECURITY.md states 'There are no tagged releases. main is the only supported line.' but list_tags returns three tags including v1-soft-release. Also README header says the repo 'declares no dependencies' while sentinel_os/requirements.txt lists them (likely meaning no packaging manifest at root, but literally inconsistent)",
+          "evidence_class": "[CODE]",
+          "status": "INSPECTED",
+          "source_path_or_call": "SECURITY.md vs mcp__github__list_tags; README.md vs sentinel_os/requirements.txt"
+        },
+        {
+          "claim": "docs/audit/HERALD_CAMPAIGN_2026-08-26.PROVENANCE.md records that branch herald-adversarial-campaign-2026-08-26 (tip 29e893386e) was closed unmerged on 2026-09-11 and that its gateway code was replaced on main by conservation/transport/ vendored from GEMS; the branch tip SHA matches list_branches output",
+          "evidence_class": "[REPOSITORY HISTORY]",
+          "status": "INSPECTED",
+          "source_path_or_call": "docs/audit/HERALD_CAMPAIGN_2026-08-26.PROVENANCE.md; mcp__github__list_branches"
+        },
+        {
+          "claim": "No conversation-history, chat-export, or transcript files observed on any branch root or in any listed subdirectory",
+          "evidence_class": "[CODE]",
+          "status": "EXECUTED",
+          "source_path_or_call": "All directory listings above on all 8 branches (root) and main (subdirectories)"
+        },
+        {
+          "claim": "Six branches are named claude/* and the HEAD merge references a claude/ branch, indicating AI-assisted development branches; this is a naming observation, not evidence of transcript storage",
+          "evidence_class": "[REPOSITORY HISTORY]",
+          "status": "EXECUTED",
+          "source_path_or_call": "mcp__github__list_branches; mcp__github__list_commits page=1 (HEAD message)"
+        }
+      ],
+      "could_not_determine": [
+        "Whether the test suite actually passes: no tests were executed; pass/fail figures are README self-reports",
+        "Contents of .github/workflows/tests.yml (not opened; behavior known only from CONTRIBUTING.md/SECURITY.md descriptions)",
+        "Contents of the 2.78 MB sample CSV, .ghost_baseline.json (478 KB), fortress_audit.log (110 KB), APPLY_authorized_by_attestation.md, and docs/prompts/*.txt (not opened)",
+        "Exact file count in sentinel_os/interpretation/Tests/ and sentinel_os/sage_k/examples/ (not listed)",
+        "Whether the git-pinned private dependencies (cns, DIT) are reachable; README says CNS is private",
+        "Commit counts on non-main branches (only main was paged)",
+        "What fortress_audit.log contains and whether it relates to corpus repos fortress-kernel/FORTRESS1 (filename only; not opened, no textual mention observed)"
+      ],
+      "description_vs_observed": "Enumeration description ('Governed AI execution framework for evidence-bound processing, approval, auditability, and controlled downstream action') is broadly consistent with observed contents: a governance kernel with an evidence ledger, attestation, twin witness, cassette/regulatory lenses, and queue workers. Observed README positions it more narrowly as 'the custody ledger stage of the governance stack' and states it is 'not deployable from a clone today'. Language claim 'Python' matches (Python dominant, with Lua/SQL/shell). size_kb 7008 is plausible given the 2.78 MB CSV, ~700 KB docs, 478 KB baseline JSON and large Python modules. created_at 2026-07-04 matches root commit date; pushed_at 2026-09-12 matches HEAD commit date. Not observed: a NOTICE file or root PROVENANCE.md. Minor internal contradictions: SECURITY.md claims no tagged releases while three tags exist."
+    }
+  ]
+}
