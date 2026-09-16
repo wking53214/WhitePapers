@@ -91,3 +91,22 @@ limitation is now live rather than hypothetical), knowledge cutoff.
 4. All Phase artifacts are written to this directory and committed, because
    Fable 5.1 gives no automatic context-budget signal and the container is
    ephemeral.
+
+## 5. Contamination risk identified and closed (2026-09-16)
+
+The merged `Consolidated-Super-Prompt.md` placed the RUN-B findings, RUN-B
+fate suggestions, and the frozen `C(0)` status in the same paste-ready file
+as the agent-facing phase specification. Pasting that file whole into a
+fresh session would hand every phase agent the earlier run's conclusions
+before any evidence was examined, defeating the clean-run requirement that
+the user's own `Super-Prompt.md` states ("do not preload these findings into
+a clean experiment").
+
+Executed work is unaffected: no Phase 1 agent received the consolidated
+file, RUN-B, or the `C(0)` state; the RUN-B reconciliation was computed in
+plain code outside the workflow (`evidence/phase-1/runb-reconciliation.json`).
+
+Closed by splitting the document into `AGENT-TASK-SPEC.md` (clean; the only
+material agents may receive) and `OPERATOR-BRIEF.md` (history and
+preferences; human and orchestrator only), and reducing the consolidated
+file to a superseded stub. Raised by the user; the defect was mine.
