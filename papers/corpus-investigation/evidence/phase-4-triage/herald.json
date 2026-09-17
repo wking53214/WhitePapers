@@ -1,0 +1,67 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "HERALD",
+    "purpose": "Pre-commitment viability triage, requested by operator before authorizing the full 20-phase run. Not a formal Phase 4 pass over the whole corpus -- this is the first of a small set of strongest candidates, executed to answer 'does the juice look worth the squeeze' before spending the full budget.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. This was direct tool-driven verification (clone, install, run tests, run live code, read source) rather than agent judgment calls, so no Fable or Opus subagent budget was spent producing it.",
+    "distinguishing_feature_vs_phase_1": "Phase 1's inspection of this repo (evidence/phase-1/phase1-table.json, row HERALD) was read-only against the GitHub API and explicitly never executed the code or ran the test suite (see that row's could_not_determine list, item 1). This entry closes that gap: the code was cloned, installed, and actually run."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/herald",
+    "head_sha": "ae5501dbe3ac6d3fefac9a1d824faf90d16fc2b3",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e . into an isolated venv (no runtime dependencies declared in pyproject.toml; dev extra is pytest>=8)",
+    "install_result": "EXECUTED, clean, no errors"
+  },
+  "findings": [
+    {
+      "id": "H1",
+      "claim": "The full pytest suite passes without modification.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "365 passed, 25 skipped, 0 failed, 0 errors (0.73-0.99s wall time across repeated runs).",
+      "compare_to_repo_claim": "README.md Status section (as recorded in Phase 1) claims '312 tests passing, 25 skipped'. Actual is 365 passing. The skip count matches exactly; the pass count does not. README is stale (undercounts), not overclaiming -- more tests exist and pass than the repo's own documentation states.",
+      "interpretation": "The skips are not concealed failures. Each skip carries an explicit reason string beginning 'REGISTRY:' naming a capability HERALD deliberately does not implement (e.g. no authorization-ledger/continuity API, no decision-history API) or a category explicitly out of scope per CONSTITUTION.md section 2 ('Out of scope: meaning-assignment'). This reads as honest scope discipline rather than swept-under-the-rug gaps."
+    },
+    {
+      "id": "H2",
+      "claim": "The extractor produces correct, well-formed candidate claims on real natural-language text it has never seen (not a test fixture).",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Constructed a 5-sentence synthetic business-document paragraph (invoice amount, a written date, a percentage, two durations, a reference ID, an ISO date with a conditional clause, a conditional duration) and ran it through herald.extract.extract() directly, not through any test harness.",
+      "result": "Extracted exactly 8 candidate claims, one per intended target, each with: correct `kind` classification, correct normalized `value`, correct character `span`, a `source_hash` binding it to the exact input text, a `content_hash`, a `claim_id`, and a `base_confidence`. The claim anchored to '2026-09-30 unless cancelled 30 days prior' was automatically tagged `opacity_flags: ['CONDITIONAL']` and its confidence was reduced (0.98 -> 0.68, delta -0.3) with a `reasons` entry citing the literal span of the word 'unless' that triggered it.",
+      "interpretation": "This is real, working rule-based information extraction with provenance binding, not a stub or a pass-through. The conditional-detection behavior in particular is a genuine, non-trivial piece of logic: it locates a specific hedging cue in the surrounding text and reduces confidence proportionally, correctly, on a sentence the code was never tested against before this run."
+    },
+    {
+      "id": "H3",
+      "claim": "Adversarial probe: does the same conditional-discounting behavior extend to negation and modality?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Fed three adversarial sentences: (a) 'The outage did NOT last 4 hours.' (b) 'The vendor might invoice us $42,500, but that has not been confirmed.' (c) 'According to the customer, the refund was $500, though we dispute this.'",
+      "result": "All three were extracted. (a) tagged opacity_flags=['NEGATION'], base_confidence unchanged at 0.9. (b) tagged opacity_flags=['MODAL','DEIXIS','NEGATION'], base_confidence unchanged at 0.95. (c) tagged opacity_flags=['DEIXIS'] only -- the explicit attribution ('According to the customer') and the explicit disagreement ('though we dispute this') produced no ATTRIBUTION or DISPUTE-type flag at all, unlike the CONDITIONAL case's 'unless' detection.",
+      "interpretation": "Two-part finding. (i) Negation and modality are detected and labeled but, unlike CONDITIONAL, do NOT reduce confidence -- inconsistent treatment of hedging categories within the same extractor. (ii) Attribution and explicit disagreement cues are not detected/flagged at all in this probe, though CONSTITUTION.md states meaning-assignment is out of scope by design, so this may be intentional rather than a defect."
+    },
+    {
+      "id": "H4",
+      "claim": "Adversarial follow-up: does the downstream admission gate (ConfidenceGate.submit, herald/gate.py) compensate for H3 by checking opacity_flags before admitting a claim?",
+      "status": "INSPECTED",
+      "evidence_class": "[CODE]",
+      "method": "Read herald/gate.py `submit()` (lines 408-509) in full, the actual decision path a claim goes through after extraction.",
+      "result": "submit() checks claim.confidence >= threshold (line 505) as its sole numeric admission test, after seal/source verification and any human confirmation lookup. `claim.opacity_flags` is read elsewhere only for the human-facing log/report string (line 511, `_confirmations`-adjacent code), never as a branch condition in the admit/refuse decision itself.",
+      "interpretation": "Combined with H3: a claim built from a sentence that explicitly negates or hedges the fact ('did NOT last 4 hours') is extracted with unreduced confidence and then ADMITTED by the gate with the verdict reason 'confidence at or above threshold; still requires governance before use' -- with no signal at the decision layer that the underlying text negated the claim. CONSTITUTION.md's stated design intent is that resolving this is a downstream governance layer's job, and README.md (as recorded in Phase 1) states no consuming project is wired in yet. This is therefore a real, currently-unmitigated gap in the practical safety story, not necessarily a defect against HERALD's own declared scope. Recorded as a finding, not a verdict on whether it matters -- that depends on what, if anything, ever consumes HERALD's output."
+    }
+  ],
+  "could_not_determine": [
+    "Whether CI (GitHub Actions) is currently green on this head SHA -- CI run status was not queried, only the local pytest run.",
+    "Behavior of the ruff/bandit static-analysis steps CI also runs -- not executed in this triage.",
+    "Whether the H4 gap is exploitable in any real downstream use, since no consuming project exists yet to have a stake in the outcome.",
+    "Novelty of the extraction+confidence+hash-binding+human-override+signed-decision packaging against prior art. Rule-based information extraction with hedge/negation detection is an established NLP category (e.g. speculation/negation-scope detection literature); what might be distinctive here is the specific combination for an evidence/governance use case. This is a Phase 9/10 (external research / novelty falsification) question, not answered by this triage."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED. Installs cleanly, its own test suite passes in full (better than its own README claims), and it correctly performs its stated function on fresh, unseen natural-language input with real provenance/confidence mechanics.",
+    "is_it_just_code_that_does_nothing": "NO. This is the concrete counter-case to that fear -- verified by direct execution, not by reading a README.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, correctly so at this stage. Not evaluated here; requires Phase 9/10-equivalent prior-art work.",
+    "recommendation": "Retain as a strong candidate for the full run. The H3/H4 gap is itself a valuable finding to carry forward -- worth testing whether it recurs in other corpus repositories that also do gated/governed claim admission (sentinel_os, TOUCHSTONE, etc.), since a shared confidence-only admission pattern across repos would be a real, testable cross-repo weakness rather than a one-off."
+  }
+}
