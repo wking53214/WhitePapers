@@ -1,0 +1,54 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "Resume_OS",
+    "purpose": "Pre-commitment viability triage, requested together with composition-engine. This repo's source material is the operator's own personal professional history documents, including a large personal Gemini chat transcript. Per this project's evidence-discipline norms, this entry deliberately records only structural/aggregate findings (counts, pass/fail, category names already present in the repo's own schema) and does not quote, excerpt, or otherwise reproduce any personal content from the extracted artifacts.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly could not determine whether the pipeline or the 38 claimed tests (12+12+14 across three files) actually run, and rated its own confidence MEDIUM in part for that reason. This entry runs the full pipeline end to end against the real committed source data and runs the test suite."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/resume_os",
+    "head_sha": "aaacc81c033b690d6db75d46687aedc64e661519",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "No manifest exists (stdlib-only per Phase 1's own read of the code, confirmed here by successful execution with zero third-party packages beyond pytest for the test runner itself). Ran bootstrap.sh directly: init_db.py, ingest.py, load_extraction.py, review.py list.",
+    "install_result": "N/A -- no install step, pure stdlib (sqlite3, argparse, etc.)."
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "claim": "Run the full pipeline end to end (init -> ingest -> load -> review) against the real committed source documents, and check whether the resulting artifact count matches the README's specific claim ('68 extracted artifacts').",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "The pipeline ran to completion with no errors. `review.py list` reported exactly 68 artifacts, all in DRAFT state, matching the README's claimed count exactly. Artifacts are distributed across the category taxonomy already documented in the repo's own schema (CAREER_HISTORY, SYSTEMS_INTELLIGENCE, PROBLEM_SOLVING_PATTERN, OPERATING_MODEL, BUSINESS_IMPACT, LEADERSHIP_MODEL).",
+      "interpretation": "This is a real, working extraction pipeline verified end to end against the operator's actual source material, not synthetic test fixtures. The specific, checkable count claim (68) holds exactly. No artifact content is reproduced in this record."
+    },
+    {
+      "id": "R2",
+      "claim": "Run the claimed 38-test suite (12+12+14 across three files, per commit messages) and determine whether it actually passes.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "38 passed, 0 failed, 10.13s -- exact match to the sum of the three commit-message claims.",
+      "interpretation": "Unlike composition-engine (evaluated in the same batch), every specific, checkable claim this repo makes about itself has now held up exactly: the artifact count and the test count both match precisely."
+    },
+    {
+      "id": "R3",
+      "claim": "Assess the substance of what the test suite actually verifies, since Phase 1 rated this repo's confidence only MEDIUM due to not having opened any source file.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "Test names and their pass results show the suite covers real governance invariants, not superficial checks: state-machine rules (production_mob is empty before review; only USER_APPROVED/CANONICAL artifacts are ever admitted to it), database-level CHECK-constraint enforcement (invalid state/category values are rejected by SQLite itself, not just application code), provenance completeness (every artifact traces to a supporting excerpt), idempotency of reload/match operations, and -- most relevant to this system's actual purpose -- anti-fabrication checks: test_invented_number_is_caught, test_gutted_line_is_caught, test_reattributing_a_line_is_refused, test_validation_catches_an_invented_line, test_validation_catches_a_demoted_artifact.",
+      "interpretation": "For a personal document-generation tool whose entire value proposition is 'never say something about yourself that the evidence doesn't support,' these are exactly the right tests to have, and they pass. This matches Phase 1's independent code-reading finding that validate.py implements five real drift/fabrication detectors (UNBACKED LINE, NOT PRODUCTION, NOT VERBATIM, NUMBER DRIFT, MEANING DRIFT) with a real MEANING_FLOOR threshold and sys.exit gating -- this triage confirms those detectors are actually exercised by passing tests, not merely present in the source."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the actual generated resume text (via generate.py/polish.py, once artifacts are promoted past DRAFT) reads well or is fit for real use -- this triage verified the governance/provenance machinery, not the quality of any generated document, and no artifact was promoted or generated content produced as part of this triage.",
+    "Contents of the personal source transcript and extraction files beyond their aggregate counts -- deliberately not inspected further than needed to confirm the pipeline runs, consistent with this being the operator's own personal data.",
+    "Novelty or broader applicability of the provenance-gated, human-promotion-required document generation pattern beyond this specific personal use case -- not evaluated, and likely not the relevant question for a tool whose own README says its name 'reflects its current sample application, not the underlying architecture.'"
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED, cleanly, on both axes checked: the extraction pipeline runs end to end against real data and produces exactly the claimed count, and the full test suite passes exactly as claimed.",
+    "is_it_just_code_that_does_nothing": "NO. This is a real, working, well-tested personal tool with genuine anti-fabrication safeguards that are exercised by passing tests, not just described in a README.",
+    "is_it_novel_or_commercially_valuable": "Likely not the right question for this specific repo -- its own documentation frames it as a sample/personal application of a more general provenance-gated document-governance architecture, not a product. The underlying pattern (human-promotion-gated artifact states, line-level provenance, drift detection against source evidence) is the same family of idea as several other repos in this corpus (CCC, TOUCHSTONE's answer-key discipline, observe-perceive's tamper detection) and may be worth considering alongside them as a recurring architectural theme across this account, rather than evaluating this one instance for standalone commercial value.",
+    "recommendation": "Retain as verified, working personal infrastructure. No further action needed for viability purposes; any future interest in this repo would be about the generality of its governance pattern, not about fixing anything found broken here."
+  }
+}
