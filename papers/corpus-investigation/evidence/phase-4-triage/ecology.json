@@ -1,0 +1,57 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "Ecology",
+    "purpose": "Pre-commitment viability triage, requested together with CCC given their documented pipeline relationship (Ecology's FindingRecord is designed to feed CCC.record_external_finding()). Phase 1 classified this repo AMBIGUOUS_INVESTIGATE (mixed tooling + a small amount of transcript/harvested material), not ELIGIBLE outright -- this triage evaluates the tooling side of that classification.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 never executed anything (explicitly listed under could_not_determine). This entry runs the test suite and live-tests the one fully deterministic, stdlib-only component (containment.py) without needing the optional multi-GB ML stack or a live Ollama server."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/ecology",
+    "head_sha": "060334faac496881edc2e3156b5e873d7bcb26d9",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -r requirements-dev.txt (ollama client library, chromadb, pydantic, pypdf, pytest). Deliberately did NOT install the optional 'RAG extras' (lancedb, sentence-transformers) -- the test file's own comment explains this pulls in 'a multi-gigabyte ML stack not needed to work on the rest of this repo,' and no live Ollama server was stood up (would require downloading LLM model weights, out of scope for this triage).",
+    "install_result": "EXECUTED, clean, no errors."
+  },
+  "findings": [
+    {
+      "id": "E1",
+      "claim": "How much of the test suite runs and passes without the optional heavy ML stack or a live LLM server?",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "124 passed, 2 failed, 6 skipped, 3.72s. The 6 skips are exactly the tests requiring lancedb/sentence-transformers, each with an explicit, reasoned skip message (not a silent collection failure) -- the test file's own comment explains that without the guard, 'an optional dependency was absent... a skip says not exercised; a collection error says nothing about the code and hides everything else.'",
+      "interpretation": "The overwhelming majority of this repo's own test suite (124 of 132 collected) neither requires nor was blocked by the absence of Ollama or the ML extras -- most of what's tested here is genuinely deterministic, stdlib-adjacent logic (containment, history parsing, provenance tracking), not a thin wrapper around an LLM call. This is a fifth instance of the honest-disclosure pattern seen across this account: skips explain themselves rather than degrading silently."
+    },
+    {
+      "id": "E2",
+      "claim": "What caused the 2 failures?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "Both failures are in tests/unit/test_corpus_origin.py, both tracing to the same root cause: corpus/ORIGIN.tsv (the provenance ledger for the harvested corpus/ directory) still lists 'gsa_universal_interlock_wrapper.py', but the actual file on disk is now named '...wrapper.txt' -- consistent with Phase 1's own note that a later commit ('corpus: every .py parses again') renamed some corpus files from .py to .txt without regenerating the ledger. test_every_corpus_file_has_a_row and test_rows_describe_the_bytes_on_disk both correctly detect this real drift.",
+      "interpretation": "This is a real, minor, currently-unfixed inconsistency in the corpus provenance ledger, not a fabricated test or a false failure. It is also good evidence the test is meaningful: it is checking something real (ledger-to-disk correspondence) and caught an actual case where they drifted apart. The fix is mechanical (rerun scripts/corpus_origin.py, exactly as the assertion's own error message says to do)."
+    },
+    {
+      "id": "E3",
+      "claim": "Live adversarial test of containment.py's verify() -- the deterministic, self-described 'UNCALIBRATED' verifier that sits at the center of the retrieval -> containment -> FindingRecord -> CCC pipeline this repo documents.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran verify_detailed() against four query/passage pairs: (1) a natural paraphrase of a direct factual answer ('max retry count' vs 'retries...up to 5 times'), (2) a totally unrelated passage (weather vs queue retries), (3) a deliberate false-positive trap -- a passage that explicitly DENIES something ('without any cryptographic signature') but shares surface vocabulary with the query ('sign', 'gateway', 'decisions'), and (4) the same question as (1) reworded with exact lexical overlap ('maximum retry count for the queue' / 'The maximum retry count for the queue is 5').",
+      "result": "(1) REJECTED (gate1_content_evidence, score 0.475) -- a true, natural-language answer was missed because the verifier is lexical/token-based, not semantic. (2) REJECTED, correctly, as unrelated. (3) REJECTED, correctly resisting the false-positive trap despite shared vocabulary. (4) ACCEPTED (score 0.875, matched_concepts=('maximum','retry','count','queue')) once the wording shared exact tokens with the query.",
+      "interpretation": "The module does something real: it is a genuine token/concept-overlap scorer with multiple hard-reject gates, not a stub, and it correctly resisted the one deliberate false-positive trap in this test. But case (1) is a concrete, executed demonstration of exactly what the module's own docstring warns about: 'the tests that ship with this module were written from the same design as the code -- they prove the design was implemented, not that it is correct... treat every constant in Thresholds as a policy parameter awaiting evidence.' A natural paraphrase of a real answer was missed. This is not a discovered defect so much as a directly-confirmed instance of a limitation the code already, explicitly, and specifically told the truth about before this triage ran."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the full RAG pipeline (src/rag/*, requiring lancedb + sentence-transformers) works -- 6 tests deliberately left skipped rather than installing a multi-GB ML stack for this triage.",
+    "Whether the live Ollama-backed synthesis path (rag_engine.generate_response, ecology.py's ActiveKnowledgeObject.receive_message) produces sensible output -- no local Ollama server was stood up; this would require downloading LLM model weights, judged out of scope for tonight's triage.",
+    "Contents of corpus/synapsis-master.zip (18.2 MB) and corpus/Extractor_corpus.md (292 KB) -- not opened, consistent with Phase 1's own size-based deferral.",
+    "Whether the 187-of-360 corpus files with 'no recorded origin' (per corpus/PROVENANCE.md, already noted in Phase 1) include any further transcript material beyond the one already-identified raw_sources/ PDF -- not re-investigated here; Phase 1's COST_OF_EXCLUSION verification already sampled this and found the corpus content is predominantly exported code/docs, not chat logs.",
+    "Novelty of the concept-extraction + multi-gate containment design, or of the anomaly-to-pattern-to-mandate discovery pipeline it feeds into CCC -- not evaluated, requires Phase 9/10-equivalent prior art work."
+  ],
+  "overall_assessment": {
+    "does_it_work": "MOSTLY YES for the deterministic core. 124/132 tests pass without any live LLM or heavy ML dependency, the 2 failures are a real, minor, mechanically-fixable ledger drift, and the central containment verifier is real, working code that behaves exactly as its own (unusually candid) documentation describes -- including being caught, live, missing a natural-language paraphrase it explicitly warned it might miss.",
+    "the_llm_dependent_path": "UNTESTED here, not confirmed either way. The RAG/Ollama-backed synthesis path -- the part of the pitch most dependent on an external LLM working well -- was not exercised in this triage and remains exactly where Phase 1 left it.",
+    "is_it_just_code_that_does_nothing": "NO for the deterministic majority of the codebase. The repo's most distinctive component (containment.py) is real, tested, and its own stated limitation was independently reproduced rather than assumed.",
+    "recommendation": "Retain the deterministic core (containment, history_loader, corpus provenance tooling) as verified working, with the ledger-drift fix (rerun scripts/corpus_origin.py) as a trivial follow-up. Treat the LLM-backed synthesis path as unverified, not as working or broken -- a future pass with Ollama actually running would be needed to say more. Given the documented Ecology -> CCC relationship, and that CCC's own private-source guard was independently verified working in this same session, the pairing shows a real, connected, and reasonably self-aware pipeline between the two, even though the flashiest (LLM) part of Ecology remains untested."
+  }
+}
