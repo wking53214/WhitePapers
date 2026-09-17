@@ -1,0 +1,75 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "innovation_os",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json, ghost_tools.json, observe-perceive.json, sentinel_os.json.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1's inspection explicitly could not determine whether the test suite passes and flagged an EXPERIMENTAL state signal from a side-branch commit message describing intelligence/ as scaffolding ('Perceiver.perceive() returns its input wrapped in a dict'). This entry executes the suite and directly re-reads the cited code at HEAD to check whether that self-description still holds, rather than treating a commit message as settled."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/innovation_os",
+    "head_sha": "3bb189d86705e9003fc5b6c451aa0259587e048e",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" (zero runtime dependencies declared)",
+    "install_result": "EXECUTED, clean"
+  },
+  "findings": [
+    {
+      "id": "I1",
+      "claim": "The full pytest suite passes.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "309 passed, 0 skipped, 0 failed, 0 errors, 0.83s. This matches exactly the highest test count found in commit messages ('309 tests pass locally'), so the self-report is accurate here (contrast with sentinel_os, where the self-report undersold reality, and HERALD, where it understated by a smaller margin).",
+      "interpretation": "The suite genuinely runs and genuinely passes. This finding alone would look like a fifth clean result -- the remaining findings below are about what those 309 tests, and the code they cover, actually demonstrate."
+    },
+    {
+      "id": "I2",
+      "claim": "Quantitative code-density survey: does the codebase's actual size match the impression given by its versioning scheme (65 git tags, ~30 of them named as sequential 'intelligence-v2-phase1 through phase30' milestones, each suffixed '-stable')?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Counted files and lines directly in the cloned working tree: total src/innovation_os/*.py file count, total line count, per-subpackage line counts across all ~100 subpackages (68 in the core package, 33 under intelligence/).",
+      "result": "351 Python files, 13,528 total lines, average 38.5 lines per file, 86 files under 10 lines. Per-subpackage totals (all files in a subpackage combined) are almost uniformly small: the entire intelligence/ tree's 33 subpackages each total well under 250 lines (two -- observation/, simulation/ -- are 0 lines); the core package's ~68 subpackages are similarly small, with only a handful (provenance/ 622 lines, lineage/ 433, registry/ 356, decision/ 318) exceeding 300 lines, and most in the 50-200 line range.",
+      "interpretation": "For comparison, single files in the four previously-triaged repos in this account routinely exceed the total size of most of this repository's entire subpackages (observe-perceive's governance_orchestrator.py alone is ~50KB; HERALD's individual modules run 3-25KB). This repository's architecture is wide (roughly 100 named subpackages, 65 version tags implying 30 completed 'phases' of an 'intelligence OS') but shallow (each named concept is represented by a handful of very small files). This is a quantitative, not merely impressionistic, basis for treating the elaborate phase/tag naming scheme with caution."
+    },
+    {
+      "id": "I3",
+      "claim": "Direct re-check of the specific scaffolding claim a side-branch commit made about intelligence/cognition/perceiver.py.",
+      "status": "EXECUTED",
+      "evidence_class": "[CODE]",
+      "result": "Read the file at HEAD. class Perceiver, method perceive(self, observation), full body: `return {\"type\": \"perception\", \"input\": observation}`. No other logic. This is exactly what the commit message described, and it is still true at the current HEAD on main, not only on the side branch that made the observation.",
+      "interpretation": "One of the 33 intelligence/ subpackages (cognition/, which lends its name to tags like 'intelligence-v2-phase15-reasoning-stable') is confirmed, by direct inspection rather than by trusting a commit message, to contain a pass-through stub with no perception logic at all."
+    },
+    {
+      "id": "I4",
+      "claim": "Does the repository's own flagship demonstration (run_mvp.sh -> demos/run_innovation_demo.py, the MVP entry point named in pyproject.toml/run_mvp.sh) show a real, computed innovation pipeline end to end?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran the demo script directly and then read both the demo script and the InnovationPipeline class it calls (src/innovation_os/core/pipeline.py) in full.",
+      "result": "The demo runs without error and prints a coherent-looking narrative (a coral-reef restoration problem, three generated ideas, three nature-inspired patterns, an aligned/reviewed/approved solution). Reading the source shows every one of those values -- the ideas, the nature patterns, the solution id, the review-complete flag, the approval flag -- is a literal, hardcoded argument passed BY THE DEMO SCRIPT ITSELF into InnovationPipeline.run(). The pipeline's run() method performs exactly one piece of actual computation in its entire body: `aligned = alignment_score >= 70`, a threshold check against a number the caller already supplied. Every other field is copied straight through into the result dataclass with no transformation.",
+      "interpretation": "The 'AI proposes, systems evaluate, humans authorize' lifecycle the README describes is, in the one code path the repository presents as its own demonstration, staged by the demo script rather than performed by the system. This is a materially different kind of finding than a coverage gap: it is the specific example the repository's own maintainers chose to showcase, and it does not show what it appears to show."
+    },
+    {
+      "id": "I5",
+      "claim": "Does real logic exist elsewhere in the codebase that the demo simply failed to showcase, or is the disconnect deeper -- is real logic present but not wired into anything?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Phase 1's own inspector had already spot-checked src/innovation_os/ideation/engine.py and found genuine, working logic (IdeationEngine.generate_idea(), get_idea(), find_by_problem()) -- cited at the time as evidence directly refuting a 'stub tree' hypothesis. Searched the entire src/ and demos/ trees for any import of IdeationEngine or the ideation package from outside ideation/ itself.",
+      "result": "Zero matches. IdeationEngine is never imported by core/pipeline.py, by any other subpackage, or by either demo script. It exists, is real, presumably passes its own unit tests (contributing to the 309), and is never called by anything outside its own directory.",
+      "interpretation": "This sharpens I4 rather than contradicting it. Real, working logic does exist in this codebase -- Phase 1 was correct that ideation/engine.py refutes a pure-stub-tree hypothesis for the repository as a whole. But that logic is not integrated into the system's own presented entry point. The picture is neither 'entirely fake' nor 'a working integrated system' -- it is closer to a collection of independently-written, independently-tested, largely unconnected small modules, organized under an elaborate naming and versioning scheme that implies far more integration and maturity than what actually executes end to end."
+    }
+  ],
+  "could_not_determine": [
+    "Whether any OTHER subpackage besides core/pipeline.py and intelligence/cognition/perceiver.py wires multiple modules together into a real multi-step flow -- only the two paths a reasonable operator would check first (the MVP demo and the specifically-flagged scaffolding claim) were examined; the ~100 subpackages were not individually surveyed for internal wiring.",
+    "Whether mvp2_demo.py (the second demo file present in demos/, not run in this triage) tells a different story than run_innovation_demo.py.",
+    "Whether the 65 git tags correspond to genuinely different code states or were applied in a burst against similar underlying content -- tag-to-commit resolution was not performed.",
+    "Whether the CEE-0001/conversation_original.txt (93 KB, still unopened as of Phase 1) describes the origin of this architecture in a way that would explain the wide-shallow pattern (e.g. a deliberately breadth-first exploratory design phase, by original intent rather than by accident).",
+    "Novelty or commercial value of any individual subpackage -- not evaluated; the finding here is about integration and depth, not about whether any single idea among the ~100 named concepts is itself worth developing further."
+  ],
+  "overall_assessment": {
+    "does_it_work": "PARTIALLY, and the qualification matters more here than in any other repo triaged so far. The test suite genuinely passes (I1) and at least one subpackage contains genuine working logic (I5, citing Phase 1). But the repository's own chosen demonstration of the whole system does not exercise real decision-making (I4), and the specific scaffolding admission a commit message made about intelligence/ is confirmed still true, not fixed since (I3). The elaborate 65-tag, 30-phase versioning scheme is not matched by a comparable depth of code (I2).",
+    "is_it_just_code_that_does_nothing": "CLOSER TO THIS FEAR THAN ANY OTHER REPO TRIAGED SO FAR, though not a clean yes. The code is real, imports cleanly, and its tests pass -- it is not empty and not a transcript dump. But the flagship demo is a scripted narrative wrapped around a near-no-op pipeline, and the one piece of genuinely working logic Phase 1 found is disconnected from everything else. If this repository were the sole basis for a commercial claim, that claim would currently rest on architecture and naming, not on demonstrated integrated capability.",
+    "contrast_with_the_other_four": "HERALD, ghost_tools, observe-perceive, and sentinel_os each had at least one adversarial test (negation handling, a live scan of an independent target, five tamper-detection vectors, real OS-permission-boundary enforcement) that produced a genuine, non-trivial, correctly-functioning result under direct pressure. This repository's equivalent adversarial test -- running its own flagship demo and reading what it actually calls -- produced the opposite kind of finding.",
+    "recommendation": "Do not group this repository with the other four in any summary claiming '5 for 5 working systems.' If any part of innovation_os is worth carrying forward, the specific, narrower claim to test next is whether individual subpackages like ideation/engine.py, provenance/, or lineage/ (the few with real line-count depth) hold up on their own terms -- not whether the 'innovation operating system' as packaged and demonstrated is itself a working, integrated system, which this triage did not find to be the case."
+  }
+}
