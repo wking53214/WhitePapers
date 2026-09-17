@@ -1,0 +1,58 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "Governance_Gateway",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json, ghost_tools.json, observe-perceive.json, sentinel_os.json, innovation_os.json. Already exercised once as an observe-perceive chain dependency in this batch; this entry evaluates it on its own terms.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly flagged the README's claimed adversarial campaign ('105 attacks, 100 defended, 5 exposed') as unverifiable from the ~11 KB of test files observed, since only file sizes were checked, not contents. This entry runs the suite and reads every test file to check the claim directly."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/governance_gateway",
+    "head_sha": "c507be7279c4488f98404514fcea2c900c53168e",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[test]\" (zero runtime dependencies declared)",
+    "install_result": "EXECUTED, clean"
+  },
+  "findings": [
+    {
+      "id": "G1",
+      "claim": "The full pytest suite passes.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "45 passed, 0 skipped, 0 failed, 0.05s. tests/test_adversarial.py contributes 25 of the 45 (after parametrize expansion of 3 parametrized test functions covering 6+3+4 cases plus 12 unparametrized functions).",
+      "interpretation": "The code that exists is small, real, and completely green. Read every one of the 25 adversarial test bodies directly (not just their names): they cover malformed-input rejection, provenance/authority/scope/integrity tampering (each via direct attribute mutation on a frozen dataclass, a realistic attack), non-string dict-key coercion, payload immutability, empty-provenance and NaN-payload construction guards. Every one of these is a real, meaningful check, and every one currently passes -- this is genuine, well-designed defensive test coverage for what the module does."
+    },
+    {
+      "id": "G2",
+      "claim": "Central check: does the README's headline claim -- 'The gateway was subjected to 105 ADVERSARIAL ATTACKS... 100 did not produce the targeted violation... 5 exposed issues... developed in support of the associated white-paper research' -- hold up against the actual repository content?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Read tests/test_adversarial.py in full (the only candidate location for such a campaign) and searched the entire repository tree for any file matching *campaign*, *adversarial*, *attack*, or any raw log/record of individual attack cases.",
+      "result": "The adversarial test file contains 25 executable cases total (after parametrize expansion), not 105. No file anywhere in the repository -- not README, not ARCHITECTURE.md, not INVARIANTS.md, not any hidden log -- lists the other 80 claimed attack cases or names what the 5 'exposed issues' specifically were. All 25 present cases pass; none is marked as a known/expected failure (no xfail, no skip, no assertion of vulnerable behavior). There is no reproducible trace of '100 defended / 5 exposed' anywhere in the current repository.",
+      "interpretation": "This is the same kind of specific, checkable numeric claim this triage batch has verified successfully in every prior repo (HERALD's test count, ghost_tools' test count, ratios in observe-perceive and sentinel_os) -- and it is the first one that does not check out. The repository's actual, reproducible evidence base is 25 real adversarial tests, all currently passing. The headline '105 attacks / 5 exposed issues' framing -- which the README explicitly says exists 'in support of the associated white-paper research' and insists 'should not be erased from the history of the system' -- is not backed by anything retrievable in this repository. This could mean the original 105-case campaign was run informally (e.g., an ad hoc agent session) and only partially, or not at all, captured as committed test code; it could also mean the number is simply inflated. This triage cannot distinguish those explanations from the repository's own content, and does not assume either."
+    },
+    {
+      "id": "G3",
+      "claim": "Attempt to locate the 'associated white-paper research' the README cites as the destination for this campaign's evidence.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "This triage runs inside the wking53214/WhitePapers repository. Searched all markdown files in this repository (outside the corpus-investigation evidence tree itself) for 'Governance Gateway', 'governance_gateway', '105 adversarial', and '105 attack'.",
+      "result": "One match: papers/co-v-co2-test/co.v.co2.test.md, line 29, a bare path '/home/wking53214/Governance_Gateway'. This is a SEPARATE, MATERIAL discovery, not a confirmation of the white-paper claim: that file is the 88.2 MB, previously entirely unread file already flagged as a P0 priority in PHASE-1-corpus-discovery.md §9.B ('bears on whether the corpus boundary and this investigation's own record are trustworthy'). A second grep match a few hundred lines later in the same file is what appears to be a raw, embedded ChatGPT conversation export (a chat.html payload with a literal 'jsonData = [{\"conversation_id\": ...' structure, containing actual personal conversation text), not a white paper about Governance_Gateway's adversarial campaign.",
+      "interpretation": "The 'associated white-paper research' Phase 1 could not identify is still not identified -- the one hit found is a bare directory-path string inside an unrelated, much larger file, not a document about this campaign. Separately, and more importantly: this incidentally confirms that the 88 MB co.v.co2.test.md file contains at least some raw personal conversation export content, not solely prose analysis, and does so by directly observing its content for the first time in this investigation. This is exactly the kind of file the operator decisions record (§9.B) already flagged as needing to be read before the corpus's own record can be trusted, and this triage's incidental discovery is reported rather than pursued further here -- reading the rest of an 88 MB file containing what appears to include real personal conversation content is out of scope for a Governance_Gateway triage and raises its own handling questions the operator should decide, not this triage."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the 105-case campaign happened at all in some non-committed form (e.g. an ungitted local session, an agent transcript never saved to this repo) -- absence of evidence in the repo is not proof the campaign never occurred, only that it is not currently verifiable from repository content.",
+    "What the 5 specific 'exposed issues' were, or whether they were ever fixed -- cannot be identified without the original campaign record.",
+    "The full nature and provenance of papers/co-v-co2-test/co.v.co2.test.md beyond the two grep hits above -- this triage deliberately did not open or further search this 88 MB file, both because it is out of scope for a Governance_Gateway triage and because an initial hit shows it contains what looks like real personal conversation content, which deserves a deliberate handling decision rather than incidental further exposure during an unrelated triage.",
+    "Whether CI has ever run this repository green -- not queried; only a local run was performed here.",
+    "Novelty or commercial value of the gateway's validate-only, fail-closed design -- not evaluated; would require Phase 9/10-equivalent prior art work (schema/contract validation gateways are a known pattern; the specific invariant set here was not compared against prior art)."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES for what is actually present: 45/45 tests pass, and the 25 adversarial tests read as genuine, well-designed security-relevant checks, all currently passing against real code (frozen dataclasses, SHA-256 integrity digest recomputation, explicit fail-closed exception handling).",
+    "the_headline_claim": "DOES NOT CHECK OUT. The README's most prominent, specifically-quantified claim (105 attacks, 100 defended, 5 exposed, tied explicitly to 'the associated white-paper research') has no supporting evidence anywhere in the repository. This is a materially different finding from a stale-but-directionally-correct number (contrast sentinel_os's README, which undersold reality) -- here the claimed evidence base is roughly 4x the size of what actually exists and the repository, in the same README, explicitly leans on the 5 failures as important, uneraseable history that in fact cannot be located anywhere.",
+    "is_it_just_code_that_does_nothing": "NO for the code itself -- it is small, real, and does something (validates artifact integrity and rejects tampering, verified by direct execution). But the evidentiary claim the repository makes ABOUT itself, which is the more ambitious and more citable claim, is not supported.",
+    "recommendation": "Retain the 45 passing tests and the underlying gateway.py/models.py as a real, small, verified component. Do NOT cite the '105 attacks / 5 exposed issues / supports the white paper' claim in any downstream summary without a caveat that it is unverified -- treat it the same way this project treats any other unverified author claim, per the task spec's own rule that repository descriptions are claims to test, not evidence. Separately and more urgently: flag the co.v.co2.test.md discovery to the operator now rather than waiting for it to come up again -- it is already a declared P0 priority and this triage just produced the first direct evidence of what it actually contains."
+  }
+}
