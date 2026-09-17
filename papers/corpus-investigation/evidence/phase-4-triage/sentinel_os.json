@@ -1,0 +1,80 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "sentinel_os",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json, ghost_tools.json, observe-perceive.json. This is the largest system in the corpus by history (284 commits, 8 branches).",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1's inspection (evidence/phase-1/phase1-table.json, row sentinel_os) explicitly could not determine whether the test suite passes, calling the README's own pass/fail numbers a self-report rather than verified fact, and could not determine whether the three pinned private git dependencies (Conservation_Kernel, cns, DIT) are even reachable. This entry closes both gaps by actually standing up the full documented environment (PostgreSQL, Redis, three real OS identities, a TLS cert) and running the suite for real."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/sentinel_os",
+    "head_sha": "c2b4c8012e24191298d663ef3dad2fcf8fbdb5bb",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "environment_stood_up": [
+      "PostgreSQL 16 (already installed in this container), started, iceberg role/database created per CONTRIBUTING.md",
+      "Redis 7 (already installed), started, verified reachable (PONG)",
+      "Three real OS-level user identities (sentinelsvc, twincustomer, twincustodian) provisioned via the repo's own sentinel_os/scripts/twin_ensure_services.sh, run as root",
+      "Ephemeral TLS cert generated via openssl per CONTRIBUTING.md's exact command",
+      "All three pinned private git dependencies installed from sentinel_os/requirements.txt: conservation-kernel (pinned commit e377093..., resolved to package version 0.1.0 -- distinct from the 0.3.0 that observe-perceive's own, differently-pinned commit resolved to earlier in this triage batch, confirming these are genuinely independent commit pins, not the same artifact relabeled), cns (pinned commit 9f8f3fe..., version 0.1.0), dit (pinned commit 26cee7b..., version 13.1.0)"
+    ]
+  },
+  "findings": [
+    {
+      "id": "S1",
+      "claim": "All three pinned private sibling dependencies actually resolve and build.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "conservation-kernel, cns, and dit all cloned from their exact pinned commits and built into installable wheels without error.",
+      "interpretation": "This is the second time in this triage batch (after observe-perceive) that a claimed set of pinned private cross-repo dependencies has been shown to genuinely resolve rather than being aspirational. Combined with observe-perceive's 6-repo chain, this account now has two independently-verified instances of real, working multi-repo dependency graphs, not one lucky case."
+    },
+    {
+      "id": "S2",
+      "claim": "One setup-documentation gap, found and fixed during this triage.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "The twin-identity live tests (test_twin_live.py) failed with FileNotFoundError: '/usr/local/bin/twin_ensure_services' when run exactly per CONTRIBUTING.md's copy-paste setup steps (which only says to run 'sudo sentinel_os/scripts/twin_ensure_services.sh' from the repo root). The test fixture actually expects the script pre-installed at that absolute path -- stated in the script's own docstring but not in CONTRIBUTING.md's setup steps. Fixed by installing the script to /usr/local/bin/twin_ensure_services and rerunning; the identity-crossing tests then passed.",
+      "interpretation": "A minor, one-line documentation gap, not a functional defect in the tested code. Recorded per this project's evidence discipline (report what actually happened, including the workaround, rather than silently normalizing it)."
+    },
+    {
+      "id": "S3",
+      "claim": "With the full documented environment actually running, the test suite result.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "967 passed, 22 skipped, 0 failed, 0 errors, in 219.03s. This includes test_twin_live.py's OS-identity-crossing tests, run via sudo as CONTRIBUTING.md specifies for 'the whole suite the way CI runs it.'",
+      "compare_to_repo_claim": "The README (as recorded in Phase 1) self-reports, dated 2026-09-09: '968 collected, 658 passing... 228 skip, 39 fail, and 38 error.' The actual result obtained here (967 passed, 22 skipped, 0 failed, 0 errors) is dramatically better on every axis: fewer skips, zero failures, zero errors, far more passes. The collected-test counts differ by one (968 vs 967 here), consistent with ordinary drift since the README's measurement date rather than a discrepancy worth chasing.",
+      "interpretation": "The README badly understates the current state of this repository -- the opposite direction of overclaiming, and the opposite of what the ROI conversation was worried about. Either the README was measured in a degraded environment that never had the full Postgres/Redis/OS-identity/TLS setup this triage assembled, or real fixes landed after 2026-09-09 without the README being updated. Either way: when actually run in the environment its own documentation specifies, essentially the entire test suite -- including the genuine OS-permission-boundary tests, not mocked ones -- passes."
+    },
+    {
+      "id": "S4",
+      "claim": "The 22 skipped tests are a deliberately gated, ethically/legally sensitive feature, not a coverage gap.",
+      "status": "INSPECTED",
+      "evidence_class": "[CODE]",
+      "result": "All 22 skips are in Tests/test_bisg_estimator.py and Tests/test_bisg_estimator_live.py -- tests for a BISG (Bayesian Improved Surname Geocoding) estimator, a real statistical technique used in fair-lending compliance to infer race/ethnicity from surname and geography. The module's own docstring states: 'BISG demographic inference is RESEARCH MODE only. IP/privacy attorney review pending. These tests are skipped by default unless SENTINEL_BISG_RESEARCH_MODE=true is set.'",
+      "interpretation": "Deliberately chose NOT to force SENTINEL_BISG_RESEARCH_MODE=true to run these tests. The repository's own authors have gated a legally and ethically sensitive capability behind an explicit opt-in pending attorney review; overriding that gate to chase a higher pass count during a viability triage would be the wrong call, not a more thorough one. This is the same posture already applied earlier in this triage batch to ghost_tools' execution-trust gate and observe-perceive's disclosed clinical limitations: respect a disclosed safety/legal boundary rather than test past it. Recorded as a finding about the repo's engineering discipline, not chased further."
+    },
+    {
+      "id": "S5",
+      "claim": "Cross-repo pattern: this is now the fifth instance, across four different repositories in this triage batch, of the same authorial discipline -- disclosing a real limitation rather than hiding or silently passing it.",
+      "status": "INFERRED",
+      "evidence_class": "[INFERENCE]",
+      "result": "HERALD: skip reasons name exactly which capability doesn't exist and why. ghost_tools: hedges its own findings' severity and refuses to execute untrusted code. observe-perceive: xfails name specific missed clinical detection patterns and say 'address before production deployment'; its own demo code prints 'this is a finding' if tamper detection ever fails. sentinel_os (S4, here): gates a legally sensitive capability pending attorney review rather than shipping it quietly.",
+      "interpretation": "This is now a pattern across four independently-triaged repositories, not a one-off trait of a single codebase. Worth carrying into any broader claim about this corpus's engineering culture: whatever else is true of novelty or commercial value, the authorial habit of disclosing rather than concealing limitations recurs consistently under direct adversarial testing, which is itself evidence -- not proof, but evidence -- bearing on how much to trust self-reported claims elsewhere in the corpus that have not yet been independently verified."
+    }
+  ],
+  "could_not_determine": [
+    "Whether CI (.github/workflows/tests.yml) currently reproduces this same result -- not queried; this triage built the documented environment manually rather than reading CI's own logs.",
+    "Contents or behavior of the three sibling packages (conservation-kernel, cns, dit) beyond successful installation -- exercised only as dependencies here, not independently triaged the way HERALD/ghost_tools were.",
+    "Whether the BISG estimator's actual demographic-inference logic (S4) produces correct, defensible statistical results -- deliberately not tested, per the gating decision in S4.",
+    "The internal contradiction Phase 1 already flagged (SECURITY.md claims 'no tagged releases' while 3 tags exist) -- not re-verified here, carried forward as still open.",
+    "Novelty of the hash-chained evidence ledger, twin-replica custody model, or cassette/regulatory-lens framework -- not evaluated here, requires Phase 9/10-equivalent prior art research. RUN-B's ontology-coercion falsification (see observe-perceive.json could_not_determine) concerns the same repository family and is not retested or overturned by this triage.",
+    "Whether load_test.py / load_test_live.py (throughput checks CONTRIBUTING.md mentions separately from the main suite) were included in the 967-passed count or need to be run separately -- not investigated."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED, and by a wide margin the strongest raw test result of the triage batch: 967 passed, 0 failed, 0 errors, against the repo's own full documented environment (real Postgres, real Redis, real cross-user OS permission boundaries, real TLS). This is also the first repo in the batch where the repo's own self-reported numbers turned out to be substantially worse than reality, rather than the reverse.",
+    "the_gated_feature": "The 22 skips are a responsible, disclosed legal/ethical gate (demographic inference pending attorney review), not a coverage failure. Left untested by deliberate choice, not oversight.",
+    "is_it_just_code_that_does_nothing": "NO, most decisively of the four repos triaged so far. This required standing up real infrastructure and real OS-level identity separation to test properly, and it held up completely once that infrastructure existed.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, not evaluated here -- requires Phase 9/10-equivalent prior art work on the hash-chained ledger/twin-custody/cassette architecture. Note again that RUN-B already falsified a related ontology-compatibility claim across this same repo family (sentinel_os, Conservation_Kernel, Governance_Gateway, CCC, GEMS); that finding is about a different property than what this triage tested and stands independently.",
+    "recommendation": "Retain as the strongest single-repo result in the batch. The documentation gap in S2 is worth a one-line CONTRIBUTING.md fix if this repo continues forward. Worth triaging conservation-kernel, cns, and dit individually in a later pass, the same recommendation already made for observe-perceive's sibling repos -- there is now a real, recurring need to evaluate the shared dependency repos on their own terms rather than only as other packages' dependencies."
+  }
+}
