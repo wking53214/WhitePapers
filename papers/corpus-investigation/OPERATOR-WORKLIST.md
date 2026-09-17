@@ -121,6 +121,26 @@ reversible; GitHub deletion mostly is not.
 These are not inferences from READMEs. Each was produced by executing the repo.
 All 15 triage entries are in `evidence/phase-4-triage/`.
 
+### Looks dead, is not — check before retiring either of these
+
+Both were executed in a fresh venv on 2026-09-17. A scan that only reads the
+default branch, or that trusts a raw pytest exit code, will misclassify both.
+
+| Repo | What a scan sees | What is actually there |
+|---|---|---|
+| `ZTS` | **`main` is empty** | The real code lives on an unmerged PR branch, `claude/zts-repo-recreation-82d08u` (`refs/pull/1/head`). Fetched and run: **98 tests pass**, zero runtime dependencies. A deterministic text-filtration pipeline with seven gates, enforcement profiles, penalty scoring and a `ValLedger`. Merge the branch or the repo reads as abandoned. |
+| `ZTGKT` | 15 failing tests | The 15 failures are entirely a missing `pytest-asyncio`, which the repo declares in its own dev extra. Install it and **47/47 pass**. Not a code defect. |
+
+Note for the fresh Phase 1: neither of these is visible as healthy without
+checking non-default branches and installing declared dev extras. The same
+may be true of other repos in the corpus; `ARLF` was already found in Phase 1
+to carry its only runnable implementation on a non-default branch.
+
+One caveat if `ZTS` is carried forward: its `scrub()` is deletion-based and
+was observed to produce ungrammatical output (`"I think this might be
+amazing-truly."` became `"think this be amazing-truly."`). It is a filter, not
+a rewriter, and should not be pointed at prose meant to be read.
+
 ### Broken as committed
 
 | Repo | Item |
