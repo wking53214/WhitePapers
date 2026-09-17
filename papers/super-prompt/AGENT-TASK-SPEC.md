@@ -345,6 +345,11 @@ prior work; determine exactly what's different and whether that difference
 is technically meaningful; attempt to falsify the novelty claim; downgrade
 or discard it if it doesn't survive.
 
+The objective of a prior-art search is to determine whether you have built
+a better mousetrap, not whether you invented the mousetrap. Finding that
+the mousetrap already exists is the beginning of the analysis, not the end
+of it.
+
 Search for novel computational primitives, algorithms, representations,
 invariants, state models, architectural patterns, governance mechanisms,
 verification methods, methodologies, benchmarks, or theoretical models. Do
