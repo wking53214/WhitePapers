@@ -1,0 +1,74 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "GSA-815",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json, ghost_tools.json, observe-perceive.json, sentinel_os.json, innovation_os.json, governance_gateway.json. Operator flagged this as the last repo for this session.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly could not determine whether the vendor/sentinel_os submodule resolves, whether the test suite passes, or which of two conflicting self-reported test counts (README: 121, DEPENDENCIES.md: 127) was correct. This entry resolves all three by actually cloning with the submodule, installing, and running the suite under two different infrastructure conditions."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 --recurse-submodules --shallow-submodules https://github.com/wking53214/gsa-815",
+    "head_sha": "02a977b2c89cf3a768ab38244232995ba0fec16d",
+    "matches_phase1_recorded_head_sha": true,
+    "submodule_pin": "vendor/sentinel_os resolved to sentinel_os commit 3cc04529a08ac26652c8d23e5610c2a729ef946a -- an OLDER commit than sentinel_os's own current main HEAD (c2b4c8012e24191298d663ef3dad2fcf8fbdb5bb) already verified in this triage batch. This is a deliberate pin, not a discrepancy -- consistent with the documented pattern across this account of consuming repos pinning kernel dependencies to specific commits.",
+    "python_version": "3.11.15",
+    "install_method": "pip install -r requirements.txt (which itself does `-r vendor/sentinel_os/sentinel_os/requirements.txt` plus a separately-pinned `cns` commit, distinct from sentinel_os's own cns pin)",
+    "install_result": "EXECUTED, clean. cns resolved to version 0.2.0 here vs 0.1.0 under sentinel_os's own pin -- confirmed genuinely independent commit pins, not the same artifact."
+  },
+  "findings": [
+    {
+      "id": "GS1",
+      "claim": "Resolve the internal contradiction Phase 1 flagged: README banner says '121 tests pass', DEPENDENCIES.md says '127 passed'.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran the suite twice: once before PostgreSQL/Redis were available in this environment, once after starting them (reusing the iceberg role/database already provisioned during the sentinel_os triage in this same session).",
+      "result": "Without Postgres/Redis: 121 passed, 6 errors (all 6 in test_production_harness_breakers.py, all failing on `psycopg2.OperationalError: connection to server ... failed`). With Postgres/Redis: 127 passed, 0 failed, 0 errors, 22.15s.",
+      "interpretation": "Both numbers in the repo's own docs are correct -- they are two honest measurements taken under two different infrastructure conditions, not a contradiction or an inflated claim. This is a clean resolution in the repo's favor: nothing here was fabricated, an operator just needs to know which environment produced which number, which the docs didn't specify."
+    },
+    {
+      "id": "GS2",
+      "claim": "Confirm whether the two gaps the repo's own PROVENANCE.md and docker-compose-prod.yml already admit to (a missing Dockerfile; an unimported 'governance core' reference module) are still present.",
+      "status": "EXECUTED",
+      "evidence_class": "[CODE]",
+      "result": "No Dockerfile exists anywhere in the repository root, while docker-compose-prod.yml's `iceberg` service specifies `build: .`. Deploying via the documented docker-compose path would fail immediately at build time.",
+      "interpretation": "A real, self-disclosed gap, still present. Consistent with this account's recurring pattern of authors documenting known limitations rather than hiding them (see prior triage entries)."
+    },
+    {
+      "id": "GS3",
+      "claim": "Central check: Phase 1's REFUTE verifier specifically opened api_server_resilient.py -- a file the inspector had not read -- and cited it as decisive evidence against a 'stub tree that imports cleanly and defines nothing' hypothesis, based on its imports and route definitions looking real. Does the file actually run?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Attempted `python3 -c \"import api_server_resilient\"` from the repo root, the way anyone deploying this file directly (not through pytest) would naturally try it.",
+      "result": "FAILS: `ModuleNotFoundError: No module named 'operational_resilience'`, raised via api_server_resilient.py -> resilient_harness.py -> operational_resilience. Confirmed the module is not missing from existence -- it lives at vendor/sentinel_os/sentinel_os/operational_resilience.py -- but is not importable from the repo root without that vendor path added to sys.path. Re-ran with `PYTHONPATH=vendor/sentinel_os/sentinel_os` set manually: the import succeeds and produces a real FastAPI app object.",
+      "interpretation": "This is the single most important finding in this triage, and it directly illustrates the value of execution over inspection. Phase 1's verifier was correct that the file's CONTENTS look real (real routes, real imports, real logic) -- that observation stands and is not overturned. But 'the code that's written looks real' and 'the code runs' are different claims, and Phase 1's read-only methodology could only ever establish the first one. Read alone, this file appeared to decisively refute the stub hypothesis; run, it decisively fails on the very first line of its own import chain unless the operator already knows to set a PYTHONPATH the file itself never mentions."
+    },
+    {
+      "id": "GS4",
+      "claim": "Is the PYTHONPATH requirement discovered in GS3 documented anywhere an operator would actually find it, e.g. the README's own 'Running it' instructions?",
+      "status": "EXECUTED",
+      "evidence_class": "[CODE]",
+      "result": "README.md's 'Running it' section reads in full: 'You need the sentinel_os kernel importable and a local Postgres reachable as iceberg/iceberg. DEPENDENCIES.md has the exact setup and the current test result (127 passed). Then: `python3 -m pytest Tests/`. Everything below describes the architecture the IVR application demonstrates.' There is no command anywhere in the README, PROVENANCE.md, or DEPENDENCIES.md for actually starting api_server_resilient.py as a running service -- the only documented 'running it' path is running the test suite.",
+      "interpretation": "The path that makes GS3's import succeed (pytest's conftest.py appending the vendor kernel directory to sys.path, with a carefully-reasoned comment about why it's appended rather than inserted at position 0) exists ONLY inside the test harness. There is currently no documented, repository-given path to actually deploy this application as a live IVR service. Combined with GS2's missing Dockerfile, the conclusion is specific and bounded: the underlying call-handling logic is real and thoroughly exercised by tests, but 'take live phone calls in production' is not currently achievable by following this repository's own instructions."
+    },
+    {
+      "id": "GS5",
+      "claim": "Given GS3/GS4, does the tested core (as opposed to the untested deployment wrapper) hold up?",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "All 127 passing tests were inspected by name: they cover Twilio event/log parsing, Bayesian intent classification and queue-staffing adjustment, RL exploration and learning, a 'sentinel' diagnostic layer (quality scoring, abandonment diagnosis, queue prescription), telemetry and circuit-breaker resilience, and -- critically -- test_production_harness_breakers.py, which makes a REAL bad Anthropic API key and asserts on the REAL resulting transport failure, and REAL postgres connection failures against the actual local database, not mocks.",
+      "interpretation": "The tested core (IcebergProductionHarness, the actual class documented as the live path alongside api_server_resilient.py) is real, is exercised against real infrastructure and real failure conditions, and passes completely. The gap found in GS3/GS4 is specifically in the separate FastAPI wrapper layer meant to expose that harness as a network service, not in the harness itself."
+    }
+  ],
+  "could_not_determine": [
+    "Whether CI (.github/workflows/tests.yml) currently passes -- it provisions Postgres/Redis itself and uses a LIBRARY_READ_TOKEN for the submodule, which was not queried; only a local run was performed here.",
+    "Whether gsa-governance-core/ (which its own README says nothing in GSA-815 imports, an unconditional-attestation, non-signing reference module) is genuinely dead code or reference material for a future integration -- not exercised, consistent with the repo's own description of it as non-live-path.",
+    "Whether production_harness.py could be driven end-to-end with a synthetic call (using the 3.8 MB synthetic caller CSV in data/) the way observe-perceive's demo_why.py or ghost_tools' live scan were exercised in earlier entries -- not attempted, time-bounded as the last repo of this session.",
+    "Novelty or commercial value of the Bayesian queue-staffing / RL / sentinel-diagnostic components -- not evaluated, requires Phase 9/10-equivalent prior art work."
+  ],
+  "overall_assessment": {
+    "does_it_work": "MOSTLY YES, with a specific, now well-understood gap. 127/127 tests pass against real Postgres, real Redis, and a real (rejected) Anthropic API call. The tested core logic (intent classification, queue staffing, RL, resilience/circuit-breaking, ledger-backed governance recording) is real and verified by execution, not just inspection.",
+    "the_gap": "The declared live-path API service (api_server_resilient.py) cannot be started by following the repository's own documentation -- it requires a PYTHONPATH setting that only exists inside the pytest harness, and its docker-compose deployment path is broken by a missing Dockerfile. This is a real, execution-confirmed finding, and a good illustration of why this triage batch runs code instead of only reading it: Phase 1's own verifier read this exact file and reasonably concluded it looked real, which was correct as far as it went, but could not have caught that it doesn't actually run without extra setup nobody documented.",
+    "is_it_just_code_that_does_nothing": "NO for the tested core, which is thoroughly real. PARTIALLY for the deployment layer specifically, which currently cannot be exercised as documented.",
+    "recommendation": "Retain the core (production_harness.py and everything the 127 tests cover) as a verified, working component. Treat the 'live IVR service' framing with the same caution as any other unverified claim in this corpus: the harness works, but nothing currently documented turns it into a running phone system. A one-line README fix (documenting the PYTHONPATH, or adding the missing Dockerfile) would close this gap without touching any of the actually-tested logic."
+  }
+}
