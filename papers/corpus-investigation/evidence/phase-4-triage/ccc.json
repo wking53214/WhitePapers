@@ -1,0 +1,58 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "CCC",
+    "purpose": "Pre-commitment viability triage, same batch as prior entries. Requested together with Ecology, which CCC has a documented downstream/upstream relationship with (Ecology's FindingRecord is designed to feed CCC.record_external_finding()).",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 could not determine whether the test suite passes or which of several conflicting self-reported counts (README banner: 135; README Status section: 27; harness: 44 PASS/18 UNSPECIFIED; commit d8020cf8: '143 passed, 1 xfailed') was accurate. This entry runs the suite and live-tests the private-source refusal guard rather than trusting its docstring."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/ccc",
+    "head_sha": "2cf7aa19db7fdad23f2b4f4d10727a9ea88a1368",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" (zero runtime dependencies declared)",
+    "install_result": "EXECUTED, clean"
+  },
+  "findings": [
+    {
+      "id": "C1",
+      "claim": "Resolve which of four conflicting self-reported test counts is accurate.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "142 passed, 1 xfailed, 0 failed, 0.73s. Total test outcomes = 143, matching commit d8020cf8's '143 passed, 1 xfailed' claim almost exactly (that commit's own phrasing is slightly loose -- 142 actually passed plus 1 expected-fail -- but the headline number is right).",
+      "interpretation": "The most recent, most specific self-report was accurate; the README's older 'banner: 135' and 'Status section: 27' figures are simply stale snapshots from earlier in the repo's development, not fabrication. Consistent with the pattern seen across this account: documentation lags code, but the freshest and most specific claims tend to check out when run."
+    },
+    {
+      "id": "C2",
+      "claim": "Live-test the PRIVATE_SOURCE_MARKERS refusal guard (a mechanism that refuses to record a finding into this public repository's audit trail if its source_material names a known-private personal-conversation archive, unless explicitly overridden).",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Constructed a duck-typed external-finding object (matching the structural contract record_external_finding() documents -- .conclusion/.method/.source_material/.confidence/.verified) citing 'ChatGPT_History/export_2026.json' as its source, and called record_external_finding() three ways: (1) with the private source and no override, (2) with the private source and allow_private_source=True, (3) with a legitimate non-private source.",
+      "result": "(1) Correctly REFUSED: `ValueError: source_material (...) names a known-private source (Resume_OS or ChatGPT_History) -- refusing to record into this public repository's audit trail without allow_private_source=True`. (2) Correctly ACCEPTED with the override, producing a full, well-formed DiscoveryRecord (machine_origin=True, correct epistemic/provenance status, correct actor attribution). (3) The legitimate-source finding was accepted normally, confirming the guard is not simply refusing everything.",
+      "interpretation": "This is a real, enforced, currently-working safety boundary -- not just a documented intention. It behaves exactly as its own code comments describe, verified by trying to trigger it rather than reading that it should. This is the same category of finding as ghost_tools' execution-trust gate and sentinel_os's BISG legal gate: a governance mechanism that actually holds under a direct adversarial attempt to bypass it."
+    },
+    {
+      "id": "C3",
+      "claim": "RUN-B (the prior investigation run, historical) specifically examined this repository family (ccc, Conservation_Kernel, Governance_Gateway, GEMS) and found a critical falsification: epistemic-status values were silently, incorrectly coerced (e.g. HUMAN_AUTHORIZATION silently becoming SYSTEM) because status handling was duck-typed against plain strings. Does that failure class reproduce here?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Called record_external_finding() with epistemic_status=\"HUMAN_AUTHORIZATION\" (a plain string) instead of the real EpistemicStatus enum member, attempting to reproduce RUN-B's exact failure shape.",
+      "result": "`AttributeError: 'str' object has no attribute 'value'` -- the call crashes immediately rather than silently accepting and misrecording the string.",
+      "interpretation": "RUN-B's specific failure class (silent, wrong-but-valid-looking coercion) does NOT reproduce in this code path: a bad status loudly crashes rather than being quietly misattributed. This is a real difference worth being precise about -- it is not evidence that RUN-B's original finding (which concerned Conservation_Kernel/Governance_Gateway/GEMS import paths, not necessarily this exact function) was wrong, and it is not a clean pass either: an unhandled AttributeError instead of a guarded, clear validation error (e.g. TypeError with an explanatory message) is itself a minor robustness gap. Recorded precisely rather than rounded to either 'bug confirmed' or 'bug fixed.'"
+    }
+  ],
+  "could_not_determine": [
+    "Whether RUN-B's original coercion finding is still present in the specific code paths it actually tested (Conservation_Kernel, Governance_Gateway, GEMS integration points) -- this triage only tested CCC's own record_external_finding() with an adversarial status value, not the cross-repo integration RUN-B examined.",
+    "Contents of .ghost_baseline.json (117 KB) -- not opened.",
+    "Whether the mission/close-the-system branch differs from main beyond the README freeze banner -- not diffed.",
+    "Whether the private/public visibility contradiction Phase 1 flagged (enumeration says private=true; in-code comments and commit messages call CCC a public repo) has any practical consequence -- not investigated further here, orthogonal to code correctness.",
+    "Novelty of the anomaly-to-pattern-to-mandate discovery ladder or the constitutional-governance model generally -- not evaluated, requires Phase 9/10-equivalent prior art work."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED. 143/143 tests pass (with one intentional xfail), and the one adversarial safety mechanism actually worth testing -- the private-source refusal guard -- works exactly as documented when directly attacked.",
+    "is_it_just_code_that_does_nothing": "NO. Small, dependency-free, real, and its one distinctive safety feature is verified functioning, not just claimed.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, not evaluated here. Note that RUN-B already examined a related claim (a single coherent EpistemicStatus vocabulary shared across this repo family) and falsified it; this triage neither confirms nor overturns that -- it tested a different, narrower property (does THIS repo's own guard hold under direct attack) and found that it does.",
+    "recommendation": "Retain as a small, verified, working component. Worth a minor hardening fix (a clear TypeError instead of an unhandled AttributeError for a malformed epistemic_status), but this is a robustness polish item, not a trust-undermining finding."
+  }
+}
