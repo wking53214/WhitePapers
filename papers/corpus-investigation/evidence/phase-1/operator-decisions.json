@@ -38,5 +38,37 @@
       "rationale": "Phase 1 already had to split across two models because of a weekly cap, and every verdict was tagged with its model for exactly this reason: one of this project's own three research questions (per Autonomous_Adversarial_Research_Agent.md) is how much of any finding is attributable to the model versus the surrounding harness/orchestration. That question can only be answered by a same-repo, both-models comparison recorded at the time. If Phase 4 runs single-model throughout to conserve budget, the comparison opportunity is lost permanently and cannot be reconstructed after the fact, whereas deferring the cross-model check (the critic's P3 framing) merely costs a delay. The critic's P3 recommendation is therefore elevated into Phase 4's design rather than left as leftover-budget work.",
       "not_yet_decided": "Which specific repos form the overlap sample, and the overall Fable/Opus split ratio for the rest of Phase 4. Left open for the operator or a subsequent planning turn."
     }
+  ],
+  "operator_testimony": [
+    {
+      "id": "T1",
+      "date": "2026-09-17",
+      "evidence_class": "[OPERATOR TESTIMONY] — first-person statement of intent by the repository owner, distinct from and higher-weight than any in-repo author claim, but not itself verified against observed corpus state until cross-checked below",
+      "statement_verbatim": "I want to explain why I have empty repos. Given enough time, they would have had content. The goal was through history to re-create a repo that was either never designed and implemented, and existed only in concept or who was developed, but never actually updated into a Rico. If the number one follows the name of a repo in an empty repo, that was me indicating that this repo may have content that predates the existing first commit for that repo. All repo's would have available content within the history so if during this project, the history repos are tapped the empty repose could be reconstructed from the history repos. I do not know if that is something that I should do but I assume not.",
+      "claims_extracted": [
+        "Empty repos represent concepts that either (a) were discussed/designed only in conversation and never implemented, or (b) were implemented at some point but the repo was never populated/updated to reflect that.",
+        "A trailing digit (observed convention: '1') on an empty repo's name is the operator's own deliberate annotation meaning 'this repo may hold content that predates the existing first commit' of a related base-named repo.",
+        "The History repos (ChatGPT_History, Claude_History, Gemini_History, CoPilot_History, Gemini_Extraction) are believed to contain recoverable source material for all repos, including the empties.",
+        "Operator's own tentative view: reconstruction should NOT be performed during this project."
+      ],
+      "cross_check_against_phase1_table": {
+        "method": "[INFERENCE] Ad hoc, non-agent, non-workflow script run against evidence/phase-1/phase1-table.json: stripped a trailing digit from each of the 14 EMPTY repo names, then searched the other 70 repos for an exact case/separator-normalized base-name match, with a loose prefix-match fallback. Not an agent verdict; not committed as evidence prior to this entry; heuristic only.",
+        "results": [
+          {"numbered_repo": "FORTRESS1", "empty": true, "created_at": "2026-09-11", "base_match": "fortress-kernel", "base_empty": false, "base_created_at": "2026-08-23", "assessment": "Consistent with testimony: base predates numbered empty."},
+          {"numbered_repo": "TBCA1", "empty": true, "created_at": "2026-09-11", "base_match": "TBCA", "base_empty": false, "base_created_at": "2026-07-04", "assessment": "Consistent with testimony: base predates numbered empty."},
+          {"numbered_repo": "GSA-2", "empty": true, "created_at": "2026-09-11", "base_match": "GSA", "base_empty": false, "base_created_at": "2026-09-11", "assessment": "Weak signal: same creation date as base, ordering not distinguishing."},
+          {"numbered_repo": "GLCM1", "empty": true, "created_at": "2026-09-11", "base_match": null, "assessment": "No base-name match anywhere in the 71-repo corpus. Consistent with testimony's other case: concept exists only in conversation, never implemented under any repo name."},
+          {"numbered_repo": "GSA-GATEWAY1", "empty": true, "created_at": "2026-09-11", "base_match": null, "assessment": "Same as GLCM1."},
+          {"numbered_repo": "TAKEOUT1", "empty": true, "created_at": "2026-09-11", "base_match": null, "assessment": "Same as GLCM1."},
+          {"numbered_repo": "TRIAD-PLUS-42", "empty": true, "created_at": "2026-09-11", "base_match": "Triad-42 (loose prefix match only)", "assessment": "DISREGARD: coincidental artifact of the fallback prefix-match heuristic, not a real name relationship. Flagged so it is not over-interpreted downstream."}
+        ],
+        "overall_assessment": "Partial, plausible support for the '1 = predates' convention (FORTRESS1, TBCA1); not proof. Three of the four unmatched numbered-empties (GLCM1, GSA-GATEWAY1, TAKEOUT1) are consistent with the testimony's 'concept never got a repo at all' case. This is corroboration at INSPECTED-from-testimony level, not independent confirmation."
+      },
+      "operator_question_and_response": {
+        "question": "I do not know if that is something that I should do but I assume not. What are your thoughts?",
+        "response_summary": "Agreed: do not reconstruct now. (1) Fate for EMPTY repos is already deferred to Phase 16 per operator decision C; populating them mid-investigation would itself be assigning the most aggressive possible fate ahead of the evidence, a larger version of the ELIMINATE-candidate framing already withdrawn. (2) 'Empty, as found' is itself a forensic data point (concept never built, or built and later gutted, per the sentinel_os -> STRIDE pattern already on record); overwriting it destroys that observation irreversibly. (3) Reconstruction from conversation transcripts requires synthesis and implementation judgment calls not present in the original transcripts, so it would be fabrication presented as recovery unless kept strictly separate and labeled as new work product, not corpus history.",
+        "disposition": "NOT ACTED ON. Recorded as testimony and a Phase 4 lead only: search the named History repos for design/concept discussions matching the names of the unmatched empties (GLCM1, GSA-GATEWAY1, TAKEOUT1, and by extension any other EMPTY repo without a base-name match). No repo content created, modified, or reconstructed as part of recording this entry."
+      }
+    }
   ]
 }
