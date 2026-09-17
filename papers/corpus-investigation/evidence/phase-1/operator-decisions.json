@@ -1,0 +1,42 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "note": "Operator-level decisions layered on top of the agent evidence in this directory. These entries do NOT alter or replace any agent's inspection or verdict record; they record a human decision made in light of that evidence, with its own status and rationale, per operator instruction to maintain optionality and weight downstream consequences over short-term gains.",
+    "instruction_applied": "Maintain all options that most strategically support the goal of the project. If a decision is made, it should consider downstream consequences at a greater weight than short-term gains."
+  },
+  "decisions": [
+    {
+      "id": "A",
+      "subject": ["ARCHIVE", "ARLF", "VANGUARD", "WhitePapers"],
+      "decision": "ACCEPTED the critic's relabels as recorded in phase1-table.json / PHASE-1-corpus-discovery.md §4. No override.",
+      "rationale": "None of the four relabels changes an eligibility verdict; all correct purpose or confidence to match observed content. Leaving the pre-verification labels in place would be the option-reducing choice, since later phases read the recorded label, not the underlying evidence, when scoping work."
+    },
+    {
+      "id": "B",
+      "subject": ["GSA-Master-Kernel", "KAGGLE"],
+      "agent_record_eligibility": "EXCLUDED_CONVERSATION_ARCHIVE",
+      "operator_status": "PROVISIONALLY_HELD_OPEN as AMBIGUOUS_INVESTIGATE pending Phase 4 P0 read of unread files",
+      "effective_date": "2026-09-17",
+      "rationale": "The exclusion in both cases rests on unread files at MEDIUM confidence with a single verification lens (critic, gaps #2). Exclusion removes a repository from every downstream phase's eligible corpus. An irreversible-by-omission decision should not sit in a closed state while the evidence that would settle it is still unread and merely queued for later. Holding the status open costs nothing; letting it harden into EXCLUDED by default before the read happens could not be cheaply undone once Phase 4+ has already scoped around its absence.",
+      "unread_evidence_pending": {
+        "GSA-Master-Kernel": ["TRANSCRIPT.md (178 KB)", "artifact_1.py", "artifact_2.py", "artifact_3.py", "artifact_4.py", "artifact_6.py", "artifact_8.py through artifact_15.py"],
+        "KAGGLE": ["claude/* branches not yet listed or opened"]
+      },
+      "resolution_rule": "On completion of the P0 read: revert to EXCLUDED_CONVERSATION_ARCHIVE only if the read confirms the primary purpose is conversation storage with no substantive tooling; otherwise confirm AMBIGUOUS_INVESTIGATE or promote to ELIGIBLE. Record the resolving evidence in a new verdict, not by editing this file in place."
+    },
+    {
+      "id": "C",
+      "subject": ["Anvil.clean", "FORTRESS1", "GLCM1", "GOVERNANCE-CONTROL-PLANE", "GSA-2", "GSA-GATEWAY1", "ICEBERG", "ICEBERG-SIM", "RADAR", "STRIDE", "TAKEOUT1", "TBCA1", "TRIAD-PLUS-42", "VSA"],
+      "decision": "NO FATE ASSIGNED. Status remains EMPTY, undetermined, decided in Phase 16 from whatever evidence accumulates.",
+      "superseded_prior_answer": "An earlier reply in this session suggested marking these as 'ELIMINATE-candidates.' That suggestion is withdrawn.",
+      "rationale": "Attaching a suggested disposition to a finding ahead of the evidence that would justify it is the exact failure this investigation identified in RUN-B's own fate-suggestion list (see OPERATOR-BRIEF.md §2) and is explicitly disallowed by the agent task spec's phase_16 rule that fate is an output of the investigation, not an input to it. The sentinel_os → STRIDE salvage-then-delete statement found during Phase 1 verification is a concrete reason at least one of these fourteen could become evidentially informative rather than disposable; no blanket disposition should be pre-loaded while that possibility is open."
+    },
+    {
+      "id": "D",
+      "subject": "Phase 4 model allocation (Fable 5.1 vs Opus 5)",
+      "decision": "Phase 4 planning must include a deliberate, tagged dual-model overlap sample, not only a cost-driven single-model default.",
+      "rationale": "Phase 1 already had to split across two models because of a weekly cap, and every verdict was tagged with its model for exactly this reason: one of this project's own three research questions (per Autonomous_Adversarial_Research_Agent.md) is how much of any finding is attributable to the model versus the surrounding harness/orchestration. That question can only be answered by a same-repo, both-models comparison recorded at the time. If Phase 4 runs single-model throughout to conserve budget, the comparison opportunity is lost permanently and cannot be reconstructed after the fact, whereas deferring the cross-model check (the critic's P3 framing) merely costs a delay. The critic's P3 recommendation is therefore elevated into Phase 4's design rather than left as leftover-budget work.",
+      "not_yet_decided": "Which specific repos form the overlap sample, and the overall Fable/Opus split ratio for the rest of Phase 4. Left open for the operator or a subsequent planning turn."
+    }
+  ]
+}

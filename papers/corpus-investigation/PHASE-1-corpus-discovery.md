@@ -41,9 +41,9 @@ substantially a product of sessions in the days before this investigation
 | Eligibility | Count | Repos |
 |---|---|---|
 | ELIGIBLE | 43 | 39 substantive systems, 3 docs/papers (`ARLF`, `SOONG_protocol`, `WhitePapers`), 1 specimen corpus (`TOUCHSTONE`) |
-| AMBIGUOUS_INVESTIGATE (mixed transcripts + tooling) | 12 | `ARCHIVE`, `ChatGPT_History`, `CITADEL`, `Claude_History`, `CODE`, `CoPilot_History`, `Data_files`, `Ecology`, `EDDP`, `Gemini_Extraction`, `Gemini_History`, `TBCA` |
+| AMBIGUOUS_INVESTIGATE (mixed transcripts + tooling) | 12, **14 pending §9.B** | `ARCHIVE`, `ChatGPT_History`, `CITADEL`, `Claude_History`, `CODE`, `CoPilot_History`, `Data_files`, `Ecology`, `EDDP`, `Gemini_Extraction`, `Gemini_History`, `TBCA` — plus `GSA-Master-Kernel` and `KAGGLE`, held here provisionally, see below |
 | EMPTY (no content on any ref; 409 "Git Repository is empty" on commits, 0 branches, 0 tags; `main` and `master` both probed) | 14 | `Anvil.clean`, `FORTRESS1`, `GLCM1`, `GOVERNANCE-CONTROL-PLANE`, `GSA-2`, `GSA-GATEWAY1`, `ICEBERG`, `ICEBERG-SIM`, `RADAR`, `STRIDE`, `TAKEOUT1`, `TBCA1`, `TRIAD-PLUS-42`, `VSA` |
-| EXCLUDED_CONVERSATION_ARCHIVE | 2 | `GSA-Master-Kernel`, `KAGGLE` |
+| EXCLUDED_CONVERSATION_ARCHIVE | 0 as-agent-recorded, 2 pending | The agent record (inspection + verifier) classified `GSA-Master-Kernel` and `KAGGLE` `EXCLUDED_CONVERSATION_ARCHIVE`. Operator decision §9.B holds both open as `AMBIGUOUS_INVESTIGATE` pending a read of their unread transcript/artifact files, so neither is dropped from scope by a later phase before that read happens. See `evidence/phase-1/operator-decisions.json`. |
 
 Access: 71/71 OK after the `sentinel_os` re-inspection.
 
@@ -142,16 +142,46 @@ UNKNOWN). RUN-B said "public corpus"; today 2 repos are public.
   `phase1-table.json` is full-fidelity and splits the status.
 - No repository was cloned, modified, or pushed to during Phase 1.
 
-## 9. Operator decisions needed before Phase 4
+## 9. Operator decisions before Phase 4
 
-A. Accept or reject the critic's recommended labels for the four non-agreed
-   rows (§4).
-B. Approve the critic's P0 follow-ups as Phase 4's first work, in this order:
-   re-open the two exclusions under a second lens and model; characterise the
-   88 MB file; test the MIXED boundary in `Resume_OS`, `innovation_os`,
-   `SAGE-K`, `Ecology`; then the GSA-GATEWAY contradiction and all-ref commit
-   histories.
-C. Decide whether the 14 empties stay in the corpus record as
-   ELIMINATE-candidates for Phase 16 (recommended) or are handled now.
-D. Budget: Phase 4 on the ~55 non-empty repos will exceed one Fable week at
-   the observed burn; decide the Fable/Opus split before it starts.
+Operating principle applied below, per operator instruction 2026-09-17:
+prefer whichever option keeps the most paths open, and weight downstream
+consequences above short-term cost or convenience. A closed decision is
+expensive to reopen; an open one costs only patience.
+
+A. **Accepted.** The four relabels in §4 close no options — none changes an
+   eligibility verdict, all only correct purpose/confidence to match observed
+   content. Leaving the old labels in place would be the option-reducing
+   choice, since Phase 4 scoping will read whatever label is on record.
+
+B. **Approved, with the two exclusions held open in the interim rather than
+   left closed while queued for later.** `GSA-Master-Kernel` and `KAGGLE`
+   are reclassified `AMBIGUOUS_INVESTIGATE` (provisional, not a finding) so
+   that no downstream phase can read `EXCLUDED` and drop them from scope
+   before their cited files are actually read. Revert to `EXCLUDED` or
+   confirm `AMBIGUOUS_INVESTIGATE`/`ELIGIBLE` only after that read. P0 order
+   stands: the two exclusions and the 88 MB `WhitePapers` file first (both
+   bear on whether the corpus boundary and this investigation's own record
+   are trustworthy), then the MIXED-boundary repos, then GSA-GATEWAY lineage
+   and all-ref commit histories.
+
+C. **Reversed from the prior answer.** The 14 empties are recorded as
+   `EMPTY`, fate undetermined, with no suggested disposition attached. The
+   earlier "ELIMINATE-candidate" framing was itself a small act of the thing
+   this investigation exists to prevent: attaching a fate suggestion ahead
+   of the evidence, the same failure this project already flagged in RUN-B's
+   fate list. Fate is a Phase 16 output, decided from whatever accumulates
+   by then, including patterns like the `sentinel_os` → `STRIDE`
+   salvage-then-delete trail, which could make some of these fourteen
+   informative rather than disposable.
+
+D. **Elevated from "decide the split" to "design the split to preserve the
+   model-attribution question."** Running Phase 4 single-model to save
+   budget forecloses, permanently and cheaply, one of the three questions
+   this whole project exists to answer (how much of any finding is the
+   model versus the harness). That option cannot be recovered after the
+   fact. Phase 4 should therefore budget a small, deliberate dual-model
+   overlap — the same handful of repos run on both Fable and Opus on
+   purpose, tagged accordingly — rather than treating cross-model
+   verification as leftover budget, which is where the critic's P3 list had
+   filed it.
