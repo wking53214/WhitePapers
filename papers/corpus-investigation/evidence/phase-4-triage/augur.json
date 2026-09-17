@@ -1,0 +1,56 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "AUGUR",
+    "purpose": "Pre-commitment viability triage, requested together with TOUCHSTONE and SWIZZLE. AUGUR was already installed once in this session as an observe-perceive chain dependency (evidence/phase-4-triage/observe-perceive.json); this entry evaluates it directly, on its own terms, rather than only as a dependency.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly could not determine whether the 34 claimed tests pass, and could not determine whether the source code actually implements the veto-only 'may refuse, never approve' semantics the README describes -- the source files were not opened. This entry runs the suite and structurally + behaviorally verifies the veto-only claim."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/augur",
+    "head_sha": "f7eafbfb84ba1a0c2b4151fce2f053f89f679e23",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" (zero required runtime dependencies; optional numpy extra not needed for the core path)",
+    "install_result": "EXECUTED, clean. Installed version 1.0.0, matching pyproject.toml."
+  },
+  "findings": [
+    {
+      "id": "A1",
+      "claim": "The claimed 34-test suite passes.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "34 passed, 0 failed, 0.13s -- exact match to the README and commit-message claim.",
+      "interpretation": "Unlike several other repos in this batch, the self-reported number here was exactly right, not stale."
+    },
+    {
+      "id": "A2",
+      "claim": "Structural check: does the codebase contain any concept of an affirmative 'approve' or 'safe' verdict, which the README explicitly says should not exist ('a simulation may refuse and may never approve... a predicted stability is an absence of objection, not evidence that acting is safe')?",
+      "status": "EXECUTED",
+      "evidence_class": "[CODE]",
+      "result": "A case-insensitive search for 'approv' across the entire augur/ package returned zero matches. The only classification vocabulary that exists is RegimeEngine.classify() returning one of STABLE / UNSTABLE / CRITICAL, plus InvariantMonitor.check() returning a list of hard violation codes (STATE_DIVERGENCE, DISTORTION_OVERFLOW, WORLD_MODEL_FAILURE, VOLATILITY_SPIKE) that can only ever be non-empty (a flag) or empty (silence), never a positive certification.",
+      "interpretation": "This is a genuinely careful design choice, verified structurally rather than just quoted from the README: it is not merely that the code currently never happens to output 'approved' -- the vocabulary to say it doesn't exist anywhere in the implementation. A consumer cannot misuse this component as an affirmative safety certification even by an integration mistake, because there is nothing in the return values that could be read that way."
+    },
+    {
+      "id": "A3",
+      "claim": "Behavioral check: does the regime classification actually respond correctly to input severity in both directions (stable under normal conditions, critical under adversarial conditions)?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Called run_simulation() with (1) default configuration, matching the README's claimed default scenario, and (2) an adversarially large noise_scale=500.0 (100x the library default of ~4.0-5.0) intended to force instability.",
+      "result": "(1) regime='STABLE'. (2) regime='CRITICAL'. Both outcomes match the documented threshold behavior in RegimeEngine.classify() (distortion/volatility above fixed thresholds escalate STABLE -> UNSTABLE -> CRITICAL).",
+      "interpretation": "The regime signal is not hardcoded or decorative -- it responds correctly, live, to a large swing in input severity in the expected direction. Combined with A2, this is real, working veto-relevant signal generation, not a stub that always reports one value."
+    }
+  ],
+  "could_not_determine": [
+    "Whether observe-perceive (the actual consumer of this component, per its README and per the augur adapter file observed during that earlier triage) correctly treats a STABLE regime as 'no objection' rather than silently upgrading it to an approval anywhere in the integration glue -- this triage tested AUGUR in isolation, not the full observe-perceive integration path.",
+    "Whether InvariantMonitor's hard violation codes (STATE_DIVERGENCE, etc.) were actually triggered in the A3 adversarial run -- the top-level run_simulation() result dict's 'violations' key was None in both test cases, suggesting violations may only surface through a different call path (e.g. run_cycle called directly, or the async execute_governance_logic path) not exercised here.",
+    "Numerical calibration of the STABLE/UNSTABLE/CRITICAL thresholds themselves (distortion > 0.35 / 0.65, volatility > 10.0 / 20.0) -- confirmed to exist and to respond directionally, not independently validated as the RIGHT thresholds for any real governance use.",
+    "Novelty of the closed-loop behavioral-simulation-as-governance-screen concept -- not evaluated, requires Phase 9/10-equivalent prior art work."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED. 34/34 tests pass exactly as claimed, and the component's one load-bearing design property -- veto-only, structurally incapable of expressing approval -- was verified both by reading the code (no approval vocabulary exists) and by running it (regime classification responds correctly to severity in both directions).",
+    "is_it_just_code_that_does_nothing": "NO. Small, real, and its distinctive safety property (can only object, never certify) is enforced by the absence of the relevant vocabulary in the implementation, not merely by convention or documentation.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, not evaluated here -- requires Phase 9/10-equivalent prior art work.",
+    "recommendation": "Retain as a small, verified, working component. The 'veto-only by construction' pattern found here (no code path can express approval, only objection or silence) is worth checking for elsewhere in this corpus as a design pattern -- it is a stronger guarantee than a policy or convention would be, since it can't be violated by a future change that forgets the rule."
+  }
+}
