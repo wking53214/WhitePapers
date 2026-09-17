@@ -1,0 +1,81 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "observe-perceive",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json and ghost_tools.json.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1's inspection (evidence/phase-1/phase1-table.json, row observe-perceive) never executed code, and explicitly could not determine whether the 6 git+https sibling dependencies (Conservation_Kernel, CCC, AUGUR, GEMS, Governance_Gateway, fortress-kernel) actually resolve and are importable. This entry closes that gap directly -- this is the first repo in the triage batch that is not standalone, so the test is materially different from HERALD/ghost_tools: whether a claimed multi-repo architecture actually assembles, not just whether one package's own tests pass."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/observe-perceive",
+    "head_sha": "c0a86516f6a46d854f0f47b5234789a00616310f",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e in two stages: first '.[test]' (base package plus the hard dependency conservation-kernel, pinned to an exact commit), then '.[chain,fortress,test]' (adds AUGUR, CCC, GEMS, Governance_Gateway, fortress-kernel, all as git+https dependencies on other private repos in the same account)."
+  },
+  "findings": [
+    {
+      "id": "OP1",
+      "claim": "The hard dependency (conservation-kernel, pinned to commit 25145aa0a10130c710dc71899c0da9930cf7d285) actually resolves and builds.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "pip cloned wking53214/conservation_kernel at that exact commit, built a wheel (conservation_kernel-0.3.0), and installed it without error.",
+      "interpretation": "The pin is real, not aspirational -- the exact commit exists and produces an installable package. pyproject.toml's own comment explains why it's pinned to a commit rather than a tag ('a tag cannot be pushed from this session'), which is consistent with what Phase 1 separately observed about session-scoped git push limitations elsewhere in this corpus."
+    },
+    {
+      "id": "OP2",
+      "claim": "With only the hard dependency installed (no chain extras), the test suite runs and the parts that need missing siblings degrade gracefully rather than failing.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "580 passed, 59 skipped, 5 xfailed, 0 failed, 0 errors, 3.48s. All 59 skips carry an explicit reason naming the missing sibling checkout (e.g. 'CCC checkout not available', 'Governance_Gateway checkout not available'), not a generic skip.",
+      "interpretation": "The adapter pattern pyproject.toml's own comment describes ('each adapter resolves a sibling checkout first and the installed package second, and its tests skip when neither is present') is real and observed working as designed, not just described."
+    },
+    {
+      "id": "OP3",
+      "claim": "The full claimed 7-package governance chain (observe-perceive + conservation-kernel + AUGUR + CCC + GEMS + Governance_Gateway + fortress-kernel) actually resolves and installs together.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "pip install -e \".[chain,fortress,test]\" cloned and built all 5 remaining sibling repos from git+https URLs (unpinned, resolved to their default-branch heads at clone time) plus numpy as fortress-kernel's own dependency. All 6 wheels built successfully: augur-1.0.0, cognitive_continuity_constitution-0.1.0, fortress_kernel-1.0.0, gems_infrastructure-0.1.0, governance_gateway-0.1.0, plus observe-perceive itself. No build failures.",
+      "interpretation": "This is the central finding for this repo: the multi-repository governance architecture is not just described in documentation, it actually assembles as a working, installable dependency graph across 7 distinct private GitHub repositories in this account. This is a materially different and stronger result than HERALD or ghost_tools, which are each self-contained."
+    },
+    {
+      "id": "OP4",
+      "claim": "With the full chain installed, the previously-skipped 59 tests now genuinely execute and pass, rather than the skip count changing for an unrelated reason.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "676 passed, 0 skipped, 5 xfailed, 0 failed, 0 errors, 3.88s. 580 + 59 skipped-now-run = 639, not 676; the remaining 37 additional passes come from tests that were already collected but whose sub-cases/parametrizations only fully expand once the sibling packages are importable (test count growth beyond a simple skip-to-pass conversion was not further decomposed here).",
+      "interpretation": "The full chain doesn't just install cleanly, it functions well enough for the previously-blocked test coverage to pass in full. Zero new failures were introduced by adding the 5 additional real repos as live dependencies."
+    },
+    {
+      "id": "OP5",
+      "claim": "Adversarial/functional check: does the claimed tamper-evidence property (a hash-chained, verifiable governance record) actually detect tampering, across every corruption type the system itself claims to guard against?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran demo_why.py (the README's own documented demonstration) end-to-end for a baseline case, then separately for all 5 corruption targets its own CORRUPTIONS dict declares: outcome, source, authority, approval, timestamp. Each corruption directly mutates a field on the in-memory governance record after the fact (e.g. setattr(governance_request, 'authority', 'ATTENDING')) -- a realistic tampering model, not a softball.",
+      "result": "All 5 of 5 corruption types were DETECTED, each by a distinct, differently-implemented check: outcome via a recomputed state commitment; source via an artifact content-hash mismatch; authority via the request's own recomputed commitment; approval via a cross-check against PERCEIVE's independent ledger; timestamp via a monotonic-ordering check (execution recorded as finishing before the outcome it followed). The demo's own code (read directly, demo_why.py lines 193-194) prints 'NOT DETECTED -- this is a finding; the enforcement boundary needs repair' if a corruption ever slips through -- that branch did not trigger in any of the 5 runs performed here.",
+      "interpretation": "This is real, working tamper-evidence across five independent attack surfaces on a governance record, not a single lucky check. The demo's own code being written to honestly report a detection failure as a finding (rather than silently passing) is a second instance of the same disclosure discipline observed in HERALD's honest skip reasons and ghost_tools' hedged findings -- worth carrying forward as a cross-repo authorial pattern, not just a fact about this one repo."
+    },
+    {
+      "id": "OP6",
+      "claim": "Material caveat: the representative demonstration domain is pediatric clinical deterioration monitoring, and the test suite discloses specific detection failures in that domain.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "5 tests are marked xfail (expected-to-fail, present in every run performed above): test_viral_fever_detection ('MISSED DETECTION... Requires pediatrician input on RR/temp escalation point'), test_reactive_airway_detection ('MISSED DETECTION... Requires rule enhancement or machine-learned pattern detection'), test_gradual_hypoxia_detection ('MISSED DETECTION... Consider enabling Kalman trajectory'), test_stuck_sensor_detection ('FAILED TO ESCALATE on fault; stayed stable'), test_overall_risk_assessment ('Too many risky sensor-fault cases (5). Address before production deployment.').",
+      "interpretation": "This is the single most important caveat for the ROI question. The governance/tamper-evidence machinery (OP5) works well. The specific clinical-monitoring application built on top of it, as tested by its own authors, currently misses real deterioration patterns and is explicitly self-labelled not production-ready. These are two separable claims: 'the governance chain assembles and its audit trail is tamper-evident' (well-supported by this triage) and 'this specific clinical application safely monitors pediatric patients' (explicitly NOT claimed by the repo's own tests -- the tests document the opposite). Any downstream framing of this repository must keep these two claims apart; conflating them would overstate what was found."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the 5 sibling repos pulled in via unpinned git+https (AUGUR, CCC, GEMS, Governance_Gateway, fortress-kernel) resolved to a specific, reproducible commit, or whatever their default branch happened to be at clone time today -- unlike conservation-kernel, these are not pinned. A rerun on a different day could install different code.",
+    "Whether CI (which requires a LIBRARY_READ_TOKEN secret per Phase 1's tests.yml inspection) has ever actually run this successfully with that token present -- this triage used direct git+https access from the session's own git proxy, not the repo's CI path.",
+    "Contents or behavior of the 5 sibling repos beyond what was needed to install and pass observe-perceive's own tests -- e.g. AUGUR, CCC, GEMS, and Governance_Gateway were not independently triaged the way HERALD and ghost_tools were; they were exercised only as dependencies, not evaluated on their own claims.",
+    "Whether the 37 additional passing tests beyond the 59 skip-to-pass conversions (639 vs 676 actual) represent new parametrized cases or something else -- not decomposed.",
+    "Novelty of the hash-chained, multi-stage governance/tamper-evidence design. RUN-B (historical) found a related but distinct claim -- a single shared 'EpistemicStatus' ontology across several of these same-family repos (ccc, Conservation_Kernel, Governance_Gateway, GEMS) -- to be FALSIFIED (silent status coercion, e.g. HUMAN_AUTHORIZATION silently becoming SYSTEM). That finding was about status-vocabulary compatibility, not about the tamper-evidence mechanism tested here (OP5), but both concern the same family of repositories and the same broad claim of coherent, trustworthy cross-repo governance. This triage did not re-test RUN-B's falsified ontology claim; it should not be read as having vindicated it."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED, and this is the strongest result of the triage batch so far. Not only does the package's own test suite pass (676/676 non-xfail, non-skip), the claimed 7-repository governance chain actually assembles from live git dependencies and functions together, and a live adversarial demo correctly detected all 5 of 5 attempted record-tampering vectors.",
+    "the_clinical_caveat": "Must be stated every time this repo is cited: the specific clinical-monitoring demonstration built on top of the governance chain has real, disclosed detection gaps and is explicitly marked not production-ready by its own authors. This is a point in favor of the corpus's overall honesty (the gaps are disclosed, not hidden) but a real constraint on this particular repo's standalone commercial claim.",
+    "is_it_just_code_that_does_nothing": "NO, decisively. This is the strongest counter-example to that fear found so far: a multi-repository system that actually assembles and demonstrably does something (tamper detection across 5 vectors) end to end.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN for the governance-chain/tamper-evidence mechanism specifically -- not evaluated here, requires Phase 9/10-equivalent prior art work (hash-chained audit trails and multi-stage approval gates are known patterns in fields like blockchain provenance and workflow orchestration; what might be distinctive is the specific composition across independently-versioned sibling repositories). Separately, RUN-B already falsified a related but distinct claim (a single coherent EpistemicStatus ontology across several of the same repos) -- that finding stands and is not overturned by this triage.",
+    "recommendation": "Retain as the strongest candidate in the triage batch so far, but split the claim in any future summary: (1) the orchestration/tamper-evidence architecture across observe-perceive + conservation-kernel + AUGUR + CCC + GEMS + Governance_Gateway + fortress-kernel is real and working: (2) the pediatric clinical monitoring demonstration on top of it is honestly self-disclosed as not production-ready. Worth triaging conservation-kernel, AUGUR, CCC, GEMS, and Governance_Gateway individually in a later pass, since this triage only exercised them as dependencies, not on their own terms."
+  }
+}
