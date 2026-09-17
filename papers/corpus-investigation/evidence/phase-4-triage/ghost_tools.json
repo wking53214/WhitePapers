@@ -1,0 +1,70 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "ghost_tools",
+    "purpose": "Pre-commitment viability triage, same batch as herald.json -- executed to answer whether the corpus contains working systems before committing to the full 20-phase run.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1's inspection (evidence/phase-1/phase1-table.json, row ghost_tools) never executed code or ran the test suite (see that row's could_not_determine item 1). This entry closes that gap."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/ghost_tools",
+    "head_sha": "d14dc1acf01f9b7d95fc3d3a822d20f8e54c96cf",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" into an isolated venv. The 'semantic' extra (requires the anthropic package, LLM-backed detector path) was NOT installed -- no API credentials were exercised in this triage.",
+    "install_result": "EXECUTED, clean. Installed version resolves to 1.7.0, matching pyproject.toml and the CHANGELOG head entry -- this resolves in pyproject/CHANGELOG's favor the version-string inconsistency Phase 1's verifier flagged (README header said v1.5.0, the only git tag is v1.6.0, pyproject/CHANGELOG say 1.7.0)."
+  },
+  "findings": [
+    {
+      "id": "G1",
+      "claim": "The full pytest suite passes (1759 test cases across 114 files, including mutation-testing self-checks) without modification.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "1759 passed, 38 skipped, 2 FAILED, in 226.77s (parallelized via pytest-xdist, -n auto). This is roughly 5x the test volume actually executed for HERALD.",
+      "interpretation": "The overwhelming majority of a genuinely large, real test suite passes. Two failures required root-cause diagnosis, see G2."
+    },
+    {
+      "id": "G2",
+      "claim": "Root cause of the two test failures.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Both failures traced through their tracebacks to the same source: Tests/test_version_provenance.py::test_the_running_source_wins_over_installed_metadata. The second failure (test_evidence_pass_mutants.py::test_the_suites_pass_unmutated) is a mutation-testing control check that runs test_version_provenance.py as a subprocess as part of its own self-verification, and fails purely because that subprocess run reproduces the first failure -- confirmed by reading the captured subprocess output embedded in its own failure traceback, which is verbatim the same AssertionError. This is one root cause surfacing through two entry points, not two independent defects. Ran a standalone diagnostic script reproducing the test's own fixture logic with added instrumentation (printing which dist-info importlib.metadata actually resolved and the live sys.meta_path).",
+      "result": "The diagnostic printed: 'resolved dist-info path: /home/user/ghost_tools/ghost_tools.egg-info'. `pip install -e .` in this environment created a legacy egg-info metadata directory directly inside the checked-out source tree (ROOT) rather than a modern PEP 660 dist-info located in the venv's site-packages away from ROOT. The test's fixture inserts ROOT onto sys.path (required, to import the source under test) ahead of a fake site-packages directory meant to simulate 'an installed version different from what's running'; because ROOT now also happens to contain its own real egg-info, importlib.metadata finds ROOT's real metadata before ever reaching the fixture's fake one, so the test observes the real 1.7.0 instead of the fixture's intended 9.9.9 and fails on its own precondition assertion, never reaching the property it actually means to test.",
+      "interpretation": "This is an artifact of the specific editable-install mechanism this session's pip/setuptools combination chose (legacy egg-link style egg-info-in-source-tree), not a functional defect in ghost_tools' actual version-provenance logic. The test's own docstring describes a real, previously-fixed security-relevant bug class it guards against (a governance ledger stamping the wrong tool version against a finding), so this is a genuine, well-motivated regression test -- it is simply brittle to one particular install layout that happens to be the one produced here. Not independently verified whether a non-editable install or a modern PEP 660 wheel build would avoid triggering it -- recorded under could_not_determine rather than assumed."
+    },
+    {
+      "id": "G3",
+      "claim": "The tool does something real when pointed at a target it has never seen in this session -- not just passing its own fixtures.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran `ghost-buster /home/user/herald --no-ledger` (the already-cloned HERALD repository from the same triage batch) as a live, independent scan target. Deliberately did NOT pass --operate (which opens a branch and commits automated remedies) or --accept (which would mutate HERALD's baseline file) -- read-only observation only, consistent with 'never clone, push, or mutate a corpus repository' from the agent task spec, applied here to a live tool run rather than an agent call.",
+      "result": "Scanned 30 files, mapped 26 modules and 2 entry points via structural analysis. Loaded HERALD's existing 86-entry .ghost_baseline.json (i.e. it correctly parsed another repo's real baseline artifact from a previous, unrelated run) and correctly identified that 60 of those 86 entries no longer matched anything in this checkout, flagging this honestly ('fixed, renamed detector, or a baseline written from another checkout') rather than silently dropping or silently re-flagging them. Reported exactly 1 new finding: a MINOR loop_invariant_call in herald/boundary.py:147, describing a raise ValueError(...) call inside a for-loop whose message string never references the loop variable.",
+      "interpretation": "Read herald/boundary.py:137-148 directly to check the finding. It is technically accurate -- the exception message is a fixed literal -- but practically inconsequential, since the call only executes on an already-erroring path that immediately exits the loop. ghost_tools' own output correctly hedges this ('unless it has a side effect... which the tree cannot see') and labels it MINOR rather than overclaiming a real inefficiency. This is a mark in favor of the tool's calibration: a genuinely low-value finding was reported as low-value, not inflated."
+    },
+    {
+      "id": "G4",
+      "claim": "Adversarial-relevant observation: does ghost-buster protect itself against executing arbitrary code from a scanned target?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "The same scan against HERALD produced: 'test status scan DECLINED: it would execute this repository's code and github.com/wking53214/herald is not in /root/.config/ghost_tools/trust.json. --trust records consent once; --no-tests declines on purpose.' The tool refused, unprompted, to run HERALD's test suite (which would mean executing HERALD's code) without an explicit, persisted, per-origin consent record.",
+      "interpretation": "This is a real, observed safety boundary, not a claim taken from documentation -- ghost_tools is a tool whose entire purpose is scanning other people's codebases, and it defaults to refusing to execute code from a target it hasn't been told to trust. That is a meaningful design property for exactly the class of tool this is, found by trying to trigger it rather than by reading about it."
+    }
+  ],
+  "could_not_determine": [
+    "Whether a non-editable install, or a modern PEP 660 editable-wheel build, would avoid the G2 failure entirely -- not tested; G2's diagnosis is high-confidence on mechanism but the fix was not verified.",
+    "Whether CI (GitHub Actions) is currently green on this head SHA -- not queried.",
+    "ruff and bandit static-analysis results -- not run in this triage (CI runs 'ruff check .' as a hard gate per Phase 1's tests.yml inspection; not reproduced here).",
+    "Secrets-scan results -- ghost-buster itself declined this (gitleaks not installed in this environment), consistent with its own stated behavior of refusing to silently skip and instead reporting exactly why a check did not run.",
+    "The --mutate (mutation testing) and --operate (autonomous remediation) code paths -- deliberately not exercised. --operate opens branches and commits changes and was out of scope for a read-only triage; --mutate was skipped for time (the test suite already spends ~227s and includes its own internal mutation self-checks, see G2).",
+    "The 'semantic' extra (LLM-backed detection via the anthropic package) -- not installed, no API credentials exercised.",
+    "Whether the 60-of-86 stale-baseline-entries pattern observed against HERALD recurs against other targets or indicates a broader baseline-portability weakness -- single data point.",
+    "Novelty. RUN-B (historical, pre-this-run) already tested ghost_tools' duplication detector specifically and found Type-1/2/3 duplication detection 'survived tested cases' with a known Type-4 semantic-equivalence boundary, and separately found that prior-art research killed broad novelty claims around clone-detection/ground-truth concepts in general. Any novelty claim for ghost_tools inherits that caution and requires fresh Phase 9/10-equivalent verification, not assumed from this triage."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED. Installs cleanly, the large majority of a substantial real test suite (1759 cases) passes, and a live scan against an independent, real target (HERALD) produced a correctly-calibrated, non-spammy, honestly-hedged finding plus a genuine, observed safety refusal (declining to execute untrusted code).",
+    "the_two_test_failures": "Diagnosed to a single environment-specific root cause (an editable-install artifact placing metadata inside the source tree), not a functional defect in the shipped tool's own logic. Recorded rather than hidden, per this project's evidence discipline -- a failure that turns out to be environment-specific is still reported, not silently omitted because the explanation is convenient.",
+    "is_it_just_code_that_does_nothing": "NO. Same conclusion as HERALD, now independently reached on a second, larger, more heavily tested repository, and additionally corroborated cross-repo: this scan of HERALD is itself evidence that HERALD is a real, structurally coherent codebase (26 real modules mapped), consistent with the HERALD triage's own findings.",
+    "is_it_novel_or_commercially_valuable": "PARTIALLY CONSTRAINED already. RUN-B specifically examined this repository's duplication-detection claims and killed the broad novelty claim; a fresh novelty pass here would need to either accept that finding or explicitly attempt to overturn it with new evidence, not start from a blank slate.",
+    "recommendation": "Retain as a second strong candidate. Worth carrying G4 (the trust-gating refusal) forward as a design pattern to check for in other repos claiming to do autonomous or semi-autonomous code operations -- and worth checking, in a later phase, whether ghost_tools' own --operate mode (not exercised here) has an equivalent safety boundary before treating any repo's 'autonomous remediation' claims as safe by default."
+  }
+}
