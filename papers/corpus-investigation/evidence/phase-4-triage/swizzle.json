@@ -1,0 +1,65 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "SWIZZLE",
+    "purpose": "Pre-commitment viability triage, requested together with TOUCHSTONE and AUGUR. SWIZZLE is purpose-built to attack ghost_tools, already triaged earlier in this batch (evidence/phase-4-triage/ghost_tools.json) as one of the strongest results so far. This entry both evaluates SWIZZLE on its own terms AND produces a material update to the ghost_tools assessment via a real cross-tool attack run.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 never executed anything and explicitly flagged the test suite and the actual ghost_tools attack run as unverified. This entry runs both, including the live attack against the already-cloned, already-verified ghost_tools checkout from earlier in this session."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/swizzle",
+    "head_sha": "bb9079d5ffd16b43fa7ada0e710d9c6aa3a09db0",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" (zero runtime dependencies declared)",
+    "install_result": "EXECUTED, clean. Installed version 0.7.1, matching pyproject.toml (not the README's stale v0.4.0 header)."
+  },
+  "findings": [
+    {
+      "id": "SW1",
+      "claim": "Resolve the conflicting test-count claims (README: 343 and, separately, 109; a commit message: 661).",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "788 passed, 0 failed, 21.85s. Only cosmetic pytest warnings (a dataclass named 'TestShape' triggers a collection warning; one test function returns a value instead of using assert).",
+      "interpretation": "None of the three documented numbers matches, but 788 is larger than all of them and the suite is fully green -- consistent with continued growth after each of those numbers was written down, the same documentation-lag pattern seen repeatedly across this account, not a sign of fabrication."
+    },
+    {
+      "id": "SW2",
+      "claim": "Run SWIZZLE's own self-honesty check (`swizzle prove`), described in its own CLI help as 'the check that SWIZZLE is not claiming defects it does not have.'",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "12 of 12 proofs hold. Each proof is a live-executed demonstration, not a static claim: a real SQLite query actually returns 2 rows instead of 1 when fed \"1 OR 1=1\" (genuine SQL injection, executed); a 'failing' and a 'working' transport both actually return True to the caller (a real swallowed-failure pattern, executed); a live HTTP client actually receives verify=False; a decorator-based dispatch table actually runs a function that no static name-reference points to.",
+      "interpretation": "SWIZZLE's foundational attack catalogue is not vaporware -- every one of its 12 core 'warps' is a genuine, executable demonstration of a real defect class, verified here by actually running each one, not by trusting the README's description of them."
+    },
+    {
+      "id": "SW3",
+      "claim": "Central test: run SWIZZLE's actual attack (`swizzle run --ghost-tools <path>`) against the real ghost_tools checkout already cloned and verified earlier in this same session, and see what it finds.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Ran `swizzle run --ghost-tools /home/user/ghost_tools` twice (once for the human-readable report, once for --json), against the exact ghost_tools checkout (head d14dc1ac...) already installed and independently verified in evidence/phase-4-triage/ghost_tools.json.",
+      "result": "Scorecard: 'proven defects named: 0 of 10; clean fixtures left alone: 1 of 2.' All 10 of SWIZZLE's disguised real-defect fixtures (4 SQL-injection variants, 2 swallowed-exception variants, one hollow abstract-base method, one string-only dead-code case, 2 insecure-default variants) ESCAPED ghost_tools' scan entirely -- 'nothing was said about <defect> at <file>:<line>' for all 10. Of the 2 clean (non-defective) control fixtures, one was correctly left alone (dismissed) and one produced a genuine false positive (CONJURED: ghost_tools flagged legitimate decorator-based dispatch code as dead_code).",
+      "interpretation": "This is the most consequential single finding of this triage batch so far, because it is a real, executed adversarial result against a tool this same triage had already verified as one of its four strongest (ghost_tools.json). It does not overturn that earlier finding -- ghost_tools' own 1759-test suite still genuinely passes, and its live scan against HERALD in that earlier triage found a real, correctly-hedged issue. What this adds is a specific, demonstrated limitation: undisguised or lightly-disguised defects are caught, but SWIZZLE's disguises (hiding SQL injection behind a directory named 'testing/' that the scanner path-excludes, hiding a swallowed exception behind a single logger.debug() call instead of a bare `pass`, hiding dead code behind a string-keyed help-table reference) evade detection completely. SWIZZLE's own methodology is rigorous about this: for the 'EXCLUSION WORN AS A COSTUME' cases, it ran a control -- removing the disguise (e.g. renaming the 'testing/' directory) and confirming ghost_tools DOES catch the underlying defect once undisguised -- which is exactly the right way to prove the escape is caused by the disguise, not a coincidence."
+    },
+    {
+      "id": "SW4",
+      "claim": "Does SWIZZLE correctly distinguish real gaps from cases ghost_tools has itself already disclosed as a known scope limit?",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "SWIZZLE's own report sorts its 10 escapes into two categories: 'UNDISCLOSED -- no part of ghost_tools mentions this gap' (the SQL-injection and dead-code/dead-end-call cases) versus 'DISCLOSED -- ghost_tools states this scope limit itself' (the two swallowed-exception cases, where SWIZZLE quotes ghost_tools' own documentation acknowledging that only a bare `pass` is currently detected, not a lone `logger.debug()` or `contextlib.suppress` call).",
+      "interpretation": "This is a materially more careful adversarial report than a flat 'found 10 bugs' claim would be -- it separates gaps the target already knows about and has scoped out (less severe) from gaps nobody has acknowledged (more severe). This same care extends to its own false positive: SWIZZLE explicitly reports the dispatch_by_decorator false positive against itself, quoting ghost_tools' own README on exactly this known blind spot ('decorator-based registration ... are still untraced'), rather than only reporting wins."
+    }
+  ],
+  "could_not_determine": [
+    "Whether SWIZZLE's other subsystems (evolve/adaptive search, minimize, the WIZZLE independent-verification layer at swizzle.wizzle, the corpus/standings/knowledge tracking across runs) work as documented -- only `prove` and `run --ghost-tools` were exercised, chosen as the two highest-value, most decisive checks given time constraints.",
+    "Whether the same 10 disguises would also evade other static-analysis tools generally, or are specifically tuned to ghost_tools' known implementation -- not tested against any other scanner.",
+    "Whether ghost_tools has been updated to catch any of these 10 patterns since this SWIZZLE corpus was built (SWIZZLE's corpus/regression fixtures reference ghost_tools version 1.7.0, matching the version triaged earlier in this session) -- version alignment confirmed, but no forward-looking check of whether these are still gaps in a hypothetical future ghost_tools release.",
+    "Novelty of the disguise/warp catalogue as an adversarial-evaluation methodology -- not evaluated, requires Phase 9/10-equivalent prior art work (mutation testing and fuzzing are established fields; the specific 'costume' framing applied to static-analysis blind spots was not compared against existing literature)."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, decisively. Both its own self-check (12/12 proofs, live-executed) and its actual purpose (attacking ghost_tools) produced real, substantive, methodologically careful results when run for real.",
+    "is_it_just_code_that_does_nothing": "NO -- and more than that, this is a repo whose entire value proposition (successfully red-teaming another verified-real tool) was independently confirmed by watching it do exactly that, live, in this session.",
+    "cross_reference_update": "Material update to evidence/phase-4-triage/ghost_tools.json, recorded here rather than by editing that file: ghost_tools' detection coverage has a real, demonstrated, 0-of-10 gap against disguised versions of five defect classes it claims to detect, with roughly half of those gaps undisclosed anywhere in its own documentation. Any future summary should cite ghost_tools' strengths (real test coverage, real live findings, honest trust-gating) and this specific, adversarially-demonstrated weakness together, not either alone.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, not evaluated here -- requires Phase 9/10-equivalent prior art work.",
+    "recommendation": "Retain as a strong, verified result, and treat it as a template for how this project's Phase 8 (experiment generation / adversarial testing) should work more broadly: SWIZZLE is, in effect, a purpose-built instance of exactly what this entire investigation is trying to do to the whole corpus, already built by the account owner, already working, and already producing exactly the kind of real, falsifiable, controlled finding this project's own methodology calls for."
+  }
+}
