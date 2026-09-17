@@ -1,0 +1,48 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "Triad-42",
+    "purpose": "Pre-commitment viability triage, same batch as prior entries. RUN-B (historical, prior investigation) already listed Triad-42 among its 21 substantive systems; this entry independently re-verifies it by execution rather than assuming that historical finding still holds.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly could not determine whether the test suite passes, and flagged an unresolved internal conflict between three different self-reported counts (README: 100 tests, ENHANCEMENT_REJECTION.md: 105, CURRENT_ARCHITECTURE.md: 11 modules against an actual 14). This entry resolves the count and live-tests the harness's central claimed property -- enforced stage order -- rather than trusting the README's description of it."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/triad-42",
+    "head_sha": "19cf383e32b6b7b52927ef402ff547804bf2d928",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "pip install -e \".[dev]\" (zero runtime dependencies declared, stdlib only)",
+    "install_result": "EXECUTED, clean"
+  },
+  "findings": [
+    {
+      "id": "T1",
+      "claim": "Resolve the conflicting test-count claims (README: 100, ENHANCEMENT_REJECTION.md: 105).",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "105 passed, 0 failed, 0.16s.",
+      "interpretation": "The more recent, more specific document (ENHANCEMENT_REJECTION.md, describing the last operational-upgrade round) was accurate; the README is a stale snapshot from before that round. Sixth or seventh instance of the same pattern across this account: the freshest specific claim checks out, older summary docs lag."
+    },
+    {
+      "id": "T2",
+      "claim": "Live adversarial test of the harness's central claimed property: enforced Red -> Gray -> Green -> 42 stage order, with no stage skippable and no closed stage reopenable.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Constructed a ReviewPass over a labeled subject and attempted three things in sequence: (1) call add_grounding() (a Green-stage method) while still in the initial RED stage, before any stage had been closed; (2) properly add a Red finding and close the Red stage; (3) attempt to add another Red finding after Red was already closed and the pass had moved to Gray.",
+      "result": "(1) REJECTED: `StageOrderError: GREEN cannot run now. Completed: none. Expected next: RED. The sequence is Red, Gray, Green, then 42, and it is not optional.` (2) Succeeded normally, moving the pass from RED to GRAY. (3) REJECTED: `StageOrderError: RED cannot run now. Completed: RED. Expected next: GRAY.` A subsequent legitimate close_stage() call correctly advanced GRAY -> GREEN.",
+      "interpretation": "This is real, working enforcement, not a documented aspiration -- verified by directly trying to break the one rule the entire package exists to enforce, in two different directions (skip forward, act backward after closure), and finding it held both times with clear, specific error messages naming exactly what stage was expected."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the deeper domain logic (severity escalation across findings clusters, the two-phase Gray behavior, the five-check 42 novelty gate, the provenance erasure cascade) holds up under similarly targeted adversarial tests -- only the top-level stage-order guard was tested live here, chosen because it is the package's single most load-bearing claim and the fastest to verify decisively.",
+    "Contents of .ghost_baseline.json (56 KB) -- not opened.",
+    "Whether the two 'no further integration needed' investigation documents (comparing Triad-42 against FACTS/STRIDE/FORTRESS concepts) reflect accurate comparisons -- their conclusions were not independently re-examined here.",
+    "Novelty of the Red/Gray/Green/42 procedural discipline itself as a review methodology -- not evaluated, requires Phase 9/10-equivalent prior art work. The design explicitly separates 'the harness disciplines the review' from 'a human or model does the reasoning,' which is itself a claim about role separation worth testing further, not assumed."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED. 105/105 tests pass, and the harness's core, defining claim -- that it enforces an unskippable, non-reversible review stage order -- was independently verified live and held under direct attempts to break it in both directions.",
+    "is_it_just_code_that_does_nothing": "NO. Small, dependency-free, and its one distinctive property (procedural discipline over a review process) is verified functioning, not just described.",
+    "is_it_novel_or_commercially_valuable": "UNKNOWN, not evaluated here -- requires Phase 9/10-equivalent prior art work on procedural review-discipline harnesses generally.",
+    "recommendation": "Retain as a small, verified, working component. Consistent with RUN-B's historical inclusion of this repo among substantive systems -- this triage independently confirms that finding by execution rather than merely inheriting it."
+  }
+}
