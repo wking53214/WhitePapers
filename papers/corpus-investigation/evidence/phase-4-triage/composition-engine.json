@@ -1,0 +1,48 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "composition-engine",
+    "purpose": "Pre-commitment viability triage, requested together with Resume_OS. Phase 1's own verifier had already flagged strong warning signs for this repo: the entire 6-commit history spans ~16 minutes in one Claude Code session, no packaging manifest exists at all, and the 4 named adapters were confirmed by direct code reading to be stubs that never call the real corpus repos they're named after.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 could not determine whether the claimed '21 tests passing' actually pass, since tests were never executed. This entry runs them and finds they cannot even be collected, then directly executes the adapter stubs Phase 1 had only read."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/composition-engine",
+    "head_sha": "5b87134b35e27a1a6cc3a1136d59fbc2997a2396",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "No manifest of any kind exists in this repo (no pyproject.toml, setup.py, requirements.txt). Installed pytest directly into a venv and ran with PYTHONPATH=src, the only way to exercise this code at all.",
+    "install_result": "N/A -- there is nothing to install; the package itself has no installable definition."
+  },
+  "findings": [
+    {
+      "id": "CE1",
+      "claim": "The README's central, specific claim -- 'All 21 tests passing' -- is checkable and should be checked before anything else, since this is the one number the repo commits to.",
+      "status": "EXECUTED",
+      "evidence_class": "[TEST]",
+      "result": "pytest cannot even COLLECT the test file: `ModuleNotFoundError: No module named 'cns.gate'`. tests/test_library_composition.py imports from src/cns/compose_library.py, which does `from .gate import GateOutcome, subject_digest` -- a relative import expecting a cns/gate.py submodule that does not exist anywhere in this repository (confirmed: src/cns/ contains __init__.py, adapters.py, adapters_cns.py, check_integration.py, cns_backend.py, cns_integration.py, compose_library.py, core.py -- no gate.py, in this triage's own listing and matching Phase 1's independent listing).",
+      "interpretation": "This is not a stale number, and not a case of documentation lagging code (the pattern seen repeatedly elsewhere in this account) -- it is a claim that is currently, structurally false. The test suite this repo claims is fully green cannot run at all, on any Python version, without the missing module being added. Phase 1 had flagged 'whether the cns.gate bridge can ever resolve' as an open question because of a suspected namespace collision with the local cns package; the actual cause is simpler and more decisive: the module the tests depend on was never committed to this repository in the first place."
+    },
+    {
+      "id": "CE2",
+      "claim": "Phase 1's verifier read adapters_cns.py (the module actually described in the README's Files table, distinct from the broken legacy test path in CE1) and reported that its invoke() methods 'are stubs returning fixed strings conditioned on input_outcome' without calling any real external code. Confirm this by execution.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "method": "Imported SwizzleAdapter and GhostToolsAdapter from cns.adapters_cns directly (this path DOES import successfully, unlike the broken legacy path in CE1) and called .invoke() with five different inputs per adapter: a normal dict, a differently-shaped dict, None, a dict with a boolean value, and a raw string.",
+      "result": "SwizzleAdapter.invoke() returned the literal string 'escaped' for every single input tried, including None. GhostToolsAdapter.invoke() returned the literal string 'reasoned' for every input tried, including a raw string where a dict was expected.",
+      "interpretation": "This is not 'conditioned on input_outcome' in any meaningful sense -- it is a hardcoded constant return value, verified directly rather than inferred from reading the source. Neither adapter makes any attempt to call, import, or reason about the actual SWIZZLE or ghost_tools systems named in its class name, both of which were independently verified as real, working systems earlier in this same triage session (evidence/phase-4-triage/swizzle.json, ghost_tools.json). This is the clearest, most direct instance in this entire triage batch of the specific failure mode the operator originally asked this project to rule out: code that runs without error but does nothing resembling what its name and documentation claim."
+    }
+  ],
+  "could_not_determine": [
+    "Whether the InnovationOSAdapter and WizzleAdapter behave identically (only Swizzle and GhostTools adapters were directly tested; Phase 1's reading of the source suggests the same stub pattern applies to all four, but this was not independently re-verified for the other two by execution).",
+    "Whether UniversalComposer.compose() (the actual orchestration logic in core.py, as opposed to the adapters it would call) contains any real path-finding/translation logic worth separately evaluating -- Phase 1's inspector did read core.py and found real BFS/graph-building code; this triage did not re-verify that specific claim, since the adapters it would orchestrate are confirmed non-functional regardless of how good the orchestration logic around them is.",
+    "Whether adding the missing cns/gate.py module (or fixing the import) would make the legacy 21-test suite pass -- not attempted, since doing so would mean writing code for the repo rather than testing what exists.",
+    "Novelty or commercial value of the composition/orchestration concept -- not evaluated, moot given CE1/CE2."
+  ],
+  "overall_assessment": {
+    "does_it_work": "NO, for the two things it actually claims: neither the tested code path (doesn't collect) nor the described code path (adapters are input-independent constants) does what the README says.",
+    "is_it_just_code_that_does_nothing": "YES, for the adapter layer specifically -- verified directly by execution, not inferred. This is the clearest confirmed instance of the operator's original stated concern found anywhere in this triage batch. The surrounding orchestration code (UniversalComposer, the compatibility graph, BFS path-finding) may be genuinely implemented, per Phase 1's reading, but it has nothing real to orchestrate: every adapter it would call is a constant.",
+    "context": "Built in a single ~16-minute Claude Code session with no packaging manifest, no CI, and (per Phase 1) a README claim of passing tests that this triage shows was never true as committed. This is a materially different profile from every other repo triaged in this session, most of which showed real engineering investment (hundreds of commits, real infrastructure, adversarially-verified logic) even where specific claims didn't hold up.",
+    "recommendation": "Do not carry forward any claim from this repo's README or docs without independent verification -- multiple specific, checkable claims failed outright. If the orchestration logic in core.py is independently valuable, it would need to be paired with real adapters before it does anything; as committed, this repo does not compose the systems it names."
+  }
+}
