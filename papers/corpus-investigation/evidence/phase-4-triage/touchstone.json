@@ -1,0 +1,39 @@
+{
+  "_provenance": {
+    "date": "2026-09-17",
+    "repo": "TOUCHSTONE",
+    "purpose": "Pre-commitment viability triage, requested together with SWIZZLE and AUGUR. This repo carries special weight: RUN-B (the prior, weaker-environment investigation) specifically examined TOUCHSTONE's predecessor concept and found its narrower claim -- the answer-key drift guard -- 'not killed but explicitly not declared novel.' This is the first opportunity in this triage batch to actually execute that guard rather than continuing to treat it as an untested historical claim.",
+    "method": "Executed directly in the main session (model claude-sonnet-5), not dispatched through the Workflow tool. Direct tool-driven verification, no Fable/Opus subagent budget spent.",
+    "distinguishing_feature_vs_phase_1": "Phase 1 explicitly could not determine whether verify_manifest.py actually passes at HEAD, and could not determine whether the flattened specimens still have 0 newlines or whether the 'silent pass' specimen really imports and defines nothing -- all were read as claims in MANIFEST.md and commit messages, never executed. This entry runs the self-check directly."
+  },
+  "repo_state_at_time_of_test": {
+    "clone_method": "git clone --depth 1 https://github.com/wking53214/touchstone",
+    "head_sha": "0db56006700356d5ac784bfb4c1ffb65f54d47c6",
+    "matches_phase1_recorded_head_sha": true,
+    "python_version": "3.11.15",
+    "install_method": "None needed -- no packaging manifest exists (by design: this is a specimen corpus, not a system). verify_manifest.py is a standalone stdlib-only script run directly from the repo root.",
+    "install_result": "N/A"
+  },
+  "findings": [
+    {
+      "id": "TS1",
+      "claim": "Run the corpus's own answer-key self-check (verify_manifest.py) and determine whether the specimen corpus still matches its documented MANIFEST.md ground truth.",
+      "status": "EXECUTED",
+      "evidence_class": "[EXPERIMENT]",
+      "result": "26/26 manifest claims hold. All five reconstruction pairs are intact (flattened source unchanged, adapter/reconstruction still parses); the uztc version progression behaves exactly as documented (v1.0 fails to parse, v1.1 and v1.2 parse); the 'silent pass' specimen (governance_os_security_source.py) still imports without error and defines zero names; the 'overclaim' specimen (uztc v1.2) still raises AttributeError as documented; the flattening-duplicate pair's two copies still differ textually with the correct one identified as flattened; the reference sandbox still enforces its declared capability restrictions.",
+      "interpretation": "This is a clean, complete, executed confirmation of every claim the corpus's own answer key makes about itself. Nothing has drifted since the 2026-09-07 measurement date recorded in MANIFEST.md. This is exactly the kind of result -- ground truth verified stable under direct execution -- that RUN-B's own historical assessment ('not killed but explicitly not declared novel') left open as still worth checking; this triage closes the 'does the guard actually still hold' question with a direct yes, without making any claim about novelty, which remains a separate, unaddressed question."
+    }
+  ],
+  "could_not_determine": [
+    "Novelty of the answer-key drift-guard concept itself -- RUN-B already declined to call this novel, and this triage does not attempt fresh prior-art research to overturn or confirm that; running the check and finding it accurate is a different claim from finding it original.",
+    "Contents of the three verbatim Gemini transcript files (~184 KB total) embedded as provenance material in three specimen subdirectories -- not opened, consistent with Phase 1's own treatment of them as ancillary rather than the repo's purpose.",
+    "Whether the corpus's damage was introduced deliberately by a human, by an earlier agent session, or through some other process -- the corpus documents WHAT is damaged and HOW, verified accurate here, but not WHY or by whom in a way this triage independently confirmed.",
+    "Whether any downstream consumer (CCC, TIE, Conservation_Kernel -- all named in MANIFEST.md as 'what consumes this') actually scores correctly against this corpus -- this triage verified the corpus's internal self-consistency, not any consuming verifier's performance against it."
+  ],
+  "overall_assessment": {
+    "does_it_work": "YES, EXECUTED, cleanly. This is not a 'system' in the sense the other triaged repos are, and doesn't claim to be -- its own README says 'Nothing here is a running system, and nothing here should be imported by one.' Its actual claim is narrower and fully verified: it is stable, accurate ground truth for scoring code verifiers, and its self-check proves that today, by execution.",
+    "is_it_just_code_that_does_nothing": "NOT APPLICABLE in the usual sense -- this repo doesn't claim to do anything operationally; it claims to BE something (accurate, known-damaged specimens) reliably, and that specific claim checks out completely.",
+    "is_it_novel_or_commercially_valuable": "Novelty already addressed by RUN-B and not re-litigated here (see could_not_determine). Commercial value of a verifier-scoring benchmark specifically is a narrower, more plausible claim than commercial value of the underlying governance concepts, and remains untested by this triage -- it would depend on whether anyone outside this account needs ground truth of this specific kind.",
+    "recommendation": "Retain as verified, stable infrastructure. This is a good candidate for the model-attribution research question this whole project also tracks: because verify_manifest.py's pass/fail is a completely deterministic, binary, cheap check with no ambiguity in interpretation, it would make an unusually clean shared fixture for comparing whether different models (Fable vs Opus) reach the same conclusion when asked to evaluate this corpus qualitatively, since the ground truth itself is now confirmed unambiguous."
+  }
+}
